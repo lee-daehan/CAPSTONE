@@ -12,38 +12,26 @@
   </head>
   <body>
     <!-- NavBar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="">프로젝트명</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
-            <a class="nav-link" href="/mypage">마이페이지</a>
-            <a class="nav-link" href="">회원가입</a>
-            <a class="nav-link" href="">로그인</a>
-          </div>
-        </div>
-      </nav>
+    <%- include('nav.html') %>
     
     <!-- 메인컨텐츠 -->
     <h1>프로필수정</h1>
     
-    <form action="/editprofile" method="POST" class="m-4">
+    <form action="/editprofile?_method=PUT" method="POST" class="m-4">
         <div class="form-group">
-            <label for="formGroupExampleInput">닉네임</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="닉네임을 입력하세요" name="nickname">
+            <label>닉네임</label>
+            <input type="text" value="<%= profile._id %>" name="id" style="display: none">
+            <input value="<%= profile.닉네임 %>" type="text" class="form-control" name="nickname">
         </div>
         <div class="form-group">
-            <label for="formGroupExampleInput">성별</label>
+            <label>성별</label>
             <select class="form-control" name="gender">
                 <option>남성</option>
                 <option>여성</option>
             </select>
         </div>
         <div class="form-group">
-            <label for="formGroupExampleInput">선호포지션</label>
+            <label>선호포지션</label>
             <select class="form-control" name="position">
                 <option>FW</option>
                 <option>MD</option>
@@ -52,19 +40,19 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="formGroupExampleInput">주 사용 발</label>
+            <label>주 사용 발</label>
             <select class="form-control" name="foot">
                 <option>왼발</option>
                 <option>오른발</option>
             </select>
         </div>
         <div class="form-group">
-            <label for="formGroupExampleInput2">신장</label>
-            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="신장을 입력하세요 (예시:180)" name="height">
+            <label>신장</label>
+            <input value="<%= profile.신장 %>" type="text" class="form-control" name="height">
         </div>
         <div class="form-group">
-            <label for="formGroupExampleInput2">몸무게</label>
-            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="몸무게를 입력하세요 (예시:80)" name="weight">
+            <label>몸무게</label>
+            <input value="<%= profile.몸무게 %>" type="text" class="form-control" name="weight">
         </div>
         <button type="submit" class="btn btn-primary m-2">저장</button>
     </form>
