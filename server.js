@@ -6,7 +6,7 @@ app.use(bodyParser.urlencoded({ extended : true }));
 app.set('view engine', 'ejs');
 
 var db;
-MongoClient.connect('mongodb+srv://admin:qwer1234@cluster0.0sp7tde.mongodb.net/FootballMatchingapp?retryWrites=true&w=majority', function(error, client){
+MongoClient.connect('mongodb+srv://admin:@cluster0.0sp7tde.mongodb.net/FootballMatchingapp?retryWrites=true&w=majority', function(error, client){
     if(error) {return console.log(error)};
 
     db = client.db('FootballMatchingapp'); 
