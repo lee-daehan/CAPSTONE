@@ -13,20 +13,19 @@
   <body>
     <%- include('nav.html') %>
       
-    <h1>나의 프로필</h1>
+    <h1><%= User.id %>님의 프로필</h1>
 
     <div>
-      <% for (var i=0; i < profile.length; i++ ) { %>
       <ul>
-        <li>닉네임: <%= profile[i].닉네임 %></li>
-        <li>성별: <%= profile[i].성별 %></li>
-        <li>선호포지션: <%= profile[i].선호포지션 %></li>
-        <li>주 사용 발: <%= profile[i].주발 %></li>
-        <li>신장: <%= profile[i].신장 %></li>
-        <li>몸무게: <%= profile[i].몸무게 %></li>
+        <li>닉네임: <%= User.닉네임 %></li>
+        <li>성별: <%= User.성별 %></li>
+        <li>선호포지션: <%= User.선호포지션 %></li>
+        <li>주 사용 발: <%= User.주발 %></li>
+        <li>신장: <%= User.신장 %></li>
+        <li>몸무게: <%= User.몸무게 %></li>
       </ul>
     </div>
-    <% } %>
+  
 
     <!-- Optional JavaScript; choose one of the two! -->
 

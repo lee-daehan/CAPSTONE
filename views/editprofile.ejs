@@ -20,8 +20,7 @@
     <form action="/editprofile?_method=PUT" method="POST" class="m-4">
         <div class="form-group">
             <label>닉네임</label>
-            <input type="text" value="<%= profile._id %>" name="id" style="display: none">
-            <input value="<%= profile.닉네임 %>" type="text" class="form-control" name="nickname">
+            <input value=" " type="text" class="form-control" name="nickname">
         </div>
         <div class="form-group">
             <label>성별</label>
@@ -48,11 +47,11 @@
         </div>
         <div class="form-group">
             <label>신장</label>
-            <input value="<%= profile.신장 %>" type="text" class="form-control" name="height">
+            <input value=" " type="text" class="form-control" name="height">
         </div>
         <div class="form-group">
             <label>몸무게</label>
-            <input value="<%= profile.몸무게 %>" type="text" class="form-control" name="weight">
+            <input value="" type="text" class="form-control" name="weight">
         </div>
         <button type="submit" class="btn btn-primary m-2">저장</button>
     </form>

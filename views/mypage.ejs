@@ -15,8 +15,13 @@
     <%- include('nav.html') %>
     
     <!-- 메인컨텐츠 -->
-    <h1>마이페이지</h1>
+    <h1><%= User.id %>마이페이지</h1>
     <div class="m-2">
+        <div class="mb-4">
+            <button type="button" class="btn btn-primary" style="width: 12rem;">
+                <a class="text-dark text-decoration-none" href="/inputprofile">프로필입력</a>
+            </button>
+        </div>
         <div class="mb-4">
             <button type="button" class="btn btn-primary" style="width: 12rem;">
                 <a class="text-dark text-decoration-none" href="/myprofile">프로필보기</a>
