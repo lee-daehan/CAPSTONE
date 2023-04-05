@@ -11,46 +11,15 @@
     <title>Football Matching for SCH</title>
   </head>
   <body>
-    <!-- NavBar -->
     <%- include('nav.html') %>
-    
-    <!-- 메인컨텐츠 -->
-    <h1><%= User.id %>마이페이지</h1>
-    <div class="m-2">
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/inputprofile">프로필입력</a>
-            </button>
-        </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/myprofile">프로필보기</a>
-            </button>
-        </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/editprofile">프로필수정</a>
-            </button>
-        </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="">팀원 평가하기</a>
-            </button>
-        </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="">신청내역</a>
-            </button>
-        </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/boardview">내가 작성한 게시물</a>
-            </button>
-        </div>
+      
+    <div>
+      <ul>
+        <li>게시글: <%= Userboard.게시글 %></li>
+      </ul>
     </div>
-    
-    
-    
+  
+
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->

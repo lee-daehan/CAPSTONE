@@ -185,16 +185,10 @@ app.post('/inputprofile', function (req, res) {
 //내 프로필 보기
 app.get('/myprofile', function (req, res) {
     // console.log(req.user);
-
     db.collection('profile').findOne({ _id: req.user._id }, function (error, result) {
-        res.render('myprofile.ejs', { User : result});
+            res.render('myprofile.ejs', { User : result});
     });
 });
-
-
-
-
-
 
 //게시판(board), 등록된 게시글 다 보이게 하는 기능
 app.get('/board', function (req, res) {
@@ -203,6 +197,13 @@ app.get('/board', function (req, res) {
         //collection 안의 모든 데이터를 꺼내주세요
         res.render('board.ejs', { User : result });
         //찾은걸 ejs파일에 집어넣어주세요.
+    });
+})
+
+//내가 작성한 게시물 보기
+app.get('/boardview', function (req, res) {
+    db.collection('board').findOne({id : req.user.id },function (error, result) {
+        res.render('boardview.ejs', {Userboard : result})
     });
 })
 
