@@ -197,9 +197,10 @@ app.get('/board', function (req, res) {
 })
 
 //내가 작성한 게시물 보기
-app.get('/boardview', function (req, res) {
-    db.collection('board').findOne({_id : req.user._id },function (error, result) {
-        res.render('boardview.ejs', {Userboard : result})
+app.get('/boardview', checklogin, function (req, res) {
+    db.collection('board').findOne({작성자 : req.user.id },function (error, result) {
+        res.render('boardview.ejs', { Article : result })
+        // console.log(Article);
     });
 })
 
@@ -214,23 +215,17 @@ app.get('/boardinput', function (req, res) {
 });
 
 app.post('/boardinput', checklogin, function (req, res) {
-    // console.log(req.user);
-
-    db.collection('profile').findOne({ id: req.user.id }, function (error, result) {
-        // db.collection('board').updateOne({ id: req.user.id }, {
-        //     $set:
-        //     {
-        //         게시글: req.body.board
-        //     }
-        // }, function (error, result) { console.log('저장완료'); });
-        db.collection('board').insertOne({_id: req.user._id, 게시글: req.body.board}, function(error, result){
-            console.log('저장완료');
-        })
-    });
-
+    console.log(req.user._id);
+    db.collection('board').insertOne({ _id: req.user._id }, function (error, result) {
+        db.collection('board').findOne({ _id: req.user._id }, function (error, result) {
+            db.collection('board').insertOne({
+                작성자: req.user.id,
+                게시글: [req.body.board]
+            }, function (error, result) { })
+        });
+    })
     //성공 알림창 띄우고 마이페이지로 돌아가게함 
     res.write("<script>alert('success')</script>");
     res.write("<script>window.location=\"../board\"</script>");
 });
-
 

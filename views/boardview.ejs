@@ -24,14 +24,15 @@
           <p><%= 게시글[i] : Userboard[i].게시글 %></p>
           <button class="delete" data-id="<%= Userboard[i].id %>">삭제</button>
      <% } %> -->
-    <% for(var i=0 ; i < Userboard.length; i++){ %>
+    <!-- <% for(var i=0 ; i < Userboard.length; i++){ %> -->
       <li class="list-group-item">
         <p>
-          <%= 게시글[i] : Userboard[i].게시글 %>
+          <% Article.게시글 %>
+          <!-- <%- Article.게시글[0] %> -->
         </p>
-        <button class="delete" data-id="<%= Userboard[i].게시글 %>">삭제</button>
+        <!-- <button class="delete" data-id="<%= Article.게시글 %>">삭제</button> -->
       </li>
-      <% } %>
+      <!-- <% } %> -->
 
         <!-- Optional JavaScript; choose one of the two! -->
 
@@ -41,7 +42,7 @@
           integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
           crossorigin="anonymous"></script>
 
-        <script>
+        <!-- <script>
           $('.delete').click(function (e) {//class명이 delete인 요소를 클릭하면,내부코드실행
             var 글번호 = e.target.dataset.id;//내가 누른 요소의 data-id
             var 지금누른거 = $(this);
@@ -59,7 +60,7 @@
               console.log('실패');
             })
           })
-        </script>
+        </script> -->
         <!-- Option 2: Separate Popper and Bootstrap JS -->
 
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
