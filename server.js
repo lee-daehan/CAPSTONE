@@ -198,11 +198,14 @@ app.get('/board', function (req, res) {
 
 //내가 작성한 게시물 보기
 app.get('/boardview', checklogin, function (req, res) {
-    db.collection('board').findOne({작성자 : req.user.id },function (error, result) {
-        res.render('boardview.ejs', { Article : result })
-        // console.log(Article);
+    db.collection('board').find().toArray(function (error, result) {
+        console.log(result);
+        db.collection('board').findOne({작성자: req.user.id},function(error, result2){
+             res.render('boardview.ejs', { A : result, B: result2});
+        })
+       
     });
-})
+});
 
 
 //게시물 등록기능
@@ -220,7 +223,7 @@ app.post('/boardinput', checklogin, function (req, res) {
         db.collection('board').findOne({ _id: req.user._id }, function (error, result) {
             db.collection('board').insertOne({
                 작성자: req.user.id,
-                게시글: [req.body.board]
+                게시글: req.body.board
             }, function (error, result) { })
         });
     })
