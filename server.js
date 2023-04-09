@@ -89,10 +89,6 @@ app.post('/register', function (req, res) {
                 res.write("<script>window.location=\"../login\"</script>");
             })
         }
-
-        db.collection('board').insertOne({id: req.body.id}, function(error, result){
-            res.write("<script>window.location=\"../login\"</script>");
-        })
     })
 });
 
@@ -195,14 +191,14 @@ app.get('/board', function (req, res) {
     db.collection('board').find().toArray(function (error, result) {
         // 디비에 저장된 profile이라는 
         //collection 안의 모든 데이터를 꺼내주세요
-        res.render('board.ejs', { User : result });
+        res.render('board.ejs', { User : result});
         //찾은걸 ejs파일에 집어넣어주세요.
     });
 })
 
 //내가 작성한 게시물 보기
 app.get('/boardview', function (req, res) {
-    db.collection('board').findOne({id : req.user.id },function (error, result) {
+    db.collection('board').findOne({_id : req.user._id },function (error, result) {
         res.render('boardview.ejs', {Userboard : result})
     });
 })
@@ -221,12 +217,15 @@ app.post('/boardinput', checklogin, function (req, res) {
     // console.log(req.user);
 
     db.collection('profile').findOne({ id: req.user.id }, function (error, result) {
-        db.collection('board').updateOne({ id: req.user.id }, {
-            $set:
-            {
-                게시글: req.body.board
-            }
-        }, function (error, result) { console.log('저장완료'); });
+        // db.collection('board').updateOne({ id: req.user.id }, {
+        //     $set:
+        //     {
+        //         게시글: req.body.board
+        //     }
+        // }, function (error, result) { console.log('저장완료'); });
+        db.collection('board').insertOne({_id: req.user._id, 게시글: req.body.board}, function(error, result){
+            console.log('저장완료');
+        })
     });
 
     //성공 알림창 띄우고 마이페이지로 돌아가게함 
