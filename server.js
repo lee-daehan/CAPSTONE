@@ -207,7 +207,6 @@ app.get('/boardview', checklogin, function (req, res) {
     });
 });
 
-
 //게시물 등록기능
 //게시물을 검색한다. 검색한 내용에 맞는 경기를 DB에서 불러와 보여준다.
 
@@ -219,16 +218,37 @@ app.get('/boardinput', function (req, res) {
 
 app.post('/boardinput', checklogin, function (req, res) {
     console.log(req.user._id);
-    db.collection('board').insertOne({ _id: req.user._id }, function (error, result) {
-        db.collection('board').findOne({ _id: req.user._id }, function (error, result) {
-            db.collection('board').insertOne({
-                작성자: req.user.id,
-                게시글: req.body.board
-            }, function (error, result) { })
-        });
-    })
+    db.collection('articlecounter').findOne({ name: '게시물갯수' }, function (error, result) {
+        console.log(result);
+        var totalPost = result.totalPost;
+
+        db.collection('board').insertOne({ _id: req.user._id }, function (error, result) {
+            db.collection('board').findOne({ _id: req.user._id }, function (error, result) {
+                db.collection('board').insertOne({
+                    _id: totalPost + 1,
+                    작성자: req.user.id,
+                    게시글: req.body.board
+                }, function (error, result) {
+                    db.collection('articlecounter').updateOne({name: '게시물갯수'}, { $inc: {totalPost:1} }, function(error, result){
+                        if(error) { return console.log(error) };
+                    });
+                });
+
+            });
+        })
+    });
     //성공 알림창 띄우고 마이페이지로 돌아가게함 
     res.write("<script>alert('success')</script>");
     res.write("<script>window.location=\"../board\"</script>");
+});
+
+//게시물 삭제
+app.delete('/delete', function(req, res){
+    req.body._id = parseInt(req.body._id);
+    db.collection('board').deleteOne(req.body, function(error, result){
+        if(error) { return res.status(400)} //요청 실패
+        else {res.status(200).send({ message : '성공'})} //요청 성공
+         
+    });
 });
 
