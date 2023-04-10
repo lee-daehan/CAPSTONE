@@ -201,7 +201,7 @@ app.get('/boardview', checklogin, function (req, res) {
     db.collection('board').find().toArray(function (error, result) {
         console.log(result);
         db.collection('board').findOne({작성자: req.user.id},function(error, result2){
-             res.render('boardview.ejs', { A : result, B: result2});
+             res.render('boardview.ejs', { allpost : result, writer: result2});
         })
        
     });
