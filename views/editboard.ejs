@@ -15,16 +15,17 @@
     <%- include('nav.html') %>
     
     <!-- 메인컨텐츠 -->
-    <h1>게시글 등록</h1>
+    <h1>게시글 수정</h1>
     
-    <form action="/boardinput" method="POST" class="m-4">
+    <form action="/editboard?_method=PUT" method="POST" class="m-4">
         <div class="form-group">
             <label>제목</label>
-            <input value="" type="text" class="form-control" name="title">
+            <input value="<%= post.제목 %>" type="text" class="form-control" name="title">
         </div>
         <div class="form-group">
-            <label>게시글</label>
-            <input value="" type="text" class="form-control" name="board">
+            <label>내용</label>
+            <input type="text" value="<%= post._id %>" name="id" style="display: none;">
+            <input value="<%= post.게시글 %>" type="text" class="form-control" name="content">
         </div>
         <button type="submit" class="btn btn-primary m-2">저장</button>
     </form>

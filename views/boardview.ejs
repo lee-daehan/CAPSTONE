@@ -23,8 +23,13 @@
       <% if(B.작성자===A[i].작성자) {%>
         <li class="list-group-item">
           <h4>작성자: <%= A[i].작성자 %></h4>
+          <p>제목: <%= A[i].제목 %></p>
           <p>게시글: <%= A[i].게시글 %></p>
           <button class="delete" data-id="<%= A[i]._id %>">삭제</button>
+          <button>
+            <a href="/editboard/<%= A[i]._id %>" class="m-4">수정</a>
+          </button>
+
         </li>
         <% } %>
       <% } %>

@@ -222,11 +222,12 @@ app.post('/boardinput', checklogin, function (req, res) {
         console.log(result);
         var totalPost = result.totalPost;
 
-        db.collection('board').insertOne({ _id: req.user._id }, function (error, result) {
+        // db.collection('board').insertOne({ _id: req.user._id }, function (error, result) {
             db.collection('board').findOne({ _id: req.user._id }, function (error, result) {
                 db.collection('board').insertOne({
                     _id: totalPost + 1,
                     작성자: req.user.id,
+                    제목: req.body.title,
                     게시글: req.body.board
                 }, function (error, result) {
                     db.collection('articlecounter').updateOne({name: '게시물갯수'}, { $inc: {totalPost:1} }, function(error, result){
@@ -235,7 +236,7 @@ app.post('/boardinput', checklogin, function (req, res) {
                 });
 
             });
-        })
+        // })
     });
     //성공 알림창 띄우고 마이페이지로 돌아가게함 
     res.write("<script>alert('success')</script>");
@@ -252,3 +253,21 @@ app.delete('/delete', function(req, res){
     });
 });
 
+//게시물 수정
+app.get('/editboard/:id', function(req, res){
+    db.collection('board').findOne({_id : parseInt(req.params.id) }, function(error, result){
+        console.log(result);
+        res.render('editboard.ejs', { post : result });
+    })
+});
+
+app.put('/editboard', function(req, res){
+    db.collection('board').updateOne({ _id: parseInt(req.body.id) },
+    { $set: {
+        제목: req.body.title,
+        게시글: req.body.content
+    } }, function(error, result){
+        console.log('수정완료');
+        res.redirect('/boardview');
+    })
+})

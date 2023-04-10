@@ -18,12 +18,15 @@
     <% const str = " "; %>
 
     <%- include('nav.html') %>
-
+    <ul class="list-group">
                 <% nprint : for(var i=0;i < User.length; i++) { %>
-                    <% if(str === User[i].게시글) { %>
+                    <% if(str === User[i].게시글 && str === User[i].제목 ) { %>
                         <% continue nprint; %>
                     <% } else {%>
-                            <p><%= User[i].게시글 %></p>
+                    <li class="list-group-item">
+                        <p>제목: <%= User[i].제목 %></p>
+                        <p>내용: <%= User[i].게시글 %></p>
+                    </li>
                     <% } %>
                 <% } %>
                 <button type="button" class="btn btn-primary" style="width: 12rem;">
@@ -31,6 +34,7 @@
                 </button>
             </div>
         </div>
+    </ul>
 
 
         <!-- Optional JavaScript; choose one of the two! -->
