@@ -15,11 +15,13 @@
             background-color : white;
             height: auto;
             width: 400px;
-            margin: 0px;
+            /* margin: 0px; */
             padding: 20px;
             margin: 0 auto;
             border-radius:5px;
-            box-shadow:0px 40px 30px -20px rgba(0,0,0,0.3);
+            /* box-shadow:0px 40px 30px -20px rgba(0,0,0,0.3); */
+            float: left;
+            margin-left: 3rem;
         }
 
         td {
@@ -80,7 +82,14 @@
             font-weight: 600;
             cursor: pointer;
         }
+
+        .showPosts {
+            color: #0ee969;
+        }
+
     </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 
     <script>
         window.onload = function () { buildCalendar(); }    // 웹 페이지가 로드되면 buildCalendar 실행
@@ -141,7 +150,8 @@
             if (document.getElementsByClassName("choiceDay")[0]) {                              // 기존에 선택한 날짜가 있으면
                 document.getElementsByClassName("choiceDay")[0].classList.remove("choiceDay");  // 해당 날짜의 "choiceDay" class 제거
             }
-            newDIV.classList.add("choiceDay");           // 선택된 날짜에 "choiceDay" class 추가
+            newDIV.classList.add("choiceDay"); // 선택된 날짜에 "choiceDay" class 추가
+
         }
 
         // 이전달 버튼 클릭
@@ -163,6 +173,22 @@
             }
             return value;
         }
+
+            $('.showPosts').click(function (e) {
+                var postNum = e.target.dataset.id; //지금 클릭한것
+                var nowClick = $(this); // 지금 이벤트가 동작하는 곳
+                $.ajax({
+                    method: 'DELETE',
+                    url: '/delete',
+                    data: { _id: postNum }
+                }).done(function (result) {
+                    console.log('성공')
+                    nowClick.parent('li').fadeOut(); //지금 누른곳의 부모태그중 li를 서서히 사라지게함
+                }).fail(function (xhr, textStatus, errorThrow) {
+                    //요청 실패시
+                    console.log(xhr, textStatus, errorThrow);
+                });
+            })
     </script>
 </head>
 <body>

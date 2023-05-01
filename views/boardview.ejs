@@ -20,7 +20,7 @@
 
   <ul class="list-group">
     <% for (var i=0; i < allpost.length; i++ ) { %>
-      <% if(writer.작성자===allpost[i].작성자) {%>
+      <% if(writer.작성자===allpost[i].작성자) { %>
         <li class="list-group-item">
           <h4>작성자: <%= allpost[i].작성자 %></h4>
           <p>제목: <%= allpost[i].제목 %></p>
@@ -29,10 +29,11 @@
           <button>
             <a href="/editboard/<%= allpost[i]._id %>" class="m-4">수정</a>
           </button>
-
         </li>
+      <% } else { %>
+          <p> 등록한 게시글이 없습니다.</p>
         <% } %>
-      <% } %>
+    <% } %>
   </ul>
 
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>

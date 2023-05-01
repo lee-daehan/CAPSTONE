@@ -140,7 +140,7 @@ passport.deserializeUser(function (id, done) {
 
 app.get('/mypage', checklogin, function (req, res) {
     // console.log(req.user);
-    res.render('mypage.ejs', { User: req.user });
+    res.render('mypage.ejs', { User: req.user });``
 })
 
 function checklogin(req, res, next) {
@@ -216,6 +216,9 @@ app.get('/boardinput', function (req, res) {
     res.render('boardinput.ejs');
 });
 
+let today = new Date();
+let date = today.getDate(); // 날짜구하기
+
 app.post('/boardinput', checklogin, function (req, res) {
     console.log(req.user._id);
     db.collection('articlecounter').findOne({ name: '게시물갯수' }, function (error, result) {
@@ -228,7 +231,8 @@ app.post('/boardinput', checklogin, function (req, res) {
                     _id: totalPost + 1,
                     작성자: req.user.id,
                     제목: req.body.title,
-                    게시글: req.body.board
+                    게시글: req.body.board,
+                    경기진행날짜: req.body.date
                 }, function (error, result) {
                     db.collection('articlecounter').updateOne({name: '게시물갯수'}, { $inc: {totalPost:1} }, function(error, result){
                         if(error) { return console.log(error) };
@@ -273,3 +277,23 @@ app.put('/editboard', function(req, res){
 })
 
 //캘린더 기능
+
+app.put('/request', checklogin, function(req, res){
+    console.log(req.user.id); // 지금 로그인한 유저의 아이디
+    req.body._id = parseInt(req.body._id)
+    console.log(req.body._id); // 신청 버튼을 누른 게시글의 글번호
+    db.collection('board').findOne({_id: req.body._id}, function(error, result) {
+        db.collection('profile').findOne({id: req.user.id}, function(error, result2){
+            db.collection('request').insertOne({
+                신청한게시물번호: req.body._id,
+                신청자: req.user.id,
+            });
+            res.render('reqmatch.ejs', {Matchuser: result2});
+        })   
+        
+    })
+});
+
+app.get('/reqmatch', checklogin, function(req, res){
+    res.render('reqmatch.ejs');
+})
