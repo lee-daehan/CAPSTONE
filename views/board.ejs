@@ -24,6 +24,7 @@
                         <% continue nprint; %>
                     <% } else {%>
                     <li class="list-group-item">
+                        <p style="display:none;" value="Articlenum">게시글 번호: <%= User[i]._id %></p>
                         <p>제목: <%= User[i].제목 %></p>
                         <p>내용: <%= User[i].게시글 %></p>
                         <button class="request" data-id="<%= User[i]._id %>">신청</button>
@@ -46,7 +47,7 @@
         $.ajax({
           method : 'PUT',
           url : '/request',
-          data : { _id : postNum2 }
+          data : { _id : postNum2, 작성자: postNum2 }
         }).done(function(result){
           console.log(data);
         }).fail(function(xhr, textStatus, errorThrow){

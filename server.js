@@ -140,7 +140,7 @@ passport.deserializeUser(function (id, done) {
 
 app.get('/mypage', checklogin, function (req, res) {
     // console.log(req.user);
-    res.render('mypage.ejs', { User: req.user });``
+    res.render('mypage.ejs', { User: req.user });
 })
 
 function checklogin(req, res, next) {
@@ -283,17 +283,22 @@ app.put('/request', checklogin, function(req, res){
     req.body._id = parseInt(req.body._id)
     console.log(req.body._id); // 신청 버튼을 누른 게시글의 글번호
     db.collection('board').findOne({_id: req.body._id}, function(error, result) {
-        db.collection('profile').findOne({id: req.user.id}, function(error, result2){
-            db.collection('request').insertOne({
-                신청한게시물번호: req.body._id,
-                신청자: req.user.id,
-            });
-            res.render('reqmatch.ejs', {Matchuser: result2});
-        })   
-        
+        db.collection('request').insertOne({
+            신청한게시물번호: req.body._id,
+            제목: result.제목,
+            게시글: result.게시글,
+            신청자: req.user.id,
+            작성자: result.작성자
+        });
     })
 });
 
-app.get('/reqmatch', checklogin, function(req, res){
-    res.render('reqmatch.ejs');
-})
+app.get('/reqmatch', checklogin, function (req, res) {
+    db.collection('request').find().toArray(function (error, result) {
+        console.log(result);
+        db.collection('request').findOne({작성자: req.user.id},function(error, result2){
+             res.render('reqmatch.ejs', { allpost : result, writer: result2});
+        })
+       
+    });
+    })

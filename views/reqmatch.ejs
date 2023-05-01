@@ -12,11 +12,24 @@
   </head>
   <body>
     <%- include('nav.html') %>
+    <% const str = " "; %>
 
-      <h1><%= Matchuser.id %>님의 신청받은내역 페이지</h1>
+      <h1>님의 신청받은내역 페이지</h1>
     <div>
-      <ul>
-
+      <ul class="list-group">
+        <% nprint : for (var i=0; i < allpost.length; i++ ) { %>
+          <% if(str === allpost[i].신청자 && str === allpost[i].작성자 ) { %>
+            <% continue nprint; %>
+            <% } %>
+          <% if(writer.작성자===allpost[i].작성자) { %>
+            <li class="list-group-item">
+              <h4>작성자: <%= allpost[i].작성자 %></h4>
+              <p>제목: <%= allpost[i].제목 %></p>
+              <p>게시글: <%= allpost[i].게시글 %></p>
+              <p>신청자: <%= allpost[i].신청자 %></p>
+            </li>
+        <% } %>
+        <% } %>
       </ul>
     </div>
   
