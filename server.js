@@ -290,7 +290,7 @@ app.put('/request', checklogin, function (req, res) {
             게시글: result.게시글,
             신청자: req.user.id,
             작성자: result.작성자,
-            여부: parseInt(0)
+            여부: null
         });
     })
 });
@@ -309,14 +309,15 @@ app.get('/reqmatch', checklogin, function (req, res) {
 //수락 확인
 app.put('/accept', checklogin, function (req, res) {
     console.log(req.user.id); // 지금 로그인한 유저의 아이디
-    req.body._id = parseInt(req.body._id)// 신청 버튼을 누른 게시글의 글번호
-    db.collection('request').updateOne({ _id: req.body._id },{
+    console.log(req.body._id);
+    const id = new mongoose.Types.ObjectId(req.body._id);
+    db.collection('request').updateOne({ _id: id },{
         $set: {
-            여부: 1
+            여부: parseInt(1)
         }
     } , function (error, result) {
-        // console.log('수정완료');
-        res.redirect('/reqmatch');
+        console.log('수정완료');
+        // res.redirect('/reqmatch');
     })
 });
 
@@ -324,14 +325,15 @@ app.put('/accept', checklogin, function (req, res) {
 //거절 확인
 app.put('/refuse', checklogin, function (req, res) {
     console.log(req.user.id); // 지금 로그인한 유저의 아이디
-    req.body._id = parseInt(req.body._id)// 신청 버튼을 누른 게시글의 글번호
-    db.collection('request').updateOne({ _id: req.body._id },{
+    console.log(req.body._id);
+    const id = new mongoose.Types.ObjectId(req.body._id);
+    db.collection('request').updateOne({ _id: id },{
         $set: {
-            여부: 0
+            여부: parseInt(0)
         }
     } , function (error, result) {
-        // console.log('수정완료');
-        res.redirect('/reqmatch');
+        console.log('수정완료');
+        // res.redirect('/reqmatch');
     })
 });
 

@@ -40,12 +40,13 @@
   
     <script>
       $('.accept').click(function(e){
-        var postNum2 = e.target.dataset.id; //지금 클릭한것
+        var clickarticle = e.target.dataset.id; //지금 클릭한것
         var nowClick = $(this); // 지금 이벤트가 동작하는 곳
+        console.log(clickarticle);
         $.ajax({
           method : 'PUT',
           url : '/accept',
-          data : { _id : postNum2}
+          data : { _id : clickarticle}
         }).done(function(result){
           console.log(data);
         }).fail(function(xhr, textStatus, errorThrow){
