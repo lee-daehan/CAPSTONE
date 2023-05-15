@@ -182,7 +182,7 @@ app.post('/inputprofile', function (req, res) {
 app.get('/myprofile', function (req, res) {
     // console.log(req.user);
     db.collection('profile').findOne({ _id: req.user._id }, function (error, result) {
-            res.render('myprofile.ejs', { User : result});
+        res.render('myprofile.ejs', { User: result });
     });
 });
 
@@ -191,7 +191,7 @@ app.get('/board', function (req, res) {
     db.collection('board').find().toArray(function (error, result) {
         // 디비에 저장된 profile이라는 
         //collection 안의 모든 데이터를 꺼내주세요
-        res.render('board.ejs', { User : result});
+        res.render('board.ejs', { User: result });
         //찾은걸 ejs파일에 집어넣어주세요.
     });
 })
@@ -200,10 +200,10 @@ app.get('/board', function (req, res) {
 app.get('/boardview', checklogin, function (req, res) {
     db.collection('board').find().toArray(function (error, result) {
         console.log(result);
-        db.collection('board').findOne({작성자: req.user.id},function(error, result2){
-             res.render('boardview.ejs', { allpost : result, writer: result2});
+        db.collection('board').findOne({ 작성자: req.user.id }, function (error, result2) {
+            res.render('boardview.ejs', { allpost: result, writer: result2 });
         })
-       
+
     });
 });
 
@@ -226,20 +226,20 @@ app.post('/boardinput', checklogin, function (req, res) {
         var totalPost = result.totalPost;
 
         // db.collection('board').insertOne({ _id: req.user._id }, function (error, result) {
-            db.collection('board').findOne({ _id: req.user._id }, function (error, result) {
-                db.collection('board').insertOne({
-                    _id: totalPost + 1,
-                    작성자: req.user.id,
-                    제목: req.body.title,
-                    게시글: req.body.board,
-                    경기진행날짜: req.body.date
-                }, function (error, result) {
-                    db.collection('articlecounter').updateOne({name: '게시물갯수'}, { $inc: {totalPost:1} }, function(error, result){
-                        if(error) { return console.log(error) };
-                    });
+        db.collection('board').findOne({ _id: req.user._id }, function (error, result) {
+            db.collection('board').insertOne({
+                _id: totalPost + 1,
+                작성자: req.user.id,
+                제목: req.body.title,
+                게시글: req.body.board,
+                경기진행날짜: req.body.date
+            }, function (error, result) {
+                db.collection('articlecounter').updateOne({ name: '게시물갯수' }, { $inc: { totalPost: 1 } }, function (error, result) {
+                    if (error) { return console.log(error) };
                 });
-
             });
+
+        });
         // })
     });
     //성공 알림창 띄우고 마이페이지로 돌아가게함 
@@ -248,57 +248,90 @@ app.post('/boardinput', checklogin, function (req, res) {
 });
 
 //게시물 삭제
-app.delete('/delete', function(req, res){
+app.delete('/delete', function (req, res) {
     req.body._id = parseInt(req.body._id);
-    db.collection('board').deleteOne(req.body, function(error, result){
-        if(error) { return res.status(400)} //요청 실패
-        else {res.status(200).send({ message : '성공'})} //요청 성공
-         
+    db.collection('board').deleteOne(req.body, function (error, result) {
+        if (error) { return res.status(400) } //요청 실패
+        else { res.status(200).send({ message: '성공' }) } //요청 성공
+
     });
 });
 
 //게시물 수정
-app.get('/editboard/:id', function(req, res){
-    db.collection('board').findOne({_id : parseInt(req.params.id) }, function(error, result){
+app.get('/editboard/:id', function (req, res) {
+    db.collection('board').findOne({ _id: parseInt(req.params.id) }, function (error, result) {
         console.log(result);
-        res.render('editboard.ejs', { post : result });
+        res.render('editboard.ejs', { post: result });
     })
 });
 
-app.put('/editboard', function(req, res){
+app.put('/editboard', function (req, res) {
     db.collection('board').updateOne({ _id: parseInt(req.body.id) },
-    { $set: {
-        제목: req.body.title,
-        게시글: req.body.content
-    } }, function(error, result){
-        console.log('수정완료');
-        res.redirect('/boardview');
-    })
+        {
+            $set: {
+                제목: req.body.title,
+                게시글: req.body.content
+            }
+        }, function (error, result) {
+            console.log('수정완료');
+            res.redirect('/boardview');
+        })
 })
 
-//캘린더 기능
 
-app.put('/request', checklogin, function(req, res){
+//원하는 경기 신청
+app.put('/request', checklogin, function (req, res) {
     console.log(req.user.id); // 지금 로그인한 유저의 아이디
-    req.body._id = parseInt(req.body._id)
-    console.log(req.body._id); // 신청 버튼을 누른 게시글의 글번호
-    db.collection('board').findOne({_id: req.body._id}, function(error, result) {
-        db.collection('request').insertOne({
+    req.body._id = parseInt(req.body._id)// 신청 버튼을 누른 게시글의 글번호
+    db.collection('board').findOne({ _id: req.body._id }, function (error, result) {
+        db.collection('request').insertOne({//request 콜렉션에 경기 신청자와 게시글 번호와 작성자,제목, 게시글을 삽입
             신청한게시물번호: req.body._id,
             제목: result.제목,
             게시글: result.게시글,
             신청자: req.user.id,
-            작성자: result.작성자
+            작성자: result.작성자,
+            여부: parseInt(0)
         });
     })
 });
 
+//신청내역 알림
 app.get('/reqmatch', checklogin, function (req, res) {
     db.collection('request').find().toArray(function (error, result) {
         console.log(result);
-        db.collection('request').findOne({작성자: req.user.id},function(error, result2){
-             res.render('reqmatch.ejs', { allpost : result, writer: result2});
+        db.collection('request').findOne({ 작성자: req.user.id }, function (error, result2) {//누가 신청했는지 정보를 불러옴
+            res.render('reqmatch.ejs', { allpost: result, writer: result2 });
         })
-       
+
     });
+})
+
+//수락 확인
+app.put('/accept', checklogin, function (req, res) {
+    console.log(req.user.id); // 지금 로그인한 유저의 아이디
+    req.body._id = parseInt(req.body._id)// 신청 버튼을 누른 게시글의 글번호
+    db.collection('request').updateOne({ _id: req.body._id },{
+        $set: {
+            여부: 1
+        }
+    } , function (error, result) {
+        // console.log('수정완료');
+        res.redirect('/reqmatch');
     })
+});
+
+
+//거절 확인
+app.put('/refuse', checklogin, function (req, res) {
+    console.log(req.user.id); // 지금 로그인한 유저의 아이디
+    req.body._id = parseInt(req.body._id)// 신청 버튼을 누른 게시글의 글번호
+    db.collection('request').updateOne({ _id: req.body._id },{
+        $set: {
+            여부: 0
+        }
+    } , function (error, result) {
+        // console.log('수정완료');
+        res.redirect('/reqmatch');
+    })
+});
+
