@@ -26,7 +26,7 @@ MongoClient.connect('mongodb+srv://admin:qwer1234@cluster0.0sp7tde.mongodb.net/?
     });
 });
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
     res.render('index.ejs');
 })
 
@@ -290,7 +290,7 @@ app.put('/request', checklogin, function (req, res) {
             게시글: result.게시글,
             신청자: req.user.id,
             작성자: result.작성자,
-            여부: null
+            여부: parseInt(0)
         });
     })
 });
@@ -308,8 +308,8 @@ app.get('/reqmatch', checklogin, function (req, res) {
 
 //수락 확인
 app.put('/accept', checklogin, function (req, res) {
-    console.log(req.user.id); // 지금 로그인한 유저의 아이디
-    console.log(req.body._id);
+    // console.log(req.user.id); // 지금 로그인한 유저의 아이디
+    // console.log(req.body._id);
     const id = new mongoose.Types.ObjectId(req.body._id);
     db.collection('request').updateOne({ _id: id },{
         $set: {
@@ -324,12 +324,12 @@ app.put('/accept', checklogin, function (req, res) {
 
 //거절 확인
 app.put('/refuse', checklogin, function (req, res) {
-    console.log(req.user.id); // 지금 로그인한 유저의 아이디
-    console.log(req.body._id);
+    // console.log(req.user.id); // 지금 로그인한 유저의 아이디
+    // console.log(req.body._id);
     const id = new mongoose.Types.ObjectId(req.body._id);
     db.collection('request').updateOne({ _id: id },{
         $set: {
-            여부: parseInt(0)
+            여부: parseInt(2)
         }
     } , function (error, result) {
         console.log('수정완료');
@@ -337,3 +337,36 @@ app.put('/refuse', checklogin, function (req, res) {
     })
 });
 
+//신청한 경기
+app.get('/resmatch', checklogin, function(req, res) {
+    db.collection('request').find().toArray(function(error, result1) {
+        db.collection('request').findOne({신청자: req.user.id}, function(error, result2) {
+            res.render('resmatch.ejs', {모든게시물: result1, 매칭된게시물: result2});
+        })
+    })
+})
+
+//조건검색 & 추천
+
+
+app.post('/recommand', function(req, res) {
+    db.collection('recommands').insertOne({
+        id: req.user.id,
+        성별: req.body.gender
+    } ,function(error, result) {
+        res.render('recommand.ejs')
+    })
+})
+
+app.get('/recommand', function(req, res) {
+    db.collection('profile').find().toArray( function(error, result1) {
+        db.collection('recommands').findOne({ id: req.user.id }, function(error, result2) {
+            res.render('recommand.ejs', {모든성별: result1, 선택성별: result2})
+            console.log(result1);
+            console.log(result2);
+        })
+    })
+})
+// app.get('/recommand', function(req, res) {
+//     db.collection('profile').
+// })
