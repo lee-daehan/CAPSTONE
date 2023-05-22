@@ -347,8 +347,6 @@ app.get('/resmatch', checklogin, function(req, res) {
 })
 
 //조건검색 & 추천
-
-
 app.post('/recommand', function(req, res) {
     db.collection('recommands').insertOne({
         id: req.user.id,
@@ -367,6 +365,12 @@ app.get('/recommand', function(req, res) {
         })
     })
 })
-// app.get('/recommand', function(req, res) {
-//     db.collection('profile').
-// })
+
+app.post('/suggest', function(req, res) {
+    
+    var gender = req.body.gender; // gender 자료형: String
+
+    db.collection('profile').find({성별 : gender}).toArray( function(error, result) {
+        res.render('index.ejs');
+    })
+})
