@@ -80,7 +80,7 @@
 
           <div class="modal-content">
             <span class="close">&times;</span>
-            <form action="/suggest" method="POST">
+            <form action="/recommand" method="POST">
               <h3>성별</h3>
               <input type="radio" id="male" name="gender" value="남성">
               <label for="male">남성</label><br>
@@ -90,14 +90,17 @@
               <label for="nothing">남성 여성 모두</label><br><br>
               <input type="submit" value="Submit">
             </form>
+
           </div>
         </div>
       </div>
 
-      <div name="suggest-wrap" style="background-color: #aaa;">
-        <%- include('suggest.ejs') %>
-      </div>
-
+      <section>
+        <div name="suggest-wrap" style="background-color: #aaa;">
+          <div style="width: 100%; height: 20rem; margin-top: 0.5rem;">
+            <%- include('suggest.ejs') %>
+          </div>
+      </section>
       <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 
       <script>

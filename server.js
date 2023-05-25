@@ -90,7 +90,15 @@ app.post('/register', function (req, res) {
             })
             db.collection('recommands').insertOne({
                 id: req.body.id,
-            }, function (error, result) { })
+                성별: null,
+                닉네임: null,
+                선호포지션: null,
+                주발: null,
+                신장: null,
+                몸무게: null
+            }, function (error, result) {
+                res.write("<script>alert('success')</script>");
+            })
         }
     })
 });
@@ -174,8 +182,20 @@ app.post('/inputprofile', function (req, res) {
                 몸무게: req.body.weight
             }
         }, function (error, result) { console.log('저장완료'); });
+        
     });
-
+    db.collection('recommands').updateOne({ id: req.user.id }, {
+        $set:
+        {   
+            id: req.body.id,
+            성별: null,
+            닉네임: null,
+            선호포지션: null,
+            주발: null,
+            신장: null,
+            몸무게: null
+        }
+    }, function (error, result) { console.log('저장완료'); });
     //성공 알림창 띄우고 마이페이지로 돌아가게함 
     res.write("<script>alert('success')</script>");
     res.write("<script>window.location=\"../mypage\"</script>");
@@ -370,7 +390,7 @@ app.get('/resmatch', checklogin, function (req, res) {
 // })
 
 // app.post('/suggest', function(req,res) {
-    
+
 //     var gender = req.body.gender; // gender 자료형: String
 //     let id = [gender.length];
 
@@ -388,19 +408,57 @@ app.get('/resmatch', checklogin, function (req, res) {
 //             res.render('index.ejs');
 //     })
 // })
+// app.put('/gender', function (req, res) {
+//     db.collection('profile').find().toArray(function (error, result1) {
+//         db.collection('recommands').findOne({ id: req.user.id }, function (error, result2) {
+//             res.render('suggest.ejs', { allposts: result1, player: result2 });
+//             console.log(allposts)
+//             console.log(player)
+//         })
+//     })
 
-app.post('/suggest', function(req,res) {
+// })
+// app.get('/', function (req, res) {
+//         db.collection('profile').find().toArray(function (error, result1) {
+//             db.collection('recommands').findOne({ id: req.user.id }, function (error, result2) {
+//                 res.render('index.ejs', {allpost: result1, player: result2 });
+              
+//             })
+//         })
     
-    var gender = req.body.gender; // gender 자료형: String
+//     })
 
-    db.collection('profile').find({성별: gender}).toArray(function (error, result) {
-            db.collection('recommands').insertOne({
-                    id: req.user.id,
+app.post('/recommand', function (req, res) {
+    var gender = req.body.gender; // gender 자료형: String
+        db.collection('recommands').updateOne({ id: req.user.id },
+            {
+                $set: {
                     성별: req.body.gender
-                })
-                res.render('index.ejs');
+                }
+            }, function (error, result) {
+                // console.log('수정완료');
+            })
+            res.render('index.ejs');
+            // res.write("<script>window.location=\"../index\"</script>");
+})
+
+app.get('/suggest',checklogin ,function(req, res){
+    db.collection('recommands').findOne({id: req.user.id},function(error, result){
+        console.log(result.id);
+        db.collection('profile').find({성별 : result.성별}).toArray(function(error, result2){
+            console.log(result2.성별)
+            res.render('suggest.ejs', {player: result2})
+        })
     })
 })
+
+
+
+// app.get('/suggest', function(req,res){
+//     db.collection('profile').find().toArray(function (error, result){
+
+//     })
+// })
 
 
 // app.get('/suggest', function (req, res) {
