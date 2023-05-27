@@ -27,8 +27,9 @@ MongoClient.connect('mongodb+srv://admin:qwer1234@cluster0.0sp7tde.mongodb.net/?
 });
 
 app.get('/', function (req, res) {
-    res.render('index.ejs');
+    res.render('home.ejs');
 })
+
 
 app.get('/editprofile', function (req, res) {
     res.render('editprofile.ejs');
@@ -438,16 +439,15 @@ app.post('/recommand', function (req, res) {
             }, function (error, result) {
                 // console.log('수정완료');
             })
-            res.render('index.ejs');
-            // res.write("<script>window.location=\"../index\"</script>");
+            res.write("<script>window.location=\"../suggest\"</script>");
 })
 
 app.get('/suggest',checklogin ,function(req, res){
     db.collection('recommands').findOne({id: req.user.id},function(error, result){
-        console.log(result.id);
+        // console.log(result.id);
         db.collection('profile').find({성별 : result.성별}).toArray(function(error, result2){
             console.log(result2.성별)
-            res.render('suggest.ejs', {player: result2})
+            res.render('index.ejs', {player: result2})
         })
     })
 })
