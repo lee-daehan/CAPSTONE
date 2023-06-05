@@ -395,3 +395,17 @@ app.get('/suggest', checklogin, function (req, res) {
     })
 
 })
+
+app.post('/apply', checklogin, function(req, res){
+    console.log(req.body.id);
+    console.log(req.body.score);
+    // console.log(req.body.score);
+    db.collection('evaluate').insertOne({
+        내용: req.body.id,
+        작성자: req.user.id,
+        점수: req.body.score
+    }, function(error, result){
+        res.write("<script>window.location=\"../resmatch\"</script>");
+    })
+        
+})

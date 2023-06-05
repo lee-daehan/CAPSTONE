@@ -14,9 +14,8 @@
     <%- include('nav.html') %>
 
     <h1><%= 매칭된게시물.신청자%>님의 매칭결과 페이지</h1>
-    <div>
       <ul class="list-group">
-        <% for (var i=0; i < 모든게시물.length; i++ ) { %>
+        <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
           <% if(모든게시물[i].신청자 == 매칭된게시물.신청자) { %>
             <li class="list-group-item">
               <p>제목: <%= 모든게시물[i].제목 %></p>
@@ -25,27 +24,45 @@
               <p>작성자: <%= 모든게시물[i].작성자 %></p>
               <% if(모든게시물[i].여부 == 0) { %>
                 <button class="btn btn-primary">매칭대기중</button>
+                <% continue nprint; %>
                 <% } %>
 
               <% if(모든게시물[i].여부 == 1) { %>
                 <button class="btn btn-success">매칭완료</button>
+                <form action="/apply" method="POST">
+                  <input name="id" value="<%= 모든게시물[i].작성자 %>" readonly/>
+                  <label>님 평가하기</label>
+                  
+                  <!-- <select class="form-control" data-score="name" name="score"> -->
+                  <select class="form-control" name="score" value="score">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                  <button type="submit">저장</button>
+                  </form>
+                <!-- <button type="submit" class="apply" data-id="<%= 모든게시물[i].작성자 %>">저장</button> -->
+                <!-- <button type="submit" name="작성자" value="<%= 모든게시물[i].작성자 %>">저장</button> -->
+              
+              <% continue nprint; %>
               <% } %>
 
               <% if(모든게시물[i].여부 == 2) { %>
                 <button class="btn btn-danger">매칭실패</button>
-              <% } %>
+                <% continue nprint; %>
+                <% } %>
             </li>
           <% } %>
         <% } %>
 
       </ul>
-    </div>
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script> -->
 
-    </script>
     <!-- Optional JavaScript; choose one of the two! -->
-
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script> -->
