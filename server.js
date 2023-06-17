@@ -409,3 +409,10 @@ app.post('/apply', checklogin, function(req, res){
     })
         
 })
+
+//평가 점수 보기
+app.get('/myscore', checklogin, function (req, res) {
+    db.collection('evaluate').find().toArray(function (error, result) {
+        res.render('myscore.ejs', { score : result, user : req.user.id })
+    });
+})
