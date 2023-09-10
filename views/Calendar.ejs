@@ -1,223 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <title>달력</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Questrial&display=swap');
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <title>달력</title>
+   <style>
+      .calendar {
+         width: 500px;
+      }
 
-        /* body { background-color : skyblue; }  */
+      .calendar table {
+         width: 100%;
+      }
 
-        /* div { */
-            /* background-color : white; */
-            /* height: auto; */
-            /* width: 400px; */
-            /* margin: 0px; */
-            /* padding: 20px; */
-            /* margin: 2rem auto; */
-            /* border-radius:5px; */
-            /* box-shadow:0px 40px 30px -20px rgba(0,0,0,0.3); */
-            /* float: left; */
-            /* margin-left: 3rem; */
-            /*  */
-        /* } */
+      .calendar table>caption {
+         font-size: larger;
+         font-weight: bolder;
+         color: red;
+         text-align: left;
+         padding: 10px 20px;
+      }
 
-        td {
-            width: 50px;
-            height: 50px;
-        }
+      .calendar table>tbody>tr>td {
+         padding: 10px 10px;
+         text-align: center;
+      }
 
-        .Calendar {
-            text-align: center;
-        }
+      .calendar table>tbody>tr>td>span {
+         display: block;
+         padding: 10px 10px;
+      }
 
-        .Calendar>thead>tr:first-child>td {
-            font-family: 'Questrial', sans-serif;
-            font-size: 1.1em;
-            font-weight: bold;
-        }
+      .calendar table>tbody>tr>td>span.today {
+         border: 1px solid red;
+         border-radius: 50%;
+         color: white;
+         background-color: red;
+         padding: 9px 9px;
+      }
 
-        .Calendar>thead>tr:last-child>td {
-            font-family: 'Questrial', sans-serif;
-            font-weight: 600;     
-        }
+      .calendar>.calendar-header {
+         position: relative;
+         height: 50px;
+         margin: 0px 20px;
+      }
 
-        .Calendar>tbody>tr>td>p {
-            font-family: 'Montserrat', sans-serif;
-            height: 45px;
-            width: 45px;
-            border-radius: 45px;
-            transition-duration: .2s;
-            line-height: 45px;
-            margin: 2.5px;
-            display: block;
-            text-align: center;
-        }        
+      .calendar>.calendar-header>.calendar-yearmonth {
+         position: relative;
+         font-size: larger;
+         font-weight: bolder;
+         color: red;
+         line-height: 50px;
+      }
 
-        .pastDay {
-            color: lightgray;
-        }
+      .calendar>.calendar-header>.calendar-controls {
+         position: absolute;
+         top: 11px;
+         right: 0px;
+      }
 
-        .today {
-            background-color: #F5D042;            
-            color: #fff;
-            font-weight: 600;
-            cursor: pointer;
-        }
+      .calendar>.calendar-header>.calendar-controls>button {
+         float: left;
+         width: 25px;
+         height: 28px;
+         padding: 1px 4px 0 4px;
+         border: 1px solid #cbcbcb;
+         background-color: #fff;
+         font-size: 12px;
+         cursor: pointer;
+      }
 
-        .futureDay {
-            background-color: #FFFFFF;
-            cursor: pointer;
-        }
-        .futureDay:hover{
-            background:#eee;
-        }
-
-        .futureDay.choiceDay,
-        .today.choiceDay {
-            background: #0A174E;
-            color: #fff;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .showPosts {
-            color: #0ee969;
-        }
-
-    </style>
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-
-    <script>
-        window.onload = function () { buildCalendar(); }    // 웹 페이지가 로드되면 buildCalendar 실행
-
-        let nowMonth = new Date();  // 현재 달을 페이지를 로드한 날의 달로 초기화
-        let today = new Date();     // 페이지를 로드한 날짜를 저장
-        today.setHours(0, 0, 0, 0);    // 비교 편의를 위해 today의 시간을 초기화
-
-        // 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
-        function buildCalendar() {
-
-            let firstDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), 1);     // 이번달 1일
-            let lastDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, 0);  // 이번달 마지막날
-
-            let tbody_Calendar = document.querySelector(".Calendar > tbody");
-            document.getElementById("calYear").innerText = nowMonth.getFullYear();             // 연도 숫자 갱신
-            document.getElementById("calMonth").innerText = leftPad(nowMonth.getMonth() + 1);  // 월 숫자 갱신
-
-            while (tbody_Calendar.rows.length > 0) {                        // 이전 출력결과가 남아있는 경우 초기화
-                tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
-            }
-
-            let nowRow = tbody_Calendar.insertRow();        // 첫번째 행 추가           
-
-            for (let j = 0; j < firstDate.getDay(); j++) {  // 이번달 1일의 요일만큼
-                let nowColumn = nowRow.insertCell();        // 열 추가
-            }
-
-            for (let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay.getDate() + 1)) {   // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복  
-
-                let nowColumn = nowRow.insertCell();        // 새 열을 추가하고
-
-
-                let newDIV = document.createElement("p");
-                newDIV.innerHTML = leftPad(nowDay.getDate());        // 추가한 열에 날짜 입력
-                nowColumn.appendChild(newDIV);
-
-                if (nowDay.getDay() == 6) {                 // 토요일인 경우
-                    nowRow = tbody_Calendar.insertRow();    // 새로운 행 추가
-                }
-
-                if (nowDay < today) {                       // 지난날인 경우
-                    newDIV.className = "pastDay";
-                }
-                else if (nowDay.getFullYear() == today.getFullYear() && nowDay.getMonth() == today.getMonth() && nowDay.getDate() == today.getDate()) { // 오늘인 경우           
-                    newDIV.className = "today";
-                    newDIV.onclick = function () { choiceDate(this); }
-                }
-                else {                                      // 미래인 경우
-                    newDIV.className = "futureDay";
-                    newDIV.onclick = function () { choiceDate(this); }
-                }
-            }
-        }
-
-        // 날짜 선택
-        function choiceDate(newDIV) {
-            if (document.getElementsByClassName("choiceDay")[0]) {                              // 기존에 선택한 날짜가 있으면
-                document.getElementsByClassName("choiceDay")[0].classList.remove("choiceDay");  // 해당 날짜의 "choiceDay" class 제거
-            }
-            newDIV.classList.add("choiceDay"); // 선택된 날짜에 "choiceDay" class 추가
-
-        }
-
-        // 이전달 버튼 클릭
-        function prevCalendar() {
-            nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() - 1, nowMonth.getDate());   // 현재 달을 1 감소
-            buildCalendar();    // 달력 다시 생성
-        }
-        // 다음달 버튼 클릭
-        function nextCalendar() {
-            nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, nowMonth.getDate());   // 현재 달을 1 증가
-            buildCalendar();    // 달력 다시 생성
-        }
-
-        // input값이 한자리 숫자인 경우 앞에 '0' 붙혀주는 함수
-        function leftPad(value) {
-            if (value < 10) {
-                value = "0" + value;
-                return value;
-            }
-            return value;
-        }
-
-            $('.showPosts').click(function (e) {
-                var postNum = e.target.dataset.id; //지금 클릭한것
-                var nowClick = $(this); // 지금 이벤트가 동작하는 곳
-                $.ajax({
-                    method: 'DELETE',
-                    url: '/delete',
-                    data: { _id: postNum }
-                }).done(function (result) {
-                    console.log('성공')
-                    nowClick.parent('li').fadeOut(); //지금 누른곳의 부모태그중 li를 서서히 사라지게함
-                }).fail(function (xhr, textStatus, errorThrow) {
-                    //요청 실패시
-                    console.log(xhr, textStatus, errorThrow);
-                });
-            })
-    </script>
+      .calendar>.calendar-header>.calendar-controls>button.calendar-today {
+         width: 40px;
+      }
+   </style>
+   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 </head>
-<body>
-  <div style="border-style: solid; margin: 2rem; background-color: white;">
-    <table class="Calendar">
-        <thead>
-            <tr>
-                <td onClick="prevCalendar();" style="cursor:pointer;">&#60;</td>
-                <td colspan="5">
-                    <span id="calYear"></span>년
-                    <span id="calMonth"></span>월
-                </td>
-                <td onClick="nextCalendar();" style="cursor:pointer;">&#62;</td>
-            </tr>
-            <tr>
-                <td>일</td>
-                <td>월</td>
-                <td>화</td>
-                <td>수</td>
-                <td>목</td>
-                <td>금</td>
-                <td>토</td>
-            </tr>
-        </thead>
 
-        <tbody>
-        </tbody>
-    </table>
-</div>
+<body>
+   <div class="calendar">
+      <div class="calendar-header">
+         <span class="calendar-yearmonth"></span>
+         <div class="calendar-controls">
+            <button type="button" class="calendar-prev">&lt;</button>
+            <button type="button" class="calendar-next">&gt;</button>
+            <button type="button" class="calendar-today">오늘</button>
+         </div>
+      </div>
+      <div id="calendar"></div>
+   </div>
+   <script>
+      // 날짜 클릭
+      $(document).on("click", ".calendar table > tbody > tr > td > span", function (e) {
+         var yearmonth = $(".calendar-yearmonth").text().split(".");
+         clickvalue = yearmonth[0] + "." + yearmonth[1] + "." + $(e.target).text();
+         console.log(clickvalue);
+         console.log(e.target);
+         console.log(e.target);
+        $.ajax({
+          method : 'PUT',
+          url : '/calendar',
+          data : {date: clickvalue}
+        }).done(function(result){
+          console.log(data);
+        }).fail(function(xhr, textStatus, errorThrow){
+          //요청 실패시
+          console.log(xhr, textStatus, errorThrow);
+        });
+      //   console.log(date);
+      });
+
+      // 이전 달 이동 버튼 클릭
+      $(".calendar-controls > .calendar-prev").on("click", function () {
+         var yearmonth = $(".calendar-yearmonth").text().split(".");
+         calendar(new Date(parseInt(yearmonth[0]), parseInt(yearmonth[1]) - 2, 1));
+      });
+
+      // 다음 달 이동 버튼 클릭
+      $(".calendar-controls > .calendar-next").on("click", function () {
+         var yearmonth = $(".calendar-yearmonth").text().split(".");
+         calendar(new Date(parseInt(yearmonth[0]), parseInt(yearmonth[1]), 1));
+      });
+
+      // 오늘 이동 버튼 클릭
+      $(".calendar-controls > .calendar-today").on("click", function () {
+         calendar(new Date());
+      });
+      function calendar(date) {
+         // 달력 연도
+         var calendarYear = date.getFullYear();
+         // 달력 월
+         var calendarMonth = date.getMonth() + 1;
+         // 달력 일
+         var calendarToday = date.getDate();
+
+         var monthLastDate = new Date(calendarYear, calendarMonth, 0);
+         // 달력 월의 마지막 일
+         var calendarMonthLastDate = monthLastDate.getDate();
+
+         var monthStartDay = new Date(calendarYear, date.getMonth(), 1);
+         // 달력 월의 시작 요일
+         var calendarMonthStartDay = monthStartDay.getDay();
+
+         // 주 카운트   
+         var calendarWeekCount = Math.ceil((calendarMonthStartDay + calendarMonthLastDate) / 7);
+
+         // 년월
+         $(".calendar-yearmonth").html(calendarYear + "." + calendarMonth);
+
+         // 오늘
+         var today = new Date();
+
+         var html = "";
+         html += "<table>";
+         html += "<thead>";
+         html += "<tr>";
+         html += "<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>";
+         html += "</tr>";
+         html += "</thead>";
+         html += "<tbody>";
+         // 위치
+         var calendarPos = 0;
+         // 날짜
+         var calendarDay = 0;
+         for (var index1 = 0; index1 < calendarWeekCount; index1++) {
+            html += "<tr>";
+            for (var index2 = 0; index2 < 7; index2++) {
+               html += "<td>";
+               if (calendarMonthStartDay <= calendarPos && calendarDay < calendarMonthLastDate) {
+                  calendarDay++;
+                  html += "<span";
+                  if (calendarYear == today.getFullYear() && calendarMonth == today.getMonth() + 1
+                     && calendarDay == today.getDate()) {
+                     html += " class=\"today\"";
+                  }
+                  html += ">" + calendarDay + "</span>";
+               }
+               html += "</td>";
+               calendarPos++;
+            }
+            html += "</tr>";
+         }
+         html += "</tbody>";
+         html += "</table>";
+         $("#calendar").html(html);
+      }
+
+      calendar(new Date());
+   </script>
 </body>
+
 </html>

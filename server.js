@@ -416,3 +416,8 @@ app.get('/myscore', checklogin, function (req, res) {
         res.render('myscore.ejs', { score : result, user : req.user.id })
     });
 })
+
+//달력
+app.post('/calendar',checklogin, function(req,res){
+    res.render('list.ejs');
+})
