@@ -6,7 +6,9 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended : false}));
 app.set('view engine', 'ejs');
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'))
@@ -419,5 +421,6 @@ app.get('/myscore', checklogin, function (req, res) {
 
 //달력
 app.post('/calendar',checklogin, function(req,res){
-    res.render('list.ejs');
-})
+    console.log(req.body.date);
+    // res.render('list.ejs');
+})  

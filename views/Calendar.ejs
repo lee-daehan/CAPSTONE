@@ -83,6 +83,7 @@
 <body>
    <div class="calendar">
       <div class="calendar-header">
+         <!-- <span class="calendar-yearmonth" id="year" data-id="<%=  %>"></span> -->
          <span class="calendar-yearmonth"></span>
          <div class="calendar-controls">
             <button type="button" class="calendar-prev">&lt;</button>
@@ -94,23 +95,57 @@
    </div>
    <script>
       // 날짜 클릭
+      // $(document).on("click", ".calendar table > tbody > tr > td > span", function (e) {
+      //    // var yearmonth = $(".calendar-yearmonth").text().split(".");
+      //    // var clickvalue = yearmonth[0] + "." + yearmonth[1] + "." + $(e.target).text();
+      //    // clickvalue =  JSON.stringify(clickvalue);
+      //    var v;
+      //    var day = $('#day').val();
+      //    day = JSON.stringify(day);
+         
+      //    // var day = $("#year").html()+"." + $(e.target).text();
+      //    // var day = calendar(new Date());
+      //    // console.log(day);
+      //    // console.log(clickvalue);
+      //    // console.log(e.target);
+      //   $.ajax({
+      //     method : 'POST',
+      //     url : '/calendar',
+      //     data : {date : day}
+      //   }).done(function(result){
+      //     v=data;
+      //     console.log(data);
+      //   }).fail(function(xhr, textStatus, errorThrow){
+      //     //요청 실패시
+      //     console.log(xhr, textStatus, errorThrow);
+      //   });
+      //   return v;
+      // });
+
+
+
+      /////////////////////////////대한이꺼
+      // 날짜 클릭
       $(document).on("click", ".calendar table > tbody > tr > td > span", function (e) {
          var yearmonth = $(".calendar-yearmonth").text().split(".");
-         clickvalue = yearmonth[0] + "." + yearmonth[1] + "." + $(e.target).text();
-         console.log(clickvalue);
-         console.log(e.target);
-         console.log(e.target);
-        $.ajax({
-          method : 'PUT',
-          url : '/calendar',
-          data : {date: clickvalue}
-        }).done(function(result){
-          console.log(data);
-        }).fail(function(xhr, textStatus, errorThrow){
-          //요청 실패시
-          console.log(xhr, textStatus, errorThrow);
-        });
-      //   console.log(date);
+         var clickvalue = yearmonth[0] + "." + yearmonth[1] + "." + $(e.target).text();
+         // console.log(clickvalue);
+         fetch("/calendar", {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json"
+            },
+            body: JSON.stringify({date : clickvalue})
+         })
+         .then(res => {
+            if(res.status==200) {
+               res.text().then(text=>console.log(text))
+            }
+            else{
+               console.log(res.statusText)
+            }
+         })
+         .catch(err=>console.log(err));
       });
 
       // 이전 달 이동 버튼 클릭
