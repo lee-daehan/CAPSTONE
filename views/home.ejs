@@ -62,13 +62,15 @@
 </style>
 
 <body>
+
   <%- include('nav.html') %>
     <h1>메인홈</h1>
     <div name="top" style="width: 100%; background-color : skyblue;">
       <div style="display: flex; margin: 2rem;">
         <%- include('calendar.ejs') %>
           <div style="width: 100%; height: 30rem; border-style:solid ; margin: 2rem;">
-            <%- include('list.ejs') %>
+
+            
           </div>
       </div>
     </div>
@@ -86,7 +88,7 @@
               <input type="radio" id="male" name="gender" value="남성">
               <label for="male">남성</label><br>
               <input type="radio" id="female" name="gender" value="여성">
-              <label for="female">여성</label><br>`
+              <label for="female">여성</label><br>
 
               <h3>선호포지션</h3>
               <input type="radio" id="FW" name="position" value="FW">

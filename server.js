@@ -8,14 +8,15 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.urlencoded({extended : false}));
+app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'))
-app.use(session({ secret: '비밀코드', //암호 키 저장, 이 키를 통하여 Session id를 암호화
-                resave: true, saveUninitialized: false, //재저장을 계속 할 것인지 정보, 세션에 변화가 없어도 계속 저장한다는 옵션
-                cookie:{maxAge:(3.6e+6)*24} //세션 저장 만료 시간 설정 (24시간으로 설정)
-                 }));
+app.use(session({
+    secret: '비밀코드', //암호 키 저장, 이 키를 통하여 Session id를 암호화
+    resave: true, saveUninitialized: false, //재저장을 계속 할 것인지 정보, 세션에 변화가 없어도 계속 저장한다는 옵션
+    cookie: { maxAge: (3.6e+6) * 24 } //세션 저장 만료 시간 설정 (24시간으로 설정)
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -149,11 +150,11 @@ passport.deserializeUser(function (id, done) {
 });
 
 //로그아웃
-app.get('/logout', (req,res)=>{
-    req.logOut(function(error, result){
-        req.session.save(function(err){
-        if(err) throw err;
-        res.redirect('/');
+app.get('/logout', (req, res) => {
+    req.logOut(function (error, result) {
+        req.session.save(function (err) {
+            if (err) throw err;
+            res.redirect('/');
         })
     });
 })
@@ -331,7 +332,7 @@ app.get('/reqmatch', checklogin, function (req, res) {
 app.put('/accept', checklogin, function (req, res) {
     const id = new mongoose.Types.ObjectId(req.body._id.id);
     const count = parseInt(req.body._id.articlenum) // 신청한게시물번호
-    console.log(req.body._id.articlenum) 
+    console.log(req.body._id.articlenum)
     console.log(req.body._id.id)
 
     db.collection('request').updateOne({ _id: id }, {
@@ -339,7 +340,7 @@ app.put('/accept', checklogin, function (req, res) {
             여부: parseInt(1)
         }
     }, function (error, result) {
-        db.collection('board').updateOne({_id: count}, { $inc: { count: -1 } }, function (error, result) {
+        db.collection('board').updateOne({ _id: count }, { $inc: { count: -1 } }, function (error, result) {
             if (error) { return console.log(error) };
         })
     })
@@ -398,7 +399,7 @@ app.get('/suggest', checklogin, function (req, res) {
 
 })
 
-app.post('/apply', checklogin, function(req, res){
+app.post('/apply', checklogin, function (req, res) {
     console.log(req.body.id);
     console.log(req.body.score);
     // console.log(req.body.score);
@@ -406,21 +407,51 @@ app.post('/apply', checklogin, function(req, res){
         내용: req.body.id,
         작성자: req.user.id,
         점수: req.body.score
-    }, function(error, result){
+    }, function (error, result) {
         res.write("<script>window.location=\"../resmatch\"</script>");
     })
-        
+
 })
 
 //평가 점수 보기
 app.get('/myscore', checklogin, function (req, res) {
     db.collection('evaluate').find().toArray(function (error, result) {
-        res.render('myscore.ejs', { score : result, user : req.user.id })
+        res.render('myscore.ejs', { score: result, user: req.user.id })
     });
 })
 
 //달력
-app.post('/calendar',checklogin, function(req,res){
-    console.log(req.body.date);
-    // res.render('list.ejs');
-})  
+app.post('/calendar', checklogin, function (req, res) {
+    // console.log(req.body.date1); //달력 클릭으로 넘어온 날짜
+    db.collection('board').find({ 경기진행날짜: req.body.date1 }).toArray(function (error, result) {
+        for (var i = 0; i < result.length; i++) {
+            db.collection('searchdate').insertOne({
+                경기진행날짜: req.body.date1,
+                작성자: result[i].작성자,
+                제목: result[i].제목,
+                게시글: result[i].게시글,
+                장소: result[i].장소,
+                인원: result[i].인원
+            })
+        }
+    })
+})
+
+
+
+app.post('/list', function (req, res) {
+    // console.log(req.body.date2);
+    db.collection('searchdate').find({경기진행날짜: req.body.date2}).toArray(function(error, result){
+        res.render('list.ejs', {result: result})
+    })
+    db.collection('searchdate').deleteMany({경기진행날짜: req.body.date2}, function (error, result) {
+        if (error) { return res.status(400) } //요청 실패
+        else { res.status(200).send({ message: '성공' }) } //요청 성공
+    });
+    res.write("<script>window.location=\"../list\"</script>");
+})
+
+app.get('/list', function(req, res){
+    
+    res.render('새로운.ejs');
+})

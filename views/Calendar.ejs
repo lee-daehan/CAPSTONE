@@ -95,47 +95,151 @@
    </div>
    <script>
       // 날짜 클릭
-      // $(document).on("click", ".calendar table > tbody > tr > td > span", function (e) {
-      //    // var yearmonth = $(".calendar-yearmonth").text().split(".");
-      //    // var clickvalue = yearmonth[0] + "." + yearmonth[1] + "." + $(e.target).text();
-      //    // clickvalue =  JSON.stringify(clickvalue);
-      //    var v;
-      //    var day = $('#day').val();
-      //    day = JSON.stringify(day);
-         
-      //    // var day = $("#year").html()+"." + $(e.target).text();
-      //    // var day = calendar(new Date());
-      //    // console.log(day);
-      //    // console.log(clickvalue);
-      //    // console.log(e.target);
-      //   $.ajax({
-      //     method : 'POST',
-      //     url : '/calendar',
-      //     data : {date : day}
-      //   }).done(function(result){
-      //     v=data;
-      //     console.log(data);
-      //   }).fail(function(xhr, textStatus, errorThrow){
-      //     //요청 실패시
-      //     console.log(xhr, textStatus, errorThrow);
-      //   });
-      //   return v;
-      // });
-
-
-
-      /////////////////////////////대한이꺼
-      // 날짜 클릭
       $(document).on("click", ".calendar table > tbody > tr > td > span", function (e) {
          var yearmonth = $(".calendar-yearmonth").text().split(".");
-         var clickvalue = yearmonth[0] + "." + yearmonth[1] + "." + $(e.target).text();
-         // console.log(clickvalue);
+         var clickvalue1 = yearmonth[0] + "-" + yearmonth[1] + "-" + $(e.target).text();
+         console.log(typeof(clickvalue1));
          fetch("/calendar", {
             method: "POST",
             headers: {
                "Content-Type": "application/json"
             },
-            body: JSON.stringify({date : clickvalue})
+            body: JSON.stringify({date1 : clickvalue1})
+         })
+         // fetch("/list", {
+         //    method: "GET",
+         //    headers: {
+         //       "Content-Type": "application/json"
+         //    },
+         //    body: JSON.stringify({date2 : clickvalue2})
+         // })
+         .then(res => {
+            if(res.status==200) {
+               res.text().then(text=>console.log(text))
+            }
+            else{
+               console.log(res.statusText)
+            }
+         })
+         .catch(err=>console.log(err));
+      });
+
+      //GET
+      // $(document).on("click", ".calendar table > tbody > tr > td > span", function (e) {
+      //    var yearmonth = $(".calendar-yearmonth").text().split(".");
+      //    var clickvalue2 = yearmonth[0] + "-" + yearmonth[1] + "-" + $(e.target).text();
+      //    console.log(typeof(clickvalue2));
+      //    fetch("/list", {
+      //       method: "GET",
+      //       headers: {
+      //          "Content-Type": "application/json"
+      //       },
+      //       body: JSON.stringify({date2 : clickvalue2})
+      //    })
+      //    .then(res => {
+      //       if(res.status==200) {
+      //          res.text().then(text=>console.log(text))
+      //       }
+      //       else{
+      //          console.log(res.statusText)
+      //       }
+      //    })
+      //    .catch(err=>console.log(err));
+      // });
+
+      // 이전 달 이동 버튼 클릭
+      $(".calendar-controls > .calendar-prev").on("click", function () {
+         var yearmonth = $(".calendar-yearmonth").text().split(".");
+         calendar(new Date(parseInt(yearmonth[0]), parseInt(yearmonth[1]) - 2, 1));
+      });
+
+      // 다음 달 이동 버튼 클릭
+      $(".calendar-controls > .calendar-next").on("click", function () {
+         var yearmonth = $(".calendar-yearmonth").text().split(".");
+         calendar(new Date(parseInt(yearmonth[0]), parseInt(yearmonth[1]), 1));
+      });
+
+      // 오늘 이동 버튼 클릭
+      $(".calendar-controls > .calendar-today").on("click", function () {
+         calendar(new Date());
+      });
+      function calendar(date) {
+         // 달력 연도
+         var calendarYear = date.getFullYear();
+         // 달력 월
+         var calendarMonth = date.getMonth() + 1;
+         // 달력 일
+         var calendarToday = date.getDate();
+
+         var monthLastDate = new Date(calendarYear, calendarMonth, 0);
+         // 달력 월의 마지막 일
+         var calendarMonthLastDate = monthLastDate.getDate();
+
+         var monthStartDay = new Date(calendarYear, date.getMonth(), 1);
+         // 달력 월의 시작 요일
+         var calendarMonthStartDay = monthStartDay.getDay();
+
+         // 주 카운트   
+         var calendarWeekCount = Math.ceil((calendarMonthStartDay + calendarMonthLastDate) / 7);
+
+         // 년월
+         $(".calendar-yearmonth").html(calendarYear + "." + calendarMonth);
+
+         // 오늘
+         var today = new Date();
+
+         var html = "";
+         html += "<table>";
+         html += "<thead>";
+         html += "<tr>";
+         html += "<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>";
+         html += "</tr>";
+         html += "</thead>";
+         html += "<tbody>";
+         // 위치
+         var calendarPos = 0;
+         // 날짜
+         var calendarDay = 0;
+         for (var index1 = 0; index1 < calendarWeekCount; index1++) {
+            html += "<tr>";
+            for (var index2 = 0; index2 < 7; index2++) {
+               html += "<td>";
+               if (calendarMonthStartDay <= calendarPos && calendarDay < calendarMonthLastDate) {
+                  calendarDay++;
+                  html += "<span";
+                  if (calendarYear == today.getFullYear() && calendarMonth == today.getMonth() + 1
+                     && calendarDay == today.getDate()) {
+                     html += " class=\"today\"";
+                  }
+                  html += ">" + calendarDay + "</span>";
+               }
+               html += "</td>";
+               calendarPos++;
+            }
+            html += "</tr>";
+         }
+         html += "</tbody>";
+         html += "</table>";
+         $("#calendar").html(html);
+      }
+
+      calendar(new Date());
+   </script>
+
+
+
+   <script>
+      //GET
+      $(document).on("click", ".calendar table > tbody > tr > td > span", function (e) {
+         var yearmonth = $(".calendar-yearmonth").text().split(".");
+         var clickvalue2 = yearmonth[0] + "-" + yearmonth[1] + "-" + $(e.target).text();
+         console.log(typeof(clickvalue2));
+         fetch("/list", {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json"
+            },
+            body: JSON.stringify({date2 : clickvalue2})
          })
          .then(res => {
             if(res.status==200) {
