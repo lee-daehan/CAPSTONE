@@ -29,12 +29,12 @@
          text-align: center;
       }
 
-      .calendar table>tbody>tr>td>span {
+      .calendar table>tbody>tr>td>a {
          display: block;
          padding: 10px 10px;
       }
 
-      .calendar table>tbody>tr>td>span.today {
+      .calendar table>tbody>tr>td>a.today {
          border: 1px solid red;
          border-radius: 50%;
          color: white;
@@ -95,16 +95,16 @@
    </div>
    <script>
       // 날짜 클릭
-      $(document).on("click", ".calendar table > tbody > tr > td > span", function (e) {
+      $(document).on("click", ".calendar table > tbody > tr > td > a", function (e) {
          var yearmonth = $(".calendar-yearmonth").text().split(".");
          var clickvalue1 = yearmonth[0] + "-" + yearmonth[1] + "-" + $(e.target).text();
-         console.log(typeof(clickvalue1));
+         console.log(clickvalue1);
          fetch("/calendar", {
             method: "POST",
             headers: {
                "Content-Type": "application/json"
             },
-            body: JSON.stringify({date1 : clickvalue1})
+            body: JSON.stringify({date : clickvalue1})
          })
          // fetch("/list", {
          //    method: "GET",
@@ -123,7 +123,15 @@
          })
          .catch(err=>console.log(err));
       });
-
+      $(document).on("click", ".calendar table > tbody > tr > td > a", function (e) {
+         fetch("/list", {
+            method: "GET",
+            headers: {
+               "Content-Type": "application/json"
+            }
+         })
+      });
+      
       //GET
       // $(document).on("click", ".calendar table > tbody > tr > td > span", function (e) {
       //    var yearmonth = $(".calendar-yearmonth").text().split(".");
@@ -206,12 +214,16 @@
                html += "<td>";
                if (calendarMonthStartDay <= calendarPos && calendarDay < calendarMonthLastDate) {
                   calendarDay++;
-                  html += "<span";
+                  html += "<a";
                   if (calendarYear == today.getFullYear() && calendarMonth == today.getMonth() + 1
                      && calendarDay == today.getDate()) {
                      html += " class=\"today\"";
+                     html += "href=/list";
                   }
-                  html += ">" + calendarDay + "</span>";
+                  else {
+                     html += " href=/list";
+                  }
+                  html += ">" + calendarDay + "</a>";
                }
                html += "</td>";
                calendarPos++;
@@ -227,7 +239,7 @@
    </script>
 
 
-
+<!-- 
    <script>
       //GET
       $(document).on("click", ".calendar table > tbody > tr > td > span", function (e) {
@@ -329,7 +341,7 @@
       }
 
       calendar(new Date());
-   </script>
+   </script> -->
 </body>
 
 </html>

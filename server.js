@@ -422,11 +422,13 @@ app.get('/myscore', checklogin, function (req, res) {
 
 //달력
 app.post('/calendar', checklogin, function (req, res) {
-    // console.log(req.body.date1); //달력 클릭으로 넘어온 날짜
-    db.collection('board').find({ 경기진행날짜: req.body.date1 }).toArray(function (error, result) {
+    var date = req.body.date;
+    console.log(date); //달력 클릭으로 넘어온 날짜
+    db.collection('board').find({ 경기진행날짜: req.body.date }).toArray(function (error, result) {
         for (var i = 0; i < result.length; i++) {
             db.collection('searchdate').insertOne({
-                경기진행날짜: req.body.date1,
+                id: req.user.id,
+                경기진행날짜: req.body.date,
                 작성자: result[i].작성자,
                 제목: result[i].제목,
                 게시글: result[i].게시글,
@@ -435,23 +437,18 @@ app.post('/calendar', checklogin, function (req, res) {
             })
         }
     })
-})
 
-
-
-app.post('/list', function (req, res) {
-    // console.log(req.body.date2);
-    db.collection('searchdate').find({경기진행날짜: req.body.date2}).toArray(function(error, result){
-        res.render('list.ejs', {result: result})
+    // console.log(date);
+    app.get('/list', function (req, res) {
+        db.collection('searchdate').find({경기진행날짜:date}).toArray(function(error, result){
+           return res.render('list.ejs', {result: result})
+        })
+        
+        db.collection('searchdate').deleteMany({경기진행날짜: date}, function (error, result) {
+        });
     })
-    db.collection('searchdate').deleteMany({경기진행날짜: req.body.date2}, function (error, result) {
-        if (error) { return res.status(400) } //요청 실패
-        else { res.status(200).send({ message: '성공' }) } //요청 성공
-    });
-    res.write("<script>window.location=\"../list\"</script>");
 })
 
-app.get('/list', function(req, res){
-    
-    res.render('새로운.ejs');
-})
+// app.get('/list', function (req, res) {
+//     res.render('list.ejs');
+// })
