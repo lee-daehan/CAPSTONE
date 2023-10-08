@@ -441,11 +441,11 @@ app.post('/calendar', checklogin, function (req, res) {
                 인원: result[i].인원
             })
         }
-        
-        db.collection('searchdate').insertOne({
-                choiceid: req.user.id,
-                선택한날짜: req.body.date
-            })
+
+        // db.collection('searchdate').insertOne({
+        //         choiceid: req.user.id,
+        //         선택한날짜: req.body.date
+        //     })
     })
 
     
