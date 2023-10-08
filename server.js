@@ -21,6 +21,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+
 var db;
 MongoClient.connect('mongodb+srv://admin:qwer1234@cluster0.0sp7tde.mongodb.net/?retryWrites=true&w=majority', function (error, client) {
     if (error) { return console.log(error) };
@@ -422,8 +423,12 @@ app.get('/myscore', checklogin, function (req, res) {
 
 //달력
 app.post('/calendar', checklogin, function (req, res) {
-    var date = req.body.date;
-    console.log(date); //달력 클릭으로 넘어온 날짜
+    db.collection('searchdate').deleteMany({}, function (error, result) {
+    });
+    var day = req.body.date;
+
+    console.log(day); //달력 클릭으로 넘어온 날짜
+    
     db.collection('board').find({ 경기진행날짜: req.body.date }).toArray(function (error, result) {
         for (var i = 0; i < result.length; i++) {
             db.collection('searchdate').insertOne({
@@ -436,19 +441,34 @@ app.post('/calendar', checklogin, function (req, res) {
                 인원: result[i].인원
             })
         }
+        
+        db.collection('searchdate').insertOne({
+                choiceid: req.user.id,
+                선택한날짜: req.body.date
+            })
     })
+
+    
+        
+            
 
     // console.log(date);
-    app.get('/list', function (req, res) {
-        db.collection('searchdate').find({경기진행날짜:date}).toArray(function(error, result){
-           return res.render('list.ejs', {result: result})
-        })
-        
-        db.collection('searchdate').deleteMany({경기진행날짜: date}, function (error, result) {
-        });
-    })
+    res.write("<script>window.location=\"../list\"</script>");
 })
 
+app.get('/list', function (req, res) {
+    db.collection('searchdate').findOne({choiceid: req.user.id}, function(error, result1){
+
+        db.collection('searchdate').find().toArray(function(error, result2){
+                return res.render('list.ejs', {result: result2, choice : result1})
+        
+            })
+    })
+        
+      
+        
+        
+    })
 // app.get('/list', function (req, res) {
 //     res.render('list.ejs');
 // })
