@@ -460,15 +460,10 @@ app.get('/list', function (req, res) {
     db.collection('searchdate').findOne({choiceid: req.user.id}, function(error, result1){
 
         db.collection('searchdate').find().toArray(function(error, result2){
-                return res.render('list.ejs', {result: result2, choice : result1})
-        
-            })
+            return res.render('list.ejs', {result: result2, choice : result1})  
+        })
     })
-        
-      
-        
-        
-    })
+})
 // app.get('/list', function (req, res) {
 //     res.render('list.ejs');
 // })
