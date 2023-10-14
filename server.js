@@ -204,15 +204,40 @@ app.get('/myprofile', function (req, res) {
     });
 });
 
+
+app.post('/board', function(req,res){
+    db.collection('matchselect').deleteMany({})
+    db.collection('board').find({ 인원: req.body.select }).toArray(function (error, result) {
+        for (var i = 0; i < result.length; i++) {
+            db.collection('matchselect').insertOne({
+                id: req.user.id,
+                경기진행날짜: req.body.date,
+                작성자: result[i].작성자,
+                제목: result[i].제목,
+                게시글: result[i].게시글,
+                장소: result[i].장소,
+                인원: result[i].인원
+            })
+        }
+    })
+    res.write("<script>window.location=\"../board\"</script>");
+})
+
 //게시판(board), 등록된 게시글 다 보이게 하는 기능
 app.get('/board', function (req, res) {
-    db.collection('board').find().toArray(function (error, result) {
-        // 디비에 저장된 profile이라는 
-        //collection 안의 모든 데이터를 꺼내주세요
-        res.render('board.ejs', { board: result });
-        //찾은걸 ejs파일에 집어넣어주세요.
-    });
+        db.collection('matchselect').find().toArray(function (error, result2) {
+            res.render('board.ejs', { board: result2});
+        });
 })
+//게시판(board), 등록된 게시글 다 보이게 하는 기능
+// app.get('/board', function (req, res) {
+//     db.collection('board').find().toArray(function (error, result) {
+//         // 디비에 저장된 profile이라는 
+//         //collection 안의 모든 데이터를 꺼내주세요
+//         res.render('board.ejs', { board: result });
+//         //찾은걸 ejs파일에 집어넣어주세요.
+//     });
+// })
 
 //내가 작성한 게시물 보기
 app.get('/boardview', checklogin, function (req, res) {
