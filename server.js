@@ -155,7 +155,8 @@ app.get('/logout', (req, res) => {
     req.logOut(function (error, result) {
         req.session.save(function (err) {
             if (err) throw err;
-            res.redirect('/');
+            res.write("<script>alert('logout')</script>");
+            res.write("<script>window.location=\"../\"</script>");
         })
     });
 })

@@ -5,8 +5,7 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Document</title>
-   <title>달력</title>
+   <title>순풋</title>
    <style>
       .calendar {
          width: 500px;
@@ -29,16 +28,22 @@
          text-align: center;
       }
 
+      .calendar table>thead>tr>th {
+         text-align: center;
+      }
+
       .calendar table>tbody>tr>td>a {
          display: block;
          padding: 10px 10px;
+         text-decoration: none;
+         color: black;
       }
 
       .calendar table>tbody>tr>td>a.today {
-         border: 1px solid red;
-         border-radius: 50%;
-         color: white;
-         background-color: red;
+         border: 1px solid rgb(15, 110, 233);
+         border-radius: 6px;
+         color: black;
+         background-color: rgb(15, 110, 233);
          padding: 9px 9px;
       }
 
@@ -52,7 +57,7 @@
          position: relative;
          font-size: larger;
          font-weight: bolder;
-         color: red;
+         color: rgb(15, 110, 233);
          line-height: 50px;
       }
 
@@ -68,6 +73,7 @@
          height: 28px;
          padding: 1px 4px 0 4px;
          border: 1px solid #cbcbcb;
+         border-radius: 3px;
          background-color: #fff;
          font-size: 12px;
          cursor: pointer;
@@ -75,6 +81,14 @@
 
       .calendar>.calendar-header>.calendar-controls>button.calendar-today {
          width: 40px;
+      }
+
+      .sunday {
+         color: red;
+      }
+
+      .saturday {
+         color:blue;
       }
    </style>
    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
@@ -105,15 +119,7 @@
                "Content-Type": "application/json"
             },
             body: JSON.stringify({date : clickvalue1})
-         })
-         // fetch("/list", {
-         //    method: "GET",
-         //    headers: {
-         //       "Content-Type": "application/json"
-         //    },
-         //    body: JSON.stringify({date2 : clickvalue2})
-         // })
-         .then(res => {
+         }).then(res => {
             if(res.status==200) {
                res.text().then(text=>console.log(text))
             }
@@ -123,38 +129,6 @@
          })
          .catch(err=>console.log(err));
       });
-
-      // $(document).on("click", ".calendar table > tbody > tr > td > a", function (e) {
-      //    fetch("/list", {
-      //       method: "GET",
-      //       headers: {
-      //          "Content-Type": "application/json"
-      //       }
-      //    })
-      // });
-      
-      //GET
-      // $(document).on("click", ".calendar table > tbody > tr > td > span", function (e) {
-      //    var yearmonth = $(".calendar-yearmonth").text().split(".");
-      //    var clickvalue2 = yearmonth[0] + "-" + yearmonth[1] + "-" + $(e.target).text();
-      //    console.log(typeof(clickvalue2));
-      //    fetch("/list", {
-      //       method: "GET",
-      //       headers: {
-      //          "Content-Type": "application/json"
-      //       },
-      //       body: JSON.stringify({date2 : clickvalue2})
-      //    })
-      //    .then(res => {
-      //       if(res.status==200) {
-      //          res.text().then(text=>console.log(text))
-      //       }
-      //       else{
-      //          console.log(res.statusText)
-      //       }
-      //    })
-      //    .catch(err=>console.log(err));
-      // });
 
       // 이전 달 이동 버튼 클릭
       $(".calendar-controls > .calendar-prev").on("click", function () {
@@ -201,7 +175,7 @@
          html += "<table>";
          html += "<thead>";
          html += "<tr>";
-         html += "<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>";
+         html += "<th class=\"sunday\">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th class=\"saturday\">토</th>";
          html += "</tr>";
          html += "</thead>";
          html += "<tbody>";
