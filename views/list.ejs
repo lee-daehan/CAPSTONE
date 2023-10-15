@@ -40,6 +40,22 @@
     border: 1px solid #aaa;
   }
 
+  .section1 {
+    display: flex;
+  }
+
+  .calendar-container {
+    border: 1px solid #ccc;
+    width: 45%;
+  }
+
+  .list-container {
+    border: 1px solid #ccc;
+    width: 55%;
+    height: 400px;
+    overflow-y: scroll;
+  }
+
   footer {
     width: 80%;
     height: 300px;
@@ -47,11 +63,6 @@
     background-color: #ddd7d7;
   }
 
-  .list-container {
-    width: 100%;
-    height: 25rem;
-    overflow-y: scroll;
-  }
   /* The Modal (background) */
   .modal {
     display: none;
@@ -115,10 +126,11 @@
   </header>
 
   <main>
-    <div>
-      <div style="display: flex; margin: 2rem;">
-        <%- include('Calendar.ejs') %>
-          <div class="list-container">
+    <div class="section1">
+      <div class="calendar-container">
+        <%- include('Calendar.ejs') %>  
+      </div>
+      <div class="list-container">
             <% for (var i=0; i < result.length; i++ ) { %>
                 <li class="list-group-item">
                   <p>닉네임: <%= result[i].작성자 %></p>
@@ -127,7 +139,6 @@
                   <p>장소: <%= result[i].장소 %></p>
                 </li>
             <% } %>
-          </div>
       </div>
     </div>
     <div name="filter-wrap" style="background-color:bisque">

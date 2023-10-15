@@ -7,9 +7,9 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>순풋</title>
    <style>
-      .calendar {
-         width: 500px;
-      }
+      /* .calendar {
+         border: 1px solid #ccc;
+      } */
 
       .calendar table {
          width: 100%;
@@ -28,6 +28,11 @@
          text-align: center;
       }
 
+      .calendar table>tbody>tr>td>a:hover {
+         border-radius: 60%;
+         background-color: #ccc;
+      }
+
       .calendar table>thead>tr>th {
          text-align: center;
       }
@@ -40,11 +45,12 @@
       }
 
       .calendar table>tbody>tr>td>a.today {
-         border: 1px solid rgb(15, 110, 233);
+         /* border: 1px solid rgb(15, 110, 233); */
          border-radius: 6px;
-         color: black;
+         /* color: black; */
          background-color: rgb(15, 110, 233);
          padding: 9px 9px;
+         background-image: url(../images/today.png);
       }
 
       .calendar>.calendar-header {
@@ -90,6 +96,10 @@
       .saturday {
          color:blue;
       }
+
+      .c {
+         background-color: #ccc;
+      }
    </style>
    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 </head>
@@ -112,7 +122,6 @@
       $(document).on("click", ".calendar table > tbody > tr > td > a", function (e) {
          var yearmonth = $(".calendar-yearmonth").text().split(".");
          var clickvalue1 = yearmonth[0] + "-" + yearmonth[1] + "-" + $(e.target).text();
-         console.log(clickvalue1);
          fetch("/calendar", {
             method: "POST",
             headers: {
@@ -130,6 +139,9 @@
          .catch(err=>console.log(err));
       });
 
+      // $(document).on("click", ".calendar table > tbody > tr > td > a", function (e) {
+      //    //선택한 날짜 표시
+      // });
       // 이전 달 이동 버튼 클릭
       $(".calendar-controls > .calendar-prev").on("click", function () {
          var yearmonth = $(".calendar-yearmonth").text().split(".");

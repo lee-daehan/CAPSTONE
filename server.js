@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
+const fs = require('fs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
@@ -493,3 +494,10 @@ app.get('/list', function (req, res) {
 // app.get('/list', function (req, res) {
 //     res.render('list.ejs');
 // })
+
+app.get('/imgs', function(req, res) {
+    fs.readFile('logo.png', function(error, data) {
+        res.writeHead(200, {'Content-type':'text/html' });
+        res.end(data);
+    }) 
+})
