@@ -19,7 +19,7 @@
 
     <%- include('nav.html') %>
     <ul class="list-group">
-        <form action="/board" method="POST">
+        <form action="/select1" method="POST">
             <select onchange="this.form.submit()" name="select">
                 <option>--인원 선택--</option>
                 <option>5vs5</option>
@@ -27,34 +27,59 @@
                 <option>8vs8</option>
             </select>
         </form>
-                <% nprint : for(var i=0;i < board.length; i++) { %>
-                    <% if(str === board[i].게시글 && str === board[i].제목 ) { %>
-                        <% continue nprint; %>
+        <form action="/select2" method="POST">
+            <select onchange="this.form.submit()" name="area">
+                <option>--장소 선택--</option>
+                <option>대운동장 풋살장(농구골대 옆)</option>
+                <option>대운동장 풋살장(체육관 옆)</option>
+                <option>소운동장</option>
+            </select>
+        </form>
+        <% nprint : for(var i=0;i < board.length; i++) { %>
+            <% if(str===board[i].게시글 && str===board[i].제목 ) { %>
+                <% continue nprint; %>
                     <% } else {%>
-                        <% if(board[i].남은인원 === 0 ) { %>
-                    <li class="list-group-item">
-                        <p style="display:none;" value="Articlenum">게시글 번호: <%= board[i]._id %></p>
-                        <p>제목: <%= board[i].제목 %></p>
-                        <p>내용: <%= board[i].게시글 %></p>
-                        <p>장소: <%= board[i].장소 %></p>
-                        <p>인원: <%= board[i].인원 %></p>
-                        <p>마감되었습니다.</p>
-                        <!-- <button class="request" data-id="<%= board[i]._id %>">신청</button> -->
-                    </li>
-                    <% } %>
-                    <% if(board[i].남은인원 != 0 ) { %>
-                        <li class="list-group-item">
-                            <p style="display:none;" value="Articlenum">게시글 번호: <%= board[i]._id %></p>
-                            <p>제목: <%= board[i].제목 %></p>
-                            <p>내용: <%= board[i].게시글 %></p>
-                            <p>장소: <%= board[i].장소 %></p>
-                            <p>인원: <%= board[i].인원 %></p>
-                            <p>남은인원: <%= board[i].남은인원 %> </p>
-                            <button class="request" data-id="<%= board[i]._id %>">신청</button>
-                        </li>
-                        <% } %>
-                    <% } %>
-                <% } %>
+                        <% if(board[i].인원 !='5vs5' && condition.인원 !='5vs5' ) { %>
+                            <div style="display: none;">
+                                <% if(board[i].남은인원 ===0 ) { %>
+                                    <li class="list-group-item">
+                                        <p style="display:none;" value="Articlenum">게시글 번호: <%= board[i]._id %>
+                                        </p>
+                                        <p>제목: <%= board[i].제목 %>
+                                        </p>
+                                        <p>내용: <%= board[i].게시글 %>
+                                        </p>
+                                        <p>장소: <%= board[i].장소 %>
+                                        </p>
+                                        <p>인원: <%= board[i].인원 %>
+                                        </p>
+                                        </p>
+                                        <p>마감되었습니다.</p>
+                                    </li>
+                                    <% } %>
+                                        <% if(board[i].남은인원 !=0 ) { %>
+                                            <li class="list-group-item">
+                                                <p style="display:none;" value="Articlenum">게시글 번호: <%=
+                                                        board[i]._id %>
+                                                </p>
+                                                <p>제목: <%= board[i].제목 %>
+                                                </p>
+                                                <p>내용: <%= board[i].게시글 %>
+                                                </p>
+                                                <p>장소: <%= board[i].장소 %>
+                                                </p>
+                                                <p>인원: <%= board[i].인원 %>
+                                                </p>
+                                                <p>남은인원: <%= board[i].남은인원 %>
+                                                </p>
+                                                <button class="request"
+                                                    data-id="<%= board[i]._id %>">신청</button>
+                                            </li>
+                                            <% } %>
+                            </div>
+                            <% } %>
+                                <% } %>
+                                    <% } %>
             </div>
         </div>
     </ul>

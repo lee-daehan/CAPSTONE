@@ -207,30 +207,70 @@ app.get('/myprofile', function (req, res) {
 });
 
 
-app.post('/board', function(req,res){
+
+app.post('/select1', function (req, res) {
     db.collection('matchselect').deleteMany({})
-    db.collection('board').find({ 인원: req.body.select }).toArray(function (error, result) {
-        for (var i = 0; i < result.length; i++) {
-            db.collection('matchselect').insertOne({
-                id: req.user.id,
-                경기진행날짜: req.body.date,
-                작성자: result[i].작성자,
-                제목: result[i].제목,
-                게시글: result[i].게시글,
-                장소: result[i].장소,
-                인원: result[i].인원,
-                남은인원: result[i].count
-            })
-        }
+    // db.collection('board').find({ 인원: req.body.select }).toArray(function (error, result) {
+    // for (var i = 0; i < result.length; i++) {
+    // db.collection('matchselect').insertOne({
+    //     id: req.user.id,
+    //     경기진행날짜: req.body.date,
+    //     작성자: result[i].작성자,
+    //     제목: result[i].제목,
+    //     게시글: result[i].게시글,
+    //     장소: result[i].장소,
+    //     인원: result[i].인원
+    // })
+    // }
+    // })
+    db.collection('matchselect').insertOne({
+        인원: req.body.select
+    })
+    res.write("<script>window.location=\"../board\"</script>");
+})
+
+app.post('/select2', function (req, res) {
+    // console.log(req.body.area)
+    // db.collection('matchselect').find({ 장소: req.body.area }).toArray(function (error, result) {
+    // db.collection('matchselect').deleteMany({})
+
+    // if(req.body.area == '대운동장 풋살장(농구골대 옆)'){
+    //     for(var i=0 ; i<result.length; i++){
+    //         db.collection('matchselect').remove({장소: '소운동장'});
+    //         db.collection('matchselect').remove({장소: '대운동장 풋살장(체육관 옆)'});
+    //     }
+    // }else if(req.body.area == '소운동장'){
+    //     for(var i=0 ; i<result.length; i++){
+    //         db.collection('matchselect').remove({장소: '대운동장 풋살장(농구골대 옆)'});
+    //         db.collection('matchselect').remove({장소: '대운동장 풋살장(체육관 옆)'});
+    //     }
+    // }else if(req.body.area == '대운동장 풋살장(체육관 옆)'){
+    //     for(var i=0 ; i<result.length; i++){
+    //         db.collection('matchselect').remove({장소: '소운동장'});
+    //         db.collection('matchselect').remove({장소: '대운동장 풋살장(농구골대 옆)'});
+    //     }
+    // }
+
+    // for(var i=0; i<result.length;i++){
+    //     if(result[i].장소 != req.body.area){
+    //         db.collection('matchselect').deleteOne({장소: result[i].장소});
+    //     }
+    // }
+    // })
+    db.collection('matchselect').insertOne({
+        장소: req.body.area
     })
     res.write("<script>window.location=\"../board\"</script>");
 })
 
 //게시판(board), 등록된 게시글 다 보이게 하는 기능
 app.get('/board', function (req, res) {
+    db.collection('board').find().toArray(function(error, result1){
         db.collection('matchselect').find().toArray(function (error, result2) {
-            res.render('board.ejs', { board: result2});
+            
+            res.render('board.ejs', { board: result1, condition: result2 });
         });
+    })
 })
 //게시판(board), 등록된 게시글 다 보이게 하는 기능
 // app.get('/board', function (req, res) {
