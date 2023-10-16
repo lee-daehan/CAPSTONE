@@ -31,26 +31,25 @@
                     <% if(str === board[i].게시글 && str === board[i].제목 ) { %>
                         <% continue nprint; %>
                     <% } else {%>
-                        <% if(board[i].count === 0 ) { %>
+                        <% if(board[i].남은인원 === 0 ) { %>
                     <li class="list-group-item">
                         <p style="display:none;" value="Articlenum">게시글 번호: <%= board[i]._id %></p>
                         <p>제목: <%= board[i].제목 %></p>
                         <p>내용: <%= board[i].게시글 %></p>
                         <p>장소: <%= board[i].장소 %></p>
                         <p>인원: <%= board[i].인원 %></p>
-                        <p>남은인원: <%= board[i].count %> </p>
                         <p>마감되었습니다.</p>
                         <!-- <button class="request" data-id="<%= board[i]._id %>">신청</button> -->
                     </li>
                     <% } %>
-                    <% if(board[i].count != 0 ) { %>
+                    <% if(board[i].남은인원 != 0 ) { %>
                         <li class="list-group-item">
                             <p style="display:none;" value="Articlenum">게시글 번호: <%= board[i]._id %></p>
                             <p>제목: <%= board[i].제목 %></p>
                             <p>내용: <%= board[i].게시글 %></p>
                             <p>장소: <%= board[i].장소 %></p>
                             <p>인원: <%= board[i].인원 %></p>
-                            <p>남은인원: <%= board[i].count %> </p>
+                            <p>남은인원: <%= board[i].남은인원 %> </p>
                             <button class="request" data-id="<%= board[i]._id %>">신청</button>
                         </li>
                         <% } %>
