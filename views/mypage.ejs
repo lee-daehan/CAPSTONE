@@ -9,62 +9,88 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
     <title>순풋</title>
+    <style>
+        .menubutton{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            margin: 20px 50px;
+        }
+        .btn{
+            background-color: white;
+            border: 1px solid gray;
+            border-radius: 100px;
+            width: 200px;
+            height: 200px;
+        }
+        .btn:hover{
+            background-color: #5da034;
+            border: 2px solid white;
+            
+        }
+        .btn_box{
+            margin:20px auto;
+        }
+        button img {
+            width: 40px;
+            height: 40px;
+            margin: 0 10px;
+        }
+        a{  
+            color: black;
+            font-weight: bold;
+            padding: 100px 0;
+        }
+        .btn a:hover{
+            color: white;
+        }
+        
+    </style>
   </head>
   <body>
     <!-- NavBar -->
     <%- include('nav.html') %>
-    
-    <!-- 메인컨텐츠 -->
-    <h1><%= User.id %>마이페이지</h1>
-    <div class="m-2">
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/inputprofile">프로필입력</a>
+    <div class="menubutton">
+
+        <div class="btn_box">
+            <button type="button" class="btn">
+                <a class="text-decoration-none" href="/inputprofile"><img src="public/imgs/profile.png" alt="프로필입력">프로필입력
+                </a>
             </button>
         </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/myprofile">프로필보기</a>
+        <div class="btn_box">
+            <button type="button" class="btn" >
+                <a class="text-decoration-none" href="/myprofile"><img src="public/imgs/view.png" alt="프로필보기">프로필보기</a>
             </button>
         </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/editprofile">프로필수정</a>
+        <div class="btn_box">
+            <button type="button" class="btn">
+                <a class="text-decoration-none" href="/editprofile"><img src="public/imgs/modify.png" alt="프로필수정">프로필수정</a>
             </button>
         </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/recommand">원하는 팀원 구하기</a>
+        
+        <div class="btn_box">
+            <button type="button" class="btn">
+                <a class="text-decoration-none" href="/resmatch"><img src="public/imgs/apply.png" alt="신청한경기">신청한 경기</a>
             </button>
         </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="">팀원 평가하기</a>
+        <div class="btn_box">
+            <button type="button" class="btn">
+                <a class="text-decoration-none" href="/reqmatch"><img src="public/imgs/receive.png" alt="신청받은경기">신청받은 경기</a>
             </button>
         </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/resmatch">신청한 경기</a>
+        <div class="btn_box">
+            <button type="button" class="btn">
+                <a class="text-decoration-none" href="/boardview"><img src="public/imgs/board.png" alt="내 게시물">내 게시물</a>
             </button>
         </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/reqmatch">신청받은 경기</a>
+        <div class="btn_box">
+            <button type="button" class="btn">
+                <a class="text-decoration-none" href="/myscore"><img src="public/imgs/score.png" alt="내 점수 보기">내 점수</a>
             </button>
         </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/boardview">내가 작성한 게시물</a>
-            </button>
-        </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/myscore">내 점수 보기</a>
-            </button>
-        </div>
-        <div class="mb-4">
-            <button type="button" class="btn btn-primary" style="width: 12rem;">
-                <a class="text-dark text-decoration-none" href="/logout">로그아웃</a>
+        <div class="btn_box">
+            <button type="button" class="btn">
+                <a class="text-decoration-none" href="/logout"><img src="public/imgs/logout.png" alt="로그아웃">로그아웃</a>
             </button>
         </div>
     </div>
