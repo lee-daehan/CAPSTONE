@@ -13,7 +13,7 @@
 </head>
 <style>
   header {
-    width: 80%;
+    width: 100%;
     height: 300px;
     margin: 0 auto;
     border: 1px solid #aaa;
@@ -33,14 +33,19 @@
 
   .menubar a {
     font-weight: bold;
-    margin: 40px;
+    margin: 0 200px;
+    display: grid;
+    grid-template-rows: auto auto;
+    place-items: center;
   }
-
+  .menubar img {
+    width: 60px;
+    height: 60px;
+  }
   
   main {
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
-    border: 1px solid #aaa;
   }
 
   .section1 {
@@ -48,16 +53,16 @@
   }
   .calendar-container {
     border: 1px solid #ccc;
-    width: 45%;
+    width: 30%;
   }
 
   .list-container {
     border: 1px solid #ccc;
-    width: 55%;
+    width: 70%;
   }
 
   footer {
-    width: 80%;
+    width: 100%;
     height: 300px;
     margin: 0 auto;
     background-color: #ddd7d7;
@@ -116,11 +121,18 @@
     <%- include('nav.html') %>
 
       <div class="menubar">
-        <div>
-          <a class="text-dark text-decoration-none" href="/board">전체 매치</a>
-          <a class="text-dark text-decoration-none" href="/boardinput">매치 등록</a>
-          <a class="text-dark text-decoration-none" href="/">공지사항</a>
-        </div>
+          <a class="text-dark text-decoration-none" href="/board">
+            <img src="public/imgs/ball.png" alt="전체 매치">
+            <p>전체 매치</p>
+          </a>
+          <a class="text-dark text-decoration-none" href="/boardinput">
+            <img src="public/imgs/write.png" alt="매치등록">
+            <p>매치 등록</p>
+          </a>
+          <a class="text-dark text-decoration-none" href="/">
+            <img src="public/imgs/notification.png" alt="공지사항">
+            <p>공지사항</p>
+          </a>
       </div>
   </header>
 

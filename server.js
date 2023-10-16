@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 const methodOverride = require('method-override');
+const { count } = require('console');
 app.use(methodOverride('_method'))
 app.use(session({
     secret: '비밀코드', //암호 키 저장, 이 키를 통하여 Session id를 암호화
@@ -217,7 +218,8 @@ app.post('/board', function(req,res){
                 제목: result[i].제목,
                 게시글: result[i].게시글,
                 장소: result[i].장소,
-                인원: result[i].인원
+                인원: result[i].인원,
+                남은인원: result[i].count
             })
         }
     })
@@ -475,10 +477,6 @@ app.post('/calendar', checklogin, function (req, res) {
         //     })
     })
 
-    
-        
-            
-
     // console.log(date);
     res.write("<script>window.location=\"../list\"</script>");
 })
@@ -490,14 +488,4 @@ app.get('/list', function (req, res) {
             return res.render('list.ejs', {result: result2, choice : result1})  
         })
     })
-})
-// app.get('/list', function (req, res) {
-//     res.render('list.ejs');
-// })
-
-app.get('/imgs', function(req, res) {
-    fs.readFile('logo.png', function(error, data) {
-        res.writeHead(200, {'Content-type':'text/html' });
-        res.end(data);
-    }) 
 })

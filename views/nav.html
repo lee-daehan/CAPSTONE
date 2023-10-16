@@ -8,8 +8,11 @@
       display: grid;
       grid-template-columns: auto auto;
       justify-content: space-between;
-      padding: 20px;
+      padding: 0;
       font-weight: bold;
+      background-color: #5da034;
+      position: relative;
+      height: 120px;
     }
 
     .menu{      
@@ -20,28 +23,27 @@
 
     .menu a {
       text-decoration: none;
-      color: black;
+      color: white;
+      padding: 10px;
     }
 
     .logo a{
       color: black;
     }
-
     .logo img {
-      width: 50px;
-      height: 50px;
+      width: 150px;
+      height: 100px;
+      position: absolute;
+      top: 10px;
     }
   </style>
 </head>
 <body>
   <nav>
     <div class="logo">
-      <img src="public/imgs/logo.png" alt="logo">
-      <a class="navbar-brand" href="/">순풋
+      <a href="/">
+      <img src="public/imgs/logo3.png" alt="logo">
       </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
     </div>
     
     <div class="menu">

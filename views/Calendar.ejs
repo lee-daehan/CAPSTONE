@@ -46,47 +46,61 @@
 
       .calendar table>tbody>tr>td>a.today {
          /* border: 1px solid rgb(15, 110, 233); */
-         border-radius: 6px;
+         /* border-radius: 6px; */
          /* color: black; */
-         background-color: rgb(15, 110, 233);
+         /* background-color: rgb(15, 110, 233); */
          padding: 9px 9px;
-         background-image: url(../images/today.png);
+         background-image: url(public/imgs/today.png);
       }
 
       .calendar>.calendar-header {
          position: relative;
-         height: 50px;
+         height: 70px;
          margin: 0px 20px;
+         display: grid;
+         grid-template-columns: auto auto;
       }
 
-      .calendar>.calendar-header>.calendar-yearmonth {
-         position: relative;
+      .calendar>.calendar-header>.calendar-controls>.calendar-yearmonth {
          font-size: larger;
          font-weight: bolder;
          color: rgb(15, 110, 233);
          line-height: 50px;
+         text-decoration: none;
       }
 
       .calendar>.calendar-header>.calendar-controls {
          position: absolute;
-         top: 11px;
-         right: 0px;
+         left: 152px;
+         top: 10px;
+         display: grid;
+         grid-template-columns: auto auto auto;
+         align-items: center;
       }
 
       .calendar>.calendar-header>.calendar-controls>button {
-         float: left;
          width: 25px;
          height: 28px;
          padding: 1px 4px 0 4px;
-         border: 1px solid #cbcbcb;
-         border-radius: 3px;
-         background-color: #fff;
+         margin: 0 10px;
+         border: 1px solid #dbe8f7;
+         border-radius: 50%;
+         background-color: #dbe8f7;
          font-size: 12px;
          cursor: pointer;
+         font-weight: bold;
       }
 
-      .calendar>.calendar-header>.calendar-controls>button.calendar-today {
-         width: 40px;
+      .calendar>.calendar-header>.calendar-today {
+         width: 50px;
+         height: 28px;
+         position: absolute;
+         right: 0;
+         top: 22.5px;
+         font-size: 14px;
+         border: 1px solid #ccc;
+         border-radius: 3px;
+         align-items: center;
       }
 
       .sunday {
@@ -107,14 +121,14 @@
 <body>
    <div class="calendar">
       <div class="calendar-header">
-         <!-- <span class="calendar-yearmonth" id="year" data-id="<%=  %>"></span> -->
-         <a href="/list", class="calendar-yearmonth"></a>
          <div class="calendar-controls">
             <button type="button" class="calendar-prev">&lt;</button>
+            <a href="/list", class="calendar-yearmonth"></a>
             <button type="button" class="calendar-next">&gt;</button>
-            <button type="button" class="calendar-today">오늘</button>
          </div>
+         <button type="button" class="calendar-today">오늘</button>
       </div>
+
       <div id="calendar"></div>
    </div>
    <script>
@@ -155,7 +169,7 @@
       });
 
       // 오늘 이동 버튼 클릭
-      $(".calendar-controls > .calendar-today").on("click", function () {
+      $(".calendar-header > .calendar-today").on("click", function () {
          calendar(new Date());
       });
       function calendar(date) {
