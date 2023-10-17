@@ -47,7 +47,7 @@ app.get('/editprofile', function (req, res) {
 //프로필 수정하기
 app.get('/editprofile', function (req, res) {
     console.log(req.user);
-    db.collection('profile').findOne({ 아이디: req.user.id }, function (error, result) {
+    db.collection('profile').findOne({ id: req.user.id }, function (error, result) {
         console.log(result);
         if (error) { return error };
 
@@ -57,7 +57,7 @@ app.get('/editprofile', function (req, res) {
 })
 //프로필 수정
 app.put('/editprofile', function (req, res) {
-    db.collection('profile').updateOne({ 아이디: req.user._id }, {
+    db.collection('profile').updateOne({ id: req.user.id }, {
         $set:
         {
             닉네임: req.body.nickname,
@@ -216,6 +216,7 @@ app.post('/select1', function (req, res) {
     db.collection('board').find({ 인원: req.body.select }).toArray(function (error, result) {
     for (var i = 0; i < result.length; i++) {
     db.collection('matchselect').insertOne({
+        _id: result[i]._id,
         id: req.user.id,
         경기진행날짜: req.body.date,
         작성자: result[i].작성자,
@@ -263,15 +264,6 @@ app.get('/board', function (req, res) {
             res.render('board.ejs', { board: result});
         });
 })
-//게시판(board), 등록된 게시글 다 보이게 하는 기능
-// app.get('/board', function (req, res) {
-//     db.collection('board').find().toArray(function (error, result) {
-//         // 디비에 저장된 profile이라는 
-//         //collection 안의 모든 데이터를 꺼내주세요
-//         res.render('board.ejs', { board: result });
-//         //찾은걸 ejs파일에 집어넣어주세요.
-//     });
-// })
 
 //내가 작성한 게시물 보기
 app.get('/boardview', checklogin, function (req, res) {
