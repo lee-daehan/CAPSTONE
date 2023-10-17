@@ -223,7 +223,8 @@ app.post('/select1', function (req, res) {
         제목: result[i].제목,
         게시글: result[i].게시글,
         장소: result[i].장소,
-        인원: result[i].인원
+        인원: result[i].인원,
+        남은인원: result[i].count
     })
     }
     })
@@ -379,6 +380,22 @@ app.put('/request', checklogin, function (req, res) {
     })
 });
 
+app.put('/request2', checklogin, function (req, res) {
+    art_id = parseInt(req.body._id)// 신청 버튼을 누른 게시글의 글번호
+    // console.log(req.user.id); // 지금 로그인한 유저의 아이디
+    // console.log(art_id);
+    db.collection('board').findOne({ _id: art_id }, function (error, result) {
+        db.collection('request').insertOne({//request 콜렉션에 경기 신청자와 게시글 번호와 작성자,제목, 게시글을 삽입
+            신청한게시물번호: art_id,
+            제목: result.제목,
+            게시글: result.게시글,
+            신청자: req.user.id,
+            작성자: result.작성자,
+            여부: parseInt(0)
+        })
+    })
+});
+
 //신청내역 알림
 app.get('/reqmatch', checklogin, function (req, res) {
     db.collection('request').find().toArray(function (error, result) {
@@ -494,11 +511,13 @@ app.post('/calendar', checklogin, function (req, res) {
             db.collection('searchdate').insertOne({
                 id: req.user.id,
                 경기진행날짜: req.body.date,
+                art_id: result[i]._id,
                 작성자: result[i].작성자,
                 제목: result[i].제목,
                 게시글: result[i].게시글,
                 장소: result[i].장소,
-                인원: result[i].인원
+                인원: result[i].인원,
+                남은인원: result[i].count
             })
         }
 
@@ -519,4 +538,8 @@ app.get('/list', function (req, res) {
             return res.render('list.ejs', {result: result2, choice : result1})  
         })
     })
+})
+
+app.get('/board2', function(req,res) {
+    console.log(req.body.art_id);
 })

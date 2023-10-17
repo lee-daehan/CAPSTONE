@@ -61,6 +61,7 @@
     grid-template-columns: 1fr 2fr;
     grid-gap: 10px;
     margin: 10px;
+    height: 500px;
   }
 
   .list-container {
@@ -68,10 +69,27 @@
     color: #838589;
     border-radius: 10px;
     box-shadow: 0 0 3px 0 rgb(172, 170, 170);
-    display: flex;
+    /* display: flex; */
     justify-content: center;
     align-items: center;
     font-size: 20px;
+    overflow-y: scroll;
+  }
+  .listContainer-item {
+    /* width: 100%; */
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .request2 {
+    border: 0;
+    border-radius: 10px;
+    color: white;
+    background-color: #5da034;
+    font-weight: bold;
+    font-size: 17px;
+    padding: 10px;
   }
 
   .recommand-container {
@@ -122,46 +140,77 @@
       <div class="container1">
         <%- include('calendar.ejs') %>
           <div class="list-container">
-            <p class="listContainer-item">
-              <% for (var i=0; i < result.length; i++ ) { %>
-                <li class="list-group-item">
-                  <p>닉네임: <%= result[i].작성자 %>
+            <% for (var i=0; i < result.length; i++ ) { %>
+              <% if(result[i].남은인원===0 ) { %>
+              <div class="listContainer-item">
+                <p>작성자: <%= result[i].작성자 %>
+                </p>
+                <p>제목: <%= result[i].제목 %>
+                </p>
+                <p>게시글: <%= result[i].게시글 %>
+                </p>
+                <p>장소: <%= result[i].장소 %>
+                </p>
+                <p>인원: <%= result[i].인원 %>
+                </p>
+                <p>경기진행날짜: <%= result[i].경기진행날짜 %>
+                </p>
+                <p>마감되었습니다.</p>
+                <button class="request2" onclick="alert('신청되었습니다.')" data-id="<%= result[i].art_id %>">신청</button>
+              </div>
+              <% } %>
+              <% if(result[i].남은인원 != 0 ) { %>
+                <div class="listContainer-item">
+                  <p>작성자: <%= result[i].작성자 %>
                   </p>
-                  <p>성별: <%= result[i].제목 %>
+                  <p>제목: <%= result[i].제목 %>
                   </p>
-                  <p>선호포지션: <%= result[i].게시글 %>
+                  <p>게시글: <%= result[i].게시글 %>
                   </p>
                   <p>장소: <%= result[i].장소 %>
                   </p>
-                </li>
+                  <p>인원: <%= result[i].인원 %>
+                  </p>
+                  <p>경기진행날짜: <%= result[i].경기진행날짜 %>
+                  </p>
+                  <p>남은인원: <%= result[i].남은인원 %>
+                  </p>
+                  <button class="request2" onclick="alert('신청되었습니다.')" data-id="<%= result[i].art_id %>">신청</button>
+                </div>
                 <% } %>
-            </p>
+            <% } %>
           </div>
       </div>
     </section>
 
     <section>
       <div class="recommand-container">
-        <form action="/recommand" method="POST" style="width: 33%;">
+        <form action="/recommand" method="POST">
+          <h3>성별</h3>
+          <input type="radio" id="male" name="gender" value="남성">
+          <label for="male">남성</label><br>
+          <input type="radio" id="female" name="gender" value="여성">
+          <label for="female">여성</label><br>
 
-          <select class="select" name="gender">
-            <option value="">--성별--</option>
-            <option value="남성">남자</option>
-            <option value="여성">여자</option>
-          </select>
-          <select class="select" name="position">
-            <option value="">--선호포지션--</option>
-            <option value="FW">FW</option>
-            <option value="MD">MD</option>
-            <option value="DF">DF</option>
-            <option value="GK">GK</option>
-          </select>
-          <select class="select" name="foot">
-            <option value="">--주발--</option>
-            <option value="왼발">왼발</option>
-            <option value="오른발">오른발</option>
-            <option value="양발">양발</option>
-          </select>
+          <h3>선호포지션</h3>
+          <input type="radio" id="FW" name="position" value="FW">
+          <label for="FW">FW</label><br>
+          <input type="radio" id="MD" name="position" value="MD">
+          <label for="MD">MD</label><br>
+          <input type="radio" id="DF" name="position" value="DF">
+          <label for="DF">DF</label><br>
+          <input type="radio" id="GK" name="position" value="GK">
+          <label for="GK">GK</label><br>
+
+          <h3>주발</h3>
+          <input type="radio" id="left" name="foot" value="왼발">
+          <label for="left">왼발</label><br>
+          <input type="radio" id="right" name="foot" value="오른발">
+          <label for="right">오른발</label><br>
+          <input type="radio" id="any" name="foot" value="양발">
+          <label for="right">양발</label><br>
+
+          <input type="submit" value="검색하기">
 
           <!-- <h3>성별</h3>
           <input type="radio" id="male" name="gender" value="남성">
@@ -186,8 +235,6 @@
           <label for="right">오른발</label><br>
           <input type="radio" id="any" name="foot" value="양발">
           <label for="right">양발</label><br> -->
-
-          <input type="submit" value="검색하기">
         </form>
       </div>
     </section>
@@ -198,6 +245,22 @@
   </footer>
 
   <script>
+    $('.request2').click(function (e) {
+      var art_id = e.target.dataset.id; //지금 클릭 게시글의 글 번호
+      var nowClick = $(this); // 지금 이벤트가 동작하는 곳
+      console.log(art_id);
+      $.ajax({
+        method: 'PUT',
+        url: '/request2',
+        data: { _id: art_id }
+      }).done(function (result) {
+        console.log(data);
+      }).fail(function (xhr, textStatus, errorThrow) {
+        //요청 실패시
+        console.log(xhr, textStatus, errorThrow);
+      });
+    })
+
     window.onload = function () {
       if (location.href.indexOf('reloaded') == -1) location.replace(location.href + '?reloaded');
       //if (parent.location.href.indexOf('reloaded')==-1) parent.location.replace(parent.location.href+'?reloaded');
