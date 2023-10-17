@@ -47,7 +47,7 @@ app.get('/editprofile', function (req, res) {
 //프로필 수정하기
 app.get('/editprofile', function (req, res) {
     console.log(req.user);
-    db.collection('profile').findOne({ _id: req.user._id }, function (error, result) {
+    db.collection('profile').findOne({ 아이디: req.user.id }, function (error, result) {
         console.log(result);
         if (error) { return error };
 
@@ -57,7 +57,7 @@ app.get('/editprofile', function (req, res) {
 })
 //프로필 수정
 app.put('/editprofile', function (req, res) {
-    db.collection('profile').updateOne({ _id: req.user._id }, {
+    db.collection('profile').updateOne({ 아이디: req.user._id }, {
         $set:
         {
             닉네임: req.body.nickname,
