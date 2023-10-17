@@ -434,9 +434,9 @@ app.get('/resmatch', checklogin, function (req, res) {
 
 //조건검색 & 추천
 app.post('/recommand', function (req, res) {
-    // console.log(req.body.gender)
-    // console.log(req.body.position)
-    // console.log(req.body.foot)
+    console.log(req.body.gender)
+    console.log(req.body.position)
+    console.log(req.body.foot)
     db.collection('recommands').updateOne({ id: req.user.id },
         {
             $set:

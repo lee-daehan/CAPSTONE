@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -15,11 +14,11 @@
   header {
     width: 100%;
     height: 300px;
-    margin: 0 auto;
-    border: 1px solid #aaa;
+    margin: 0;
+    padding: 0;
+    border: 0;
     display: grid;
     grid-template-rows: auto auto;
-    /* background-color: #19c519; */
   }
 
   .menubar {
@@ -28,12 +27,14 @@
     grid-template-columns: auto auto auto auto;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 20px 0;
     margin-bottom: 20px;
     height: 100px;
   }
 
   .menubar a {
+    text-decoration: none;
+    color: black;
     font-weight: bold;
     margin: 0 200px;
     display: grid;
@@ -44,6 +45,10 @@
   .menubar img {
     width: 60px;
     height: 60px;
+  }
+
+  .menuname {
+    margin-top: 10px;
   }
 
   main {
@@ -62,12 +67,18 @@
     border: 1px solid #ced4da;
     color: #838589;
     border-radius: 10px;
-    box-shadow: 0 0 3px 0 rgb(172,170,170);
+    box-shadow: 0 0 3px 0 rgb(172, 170, 170);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 20px;
+  }
 
+  .recommand-container {
+    margin: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+    box-shadow: 0 0 3px 0 rgb(172, 170, 170);
   }
 
   /* .listContainer-item {
@@ -83,55 +94,7 @@
     width: 100%;
     height: 300px;
     margin: 0 auto;
-    background-color: #ddd7d7;
-  }
-
-  /* The Modal (background) */
-  .modal {
-    display: none;
-    /* Hidden by default */
-    position: fixed;
-    /* Stay in place */
-    z-index: 1;
-    /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%;
-    /* Full width */
-    height: 100%;
-    /* Full height */
-    overflow: auto;
-    /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0);
-    /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4);
-    /* Black w/ opacity */
-  }
-
-  /* Modal Content/Box */
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    /* Could be more or less, depending on screen size */
-  }
-
-  /* The Close Button */
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+    background-color: #282B33;
   }
 </style>
 
@@ -139,17 +102,17 @@
   <header>
     <%- include('nav.html') %>
       <div class="menubar">
-        <a class="text-dark text-decoration-none" href="/board">
+        <a href="/board">
           <img src="public/imgs/ball.png" alt="전체 매치">
-          <p>전체 매치</p>
+          <p class="menuname">전체 매치</p>
         </a>
-        <a class="text-dark text-decoration-none" href="/boardinput">
+        <a href="/boardinput">
           <img src="public/imgs/write.png" alt="매치등록">
-          <p>매치 등록</p>
+          <p class="menuname">매치 등록</p>
         </a>
-        <a class="text-dark text-decoration-none" href="/">
+        <a href="/">
           <img src="public/imgs/notification.png" alt="공지사항">
-          <p>공지사항</p>
+          <p class="menuname">공지사항</p>
         </a>
       </div>
   </header>
@@ -158,56 +121,61 @@
     <section>
       <div class="container1">
         <%- include('calendar.ejs') %>
-        <div class="list-container">
-          <p class="listContainer-item">캘린더에서 날짜를 선택하여 원하는 경기를 찾아보세요.</p>
-        </div>
+          <div class="list-container">
+            <p class="listContainer-item">캘린더에서 날짜를 선택하여 원하는 경기를 찾아보세요.</p>
+          </div>
       </div>
     </section>
 
     <section>
-      <div name="filter-wrap" style="background-color:bisque">
-        <div name="filter">
-          <button id="btn1">
-            조건선택하기
-          </button>
-          <div id="modal1" class="modal">
-            <div class="modal-content">
-              <span class="close">&times;</span>
-              <div style="display: flex;">
-                <form action="/recommand" method="POST" style="width: 33%;">
-                  <h3>성별</h3>
-                  <input type="radio" id="male" name="gender" value="남성">
-                  <label for="male">남성</label><br>
-                  <input type="radio" id="female" name="gender" value="여성">
-                  <label for="female">여성</label><br>
+      <div class="recommand-container">
+        <form action="/recommand" method="POST" style="width: 33%;">
 
-                  <h3>선호포지션</h3>
-                  <input type="radio" id="FW" name="position" value="FW">
-                  <label for="FW">FW</label><br>
-                  <input type="radio" id="MD" name="position" value="MD">
-                  <label for="MD">MD</label><br>
-                  <input type="radio" id="DF" name="position" value="DF">
-                  <label for="DF">DF</label><br>
-                  <input type="radio" id="GK" name="position" value="GK">
-                  <label for="GK">GK</label><br>
-                  <!-- <input type="radio" id="none" name="position" value="선택안함">
-              <label for="none">선택안함</label><br> -->
+          <select class="select" name="gender">
+            <option value="">--성별--</option>
+            <option value="남성">남자</option>
+            <option value="여성">여자</option>
+          </select>
+          <select class="select" name="position">
+            <option value="">--선호포지션--</option>
+            <option value="FW">FW</option>
+            <option value="MD">MD</option>
+            <option value="DF">DF</option>
+            <option value="GK">GK</option>
+          </select>
+          <select class="select" name="foot">
+            <option value="">--주발--</option>
+            <option value="왼발">왼발</option>
+            <option value="오른발">오른발</option>
+            <option value="양발">양발</option>
+          </select>
 
-                  <h3>주발</h3>
-                  <input type="radio" id="left" name="foot" value="왼발">
-                  <label for="left">왼발</label><br>
-                  <input type="radio" id="right" name="foot" value="오른발">
-                  <label for="right">오른발</label><br>
-                  <input type="radio" id="any" name="foot" value="양발">
-                  <label for="right">양발</label><br>
-                  <!-- <input type="radio" id="none" name="foot" value="선택안함">
-              <label for="none">선택안함</label><br> -->
-                  <input type="submit" value="검색하기">
-              </div>
-              </form>
-            </div>
-          </div>
-        </div>
+          <!-- <h3>성별</h3>
+          <input type="radio" id="male" name="gender" value="남성">
+          <label for="male">남성</label><br>
+          <input type="radio" id="female" name="gender" value="여성">
+          <label for="female">여성</label><br>
+
+          <h3>선호포지션</h3>
+          <input type="radio" id="FW" name="position" value="FW">
+          <label for="FW">FW</label><br>
+          <input type="radio" id="MD" name="position" value="MD">
+          <label for="MD">MD</label><br>
+          <input type="radio" id="DF" name="position" value="DF">
+          <label for="DF">DF</label><br>
+          <input type="radio" id="GK" name="position" value="GK">
+          <label for="GK">GK</label><br>
+
+          <h3>주발</h3>
+          <input type="radio" id="left" name="foot" value="왼발">
+          <label for="left">왼발</label><br>
+          <input type="radio" id="right" name="foot" value="오른발">
+          <label for="right">오른발</label><br>
+          <input type="radio" id="any" name="foot" value="양발">
+          <label for="right">양발</label><br> -->
+
+          <input type="submit" value="검색하기">
+        </form>
       </div>
     </section>
   </main>
@@ -220,60 +188,20 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 
   <script>
-    // Get the modal
-    var modal1 = document.getElementById("modal1");
-    // var modal2 = document.getElementById("modal2");
-    // var modal3 = document.getElementById("modal3");
+    const select = document.querySelector(".select");
+    const currentValue = select.options[select.selectedIndex].value
+    
+    // console.log(currentValue);
+    const Gender_LS = "gender";
+    localStorage.setItem(Gender_LS, currentValue);
 
+    const lsValue = localStorage.getItem(Gender_LS);
 
-    // Get the button that opens the modal
-    var btn1 = document.getElementById("btn1");
-    // var btn2 = document.getElementById("btn2");
-    // var btn3 = document.getElementById("btn3");
-
-
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-    // var span2 = document.getElementsByClassName("close")[1];
-    // var span3 = document.getElementsByClassName("close")[2];
-
-
-
-    // When the user clicks on the button, open the modal
-    btn1.onclick = function () {
-      modal1.style.display = "block";
-    }
-    // btn2.onclick = function () {
-    //   modal2.style.display = "block";
-    // }
-    // btn3.onclick = function () {
-    //   modal3.style.display = "block";
-    // }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-      modal1.style.display = "none";
-    }
-    // span2.onclick = function () {
-    //   modal2.style.display = "none";
-    // }
-    // span3.onclick = function () {
-    //   modal3.style.display = "none";
-    // }
-
-    // When the user clicks anywhere outside of the modal, close it
-
-    window.onclick = function (event) {
-      if (event.target == modal1) {
-        modal1.style.display = "none";
+    function loadValue() {
+      const lsValue = localStorage.getItem(Gender_LS);
+      if(lsValue!==null) {
+        select.value=lsValue;
       }
-      // else if (event.target == modal2) {
-      //   modal2.style.display = "none";
-      // }
-      // else if (event.target == modal3) {
-      //   modal3.style.display = "none";
-      // }
     }
   </script>
   <!-- Optional JavaScript; choose one of the two! -->
