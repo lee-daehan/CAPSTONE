@@ -143,18 +143,12 @@
             <% for (var i=0; i < result.length; i++ ) { %>
               <% if(result[i].남은인원===0 ) { %>
               <div class="listContainer-item">
-                <p>작성자: <%= result[i].작성자 %>
-                </p>
-                <p>제목: <%= result[i].제목 %>
-                </p>
-                <p>게시글: <%= result[i].게시글 %>
-                </p>
-                <p>장소: <%= result[i].장소 %>
-                </p>
-                <p>인원: <%= result[i].인원 %>
-                </p>
-                <p>경기진행날짜: <%= result[i].경기진행날짜 %>
-                </p>
+                <p>작성자: <%= result[i].작성자 %></p>
+                <p>제목: <%= result[i].제목 %></p>
+                <p>게시글: <%= result[i].게시글 %></p>
+                <p>장소: <%= result[i].장소 %></p>
+                <p>인원: <%= result[i].인원 %></p>
+                <p>경기진행날짜: <%= result[i].경기진행날짜 %></p>
                 <p>마감되었습니다.</p>
                 <button class="request2" onclick="alert('신청되었습니다.')" data-id="<%= result[i].art_id %>">신청</button>
               </div>

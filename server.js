@@ -310,6 +310,7 @@ app.post('/boardinput', checklogin, function (req, res) {
             장소: req.body.place,
             인원: req.body.matchcount,
             경기진행날짜: req.body.date,
+            경기진행시간: req.body.matchtime,
             count: totalCount
         }, function (error, result) {
             db.collection('articlecounter').updateOne({ name: '게시물갯수' }, { $inc: { totalPost: 1 } }, function (error, result) {
@@ -347,7 +348,8 @@ app.put('/editboard', function (req, res) {
                 게시글: req.body.content,
                 장소: req.body.place,
                 인원: req.body.matchcount,
-                경기진행날짜: req.body.date
+                경기진행날짜: req.body.date,
+                경기진행시간: req.body.matchtime
             }
         }, function (error, result) {
             console.log('수정완료');
@@ -366,6 +368,10 @@ app.put('/request', checklogin, function (req, res) {
             게시글: result.게시글,
             신청자: req.user.id,
             작성자: result.작성자,
+            경기진행날짜: result.경기진행날짜,
+            경기진행시간: result.경기진행시간,
+            장소: result.장소,
+            인원: result.인원,
             여부: parseInt(0)
         })
     })
@@ -382,6 +388,10 @@ app.put('/request2', checklogin, function (req, res) {
             게시글: result.게시글,
             신청자: req.user.id,
             작성자: result.작성자,
+            경기진행날짜: result.경기진행날짜,
+            경기진행시간: result.경기진행시간,
+            장소: result.장소,
+            인원: result.인원,
             여부: parseInt(0)
         })
     })
@@ -502,6 +512,7 @@ app.post('/calendar', checklogin, function (req, res) {
             db.collection('searchdate').insertOne({
                 id: req.user.id,
                 경기진행날짜: req.body.date,
+                경기진행시간: req.body.matchtime,
                 art_id: result[i]._id,
                 작성자: result[i].작성자,
                 제목: result[i].제목,
