@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -81,6 +82,11 @@
     box-shadow: 0 0 3px 0 rgb(172, 170, 170);
   }
 
+  .recommand-title {
+    margin: 20px 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
   /* .listContainer-item {
     font-size: 24px;
     width: 100%;
@@ -89,6 +95,114 @@
     justify-content: center;
     align-items: center;
   } */
+
+
+  /* #gender {
+    height: 50px;
+  } */
+
+  .select {
+    /* display: grid;
+    grid-template-columns: auto auto; */
+    padding: 0;
+    height: 100%;
+  }
+
+  .select-container {
+    display: grid;
+    grid-template-columns: 3fr 3fr 3fr 1fr;
+    grid-gap: 20px;
+    margin: 20px 10px;
+    position: relative;
+  }
+
+  .select input[type=radio] {
+    display: none;
+  }
+
+  .select input[type=radio]+label {
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid #8f9194;
+    box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+    line-height: 24px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
+  }
+
+  .select input[type=radio]+label {
+    background-color: #fff;
+    color: #a8aaac;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+  }
+
+  .select input[type=radio]:checked+label {
+    border: 1px solid #5da034;
+    color: #5da034
+  }
+
+  .genderlabel {
+    margin: 0;
+  }
+
+  .submitButton {
+    margin: 20px 0;
+  }
+
+  .sub_title {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+  }
+
+  .sub_title span{
+    display: grid; 
+    justify-content: flex-start;
+    align-items: last baseline;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .sub_title img{
+    width: 50px;
+    height: 50px;
+    float: left;
+  }
+
+  .radio-container-gender {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .radio-container-position {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  .radio-container-foot {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .submit {
+    width: 100%;
+    height: 100%;
+  }
+
+  .submit input{
+    width: 100%;
+    background-color: #5da034;
+    margin-top: 64.4px;
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+    color: white;
+    font-weight: bold;
+  }
 
   footer {
     width: 100%;
@@ -129,8 +243,60 @@
 
     <section>
       <div class="recommand-container">
+        <div class="recommand-title">
+          원하는 조건의 팀원을 찾아보세요!
+        </div>
         <form action="/recommand" method="POST">
-          <h3>성별</h3>
+          <div class="select-container">
+            <div class="select">
+              <p class="sub_title">
+                <img src="public/imgs/gender.png" alt="">
+                <span>성별</span>
+              </p>
+              <div class="radio-container-gender">
+                <input type="radio" name="gender" id="male" value="남성"><label class="genderlabel" for="male"
+                  required>남성</label>
+                <input type="radio" name="gender" id="female" value="여성"><label class="genderlabel" for="female"
+                  required>여성</label>
+              </div>
+            </div>
+
+            <div class="select">
+              <p class="sub_title">
+                <img src="public/imgs/position.png" alt="">
+                <span>선호포지션</span>
+              </p>
+              <div class="radio-container-position">
+                <input type="radio" name="position" id="FW" value="FW"><label class="genderlabel" for="FW"
+                  required>FW</label>
+                <input type="radio" name="position" id="MD" value="MD"><label class="genderlabel" for="MD"
+                  required>MD</label>
+                <input type="radio" name="position" id="DF" value="DF"><label class="genderlabel" for="DF"
+                  required>DF</label>
+                <input type="radio" name="position" id="GK" value="GK"><label class="genderlabel" for="GK"
+                  required>GK</label>
+              </div>
+            </div>
+
+            <div class="select">
+              <p class="sub_title">
+                <img src="public/imgs/foot.png" alt="">
+                <span>주발</span>
+              </p>
+              <div class="radio-container-foot">
+                <input type="radio" name="foot" id="left" value="왼발"><label class="genderlabel" for="left"
+                  required>왼발</label>
+                <input type="radio" name="foot" id="right" value="오른발"><label class="genderlabel" for="right"
+                  required>오른발</label>
+                <input type="radio" name="foot" id="any" value="양발"><label class="genderlabel" for="any"
+                  required>양발</label>
+              </div>
+            </div>
+            <div class="submit">
+              <input type="submit" value="검색하기">
+            </div>
+          </div>
+          <!-- <h3>성별</h3>
           <input type="radio" id="male" name="gender" value="남성">
           <label for="male">남성</label><br>
           <input type="radio" id="female" name="gender" value="여성">
@@ -154,7 +320,8 @@
           <input type="radio" id="any" name="foot" value="양발">
           <label for="right">양발</label><br>
 
-          <input type="submit" value="검색하기">
+          <input type="submit" value="검색하기"> -->
+
           <!-- <select class="select" name="gender">
             <option value="">--성별--</option>
             <option value="남성">남자</option>
@@ -188,7 +355,7 @@
   <script>
     const select = document.querySelector(".select");
     const currentValue = select.options[select.selectedIndex].value
-    
+
     // console.log(currentValue);
     const Gender_LS = "gender";
     localStorage.setItem(Gender_LS, currentValue);
@@ -197,8 +364,8 @@
 
     function loadValue() {
       const lsValue = localStorage.getItem(Gender_LS);
-      if(lsValue!==null) {
-        select.value=lsValue;
+      if (lsValue !== null) {
+        select.value = lsValue;
       }
     }
   </script>
