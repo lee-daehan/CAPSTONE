@@ -211,58 +211,60 @@ app.get('/myprofile', function (req, res) {
 
 
 
-app.post('/select1', function (req, res) {
-    db.collection('matchselect').deleteMany({})
-    db.collection('board').find({ 인원: req.body.select }).toArray(function (error, result) {
-    for (var i = 0; i < result.length; i++) {
-    db.collection('matchselect').insertOne({
-        _id: result[i]._id,
-        id: req.user.id,
-        경기진행날짜: req.body.date,
-        작성자: result[i].작성자,
-        제목: result[i].제목,
-        게시글: result[i].게시글,
-        장소: result[i].장소,
-        인원: result[i].인원,
-        남은인원: result[i].count
-    })
-    }
-    })
+// app.post('/select1', function (req, res) {
+//     db.collection('matchselect').deleteMany({})
+//     db.collection('board').find({ 인원: req.body.select }).toArray(function (error, result) {
+//     for (var i = 0; i < result.length; i++) {
+//     db.collection('matchselect').insertOne({
+//         _id: result[i]._id,
+//         id: req.user.id,
+//         경기진행날짜: req.body.date,
+//         작성자: result[i].작성자,
+//         제목: result[i].제목,
+//         게시글: result[i].게시글,
+//         장소: result[i].장소,
+//         인원: result[i].인원,
+//         남은인원: result[i].count
+//     })
+//     }
+//     })
     
-    res.write("<script>window.location=\"../board\"</script>");
-})
+//     res.write("<script>window.location=\"../board\"</script>");
+// })
 
-app.post('/select2', function (req, res) {
-    db.collection('matchselect').find({ 장소: req.body.area }).toArray(function (error, result) {
-    if(req.body.area == '대운동장 풋살장(농구골대 옆)'){
-        for(var i=0 ; i<result.length; i++){
-            db.collection('matchselect').remove({장소: '소운동장'});
-            db.collection('matchselect').remove({장소: '대운동장 풋살장(체육관 옆)'});
-        }
-    }else if(req.body.area == '소운동장'){
-        for(var i=0 ; i<result.length; i++){
-            db.collection('matchselect').remove({장소: '대운동장 풋살장(농구골대 옆)'});
-            db.collection('matchselect').remove({장소: '대운동장 풋살장(체육관 옆)'});
-        }
-    }else if(req.body.area == '대운동장 풋살장(체육관 옆)'){
-        for(var i=0 ; i<result.length; i++){
-            db.collection('matchselect').remove({장소: '소운동장'});
-            db.collection('matchselect').remove({장소: '대운동장 풋살장(농구골대 옆)'});
-        }
-    }
+// app.post('/select2', function (req, res) {
+//     db.collection('matchselect').find({ 장소: req.body.area }).toArray(function (error, result) {
+//     if(req.body.area == '대운동장 풋살장(농구골대 옆)'){
+//         for(var i=0 ; i<result.length; i++){
+//             db.collection('matchselect').remove({장소: '소운동장'});
+//             db.collection('matchselect').remove({장소: '대운동장 풋살장(체육관 옆)'});
+//         }
+//     }else if(req.body.area == '소운동장'){
+//         for(var i=0 ; i<result.length; i++){
+//             db.collection('matchselect').remove({장소: '대운동장 풋살장(농구골대 옆)'});
+//             db.collection('matchselect').remove({장소: '대운동장 풋살장(체육관 옆)'});
+//         }
+//     }else if(req.body.area == '대운동장 풋살장(체육관 옆)'){
+//         for(var i=0 ; i<result.length; i++){
+//             db.collection('matchselect').remove({장소: '소운동장'});
+//             db.collection('matchselect').remove({장소: '대운동장 풋살장(농구골대 옆)'});
+//         }
+//     }
 
    
-    })
+//     })
     
-    res.write("<script>window.location=\"../board\"</script>");
-})
+//     res.write("<script>window.location=\"../board\"</script>");
+// })
 
 //게시판(board), 등록된 게시글 다 보이게 하는 기능
 app.get('/board', function (req, res) {
-        db.collection('matchselect').find().toArray(function (error, result) {
+    db.collection('board').find().toArray(function(error,result){
+        res.render('board.ejs', { board: result});
+    })
+        // db.collection('matchselect').find().toArray(function (error, result) {
+        // });
             
-            res.render('board.ejs', { board: result});
-        });
 })
 
 //내가 작성한 게시물 보기
@@ -301,7 +303,8 @@ app.post('/boardinput', checklogin, function (req, res) {
         if (req.body.matchcount === '8vs8') {
             var totalCount = 15;
         }
-
+        console.log(req.body.matchtime);
+        console.log(typeof req.body.matchtime);
         db.collection('board').insertOne({
             _id: totalPost + 1,
             작성자: req.user.id,
@@ -313,10 +316,12 @@ app.post('/boardinput', checklogin, function (req, res) {
             경기진행시간: req.body.matchtime,
             count: totalCount
         }, function (error, result) {
+            console.log(typeof req.body.matchtime);
             db.collection('articlecounter').updateOne({ name: '게시물갯수' }, { $inc: { totalPost: 1 } }, function (error, result) {
                 if (error) { return console.log(error) };
             });
         });
+        
     });
     //성공 알림창 띄우고 마이페이지로 돌아가게함 
     res.write("<script>alert('success')</script>");
@@ -512,7 +517,7 @@ app.post('/calendar', checklogin, function (req, res) {
             db.collection('searchdate').insertOne({
                 id: req.user.id,
                 경기진행날짜: req.body.date,
-                경기진행시간: req.body.matchtime,
+                경기진행시간: result[i].경기진행시간,
                 art_id: result[i]._id,
                 작성자: result[i].작성자,
                 제목: result[i].제목,
