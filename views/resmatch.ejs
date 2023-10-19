@@ -7,75 +7,254 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <title>순풋</title>
+    <style>
+    .list-container {
+      height: 850px;
+      border: 1px solid #ced4da;
+      color: #838589;
+      border-radius: 10px;
+      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+      /* display: flex; */
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      overflow-y: scroll;
+      margin: 40px 20px;
+    }
+    .list-item{
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid #ced4da;
+      color: #838589;
+      border-radius: 10px;
+      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+      margin: 10px 10px;
+    }
 
-    <title>Football Matching for SCH</title>
+    .list-item-success {
+      display: grid;
+      grid-gap: 0px;
+      grid-template-rows: 1fr 1fr;
+      border: 1px solid #ced4da;
+      color: #838589;
+      border-radius: 10px;
+      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+      margin: 10px 10px;
+    }
+    .group1 {
+      display: flex;
+      justify-content: space-between;
+    }
+    .group2 {
+      margin: 10px 10px;
+    }
+    .title {
+      color: black;
+      font-weight: bold;
+    }
+    .content {
+      color: black;
+    }
+    .detail {
+      font-size: 16px;
+      color: #545658;
+    }
+    .btn_wait {
+      width: 120px;
+      height: 30px;
+      border: 0;
+      background-color: rgb(66, 66, 236);
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      border-radius: 10px;
+      padding: 3px;
+    }
+    .btn_fail {
+      width: 120px;
+      height: 30px;
+      border: 0;
+      background-color: red;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      border-radius: 10px;
+      padding: 3px;
+    }
+    .btn_complete {
+      width: 120px;
+      height: 30px;
+      border: 0;
+      background-color: #5da034;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      border-radius: 10px;
+      padding: 3px;
+    }
+    /* #score {
+      display: flex;
+      justify-content: flex-end;
+      margin: 10px;
+    } */
+    .score_button {
+      border: 1px solid #ced4da;
+      background-color: white;
+      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+      font-size: 15px;
+    }
+
+    .rating {
+      width: 180px;
+    }
+
+    .rating__star {
+      cursor: pointer;
+      color: #dabd18b2;
+    }
+    footer {
+      width: 100%;
+      height: 300px;
+      margin: 0 auto;
+      background-color: #282B33;
+    }
+    </style>
   </head>
   <body>
     <%- include('nav.html') %>
-
-    <h1><%= 매칭된게시물.신청자%>님의 매칭결과 페이지</h1>
-      <ul class="list-group">
+    <main>
+      <div class="list-container">
         <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
           <% if(모든게시물[i].신청자 == 매칭된게시물.신청자) { %>
-            <li class="list-group-item">
-              <p>제목: <%= 모든게시물[i].제목 %></p>
-              <p>게시글: <%= 모든게시물[i].게시글 %></p>
-              <p>신청자: <%= 모든게시물[i].신청자 %></p>
-              <p>작성자: <%= 모든게시물[i].작성자 %></p>
-              <p>경기진행날짜: <%= 모든게시물[i].경기진행날짜 %></p>
-              <p>경기진행시간: <%= 모든게시물[i].경기진행시간 %></p>
-              <% if(모든게시물[i].여부 == 0) { %>
-                <button class="btn btn-primary">매칭대기중</button>
-                <% continue nprint; %>
-                <% } %>
-
-              <% if(모든게시물[i].여부 == 1) { %>
-                <button class="btn btn-success">매칭완료</button>
-                <form action="/apply" method="POST">
-                  <input name="id" value="<%= 모든게시물[i].작성자 %>" readonly/>
-                  <label>님 평가하기</label>
-                  
-                  <!-- <select class="form-control" data-score="name" name="score"> -->
-                  <select class="form-control" name="score" value="score">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </select>
-                  <button type="submit">저장</button>
-                  </form>
-                <!-- <button type="submit" class="apply" data-id="<%= 모든게시물[i].작성자 %>">저장</button> -->
-                <!-- <button type="submit" name="작성자" value="<%= 모든게시물[i].작성자 %>">저장</button> -->
-              
-              <% continue nprint; %>
-              <% } %>
-
-              <% if(모든게시물[i].여부 == 2) { %>
-                <button class="btn btn-danger">매칭실패</button>
-                <% continue nprint; %>
-                <% } %>
-            </li>
+            <% if(모든게시물[i].여부 == 0) { %>
+              <div class="list-item">
+                <div class="item1">
+                  <div class="title"><%= 모든게시물[i].제목 %></div>
+                  <div class="content"><%= 모든게시물[i].게시글 %></div>
+                  <div class="detail">
+                    <span>작성자: <%= 모든게시물[i].작성자 %> •</span>
+                    <span><%= 모든게시물[i].경기진행날짜 %> •</span>
+                    <span><%= 모든게시물[i].경기진행시간 %>:00 •</span>
+                    <span><%= 모든게시물[i].장소 %> •</span>
+                    <span><%= 모든게시물[i].인원 %> •</span>
+                    <span>남은인원: 15<%= 모든게시물[i].남은인원 %></span>
+                  </div>
+                </div>
+                <button class="btn_wait">매칭대기중</button>
+              </div>
+            <% } %>
           <% } %>
         <% } %>
 
-      </ul>
+        <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
+          <% if(모든게시물[i].신청자 == 매칭된게시물.신청자) { %>
+            <% if(모든게시물[i].여부 == 1) { %>
+              <div class="list-item-success">
+                <div class="group1">
+                  <div class="item1">
+                    <div class="title"><%= 모든게시물[i].제목 %></div>
+                    <div class="content"><%= 모든게시물[i].게시글 %></div>
+                    <div class="detail">
+                      <span>작성자: <%= 모든게시물[i].작성자 %> •</span>
+                      <span><%= 모든게시물[i].경기진행날짜 %> •</span>
+                      <span><%= 모든게시물[i].경기진행시간 %>:00 •</span>
+                      <span><%= 모든게시물[i].장소 %> •</span>
+                      <span><%= 모든게시물[i].인원 %> •</span>
+                      <span>남은인원: 14<%= 모든게시물[i].남은인원 %></span>
+                    </div>
+                  </div>
+                  <button class="btn_complete">매칭완료</button>
+                </div>
+                <div class="group2">
+                  <form action="/apply" method="POST">
+                    <div class="rating">
+                      <span class="rating__result"></span> 
+                      <i class="rating__star far fa-star"></i>
+                      <i class="rating__star far fa-star"></i>
+                      <i class="rating__star far fa-star"></i>
+                      <i class="rating__star far fa-star"></i>
+                      <i class="rating__star far fa-star"></i>
+                    </div>
+                    <button type="submit" class="score_button"><%= 모든게시물[i].작성자 %>님 매너점수 평가하기</button>
+                  </form>
+                </div>
+              </div>
+              <% } %>
+              <% } %>
+              <% } %>
+              
+              
+              
+                              <!-- ////////////////////////////// -->
+                              <!-- <select class="form-control" name="score" value="score">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                              </select> -->
+              
 
-    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script> -->
+        <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
+          <% if(모든게시물[i].신청자 == 매칭된게시물.신청자) { %>
+            <% if(모든게시물[i].여부 == 2) { %>
+              <div class="list-item">
+                <div class="item1">
+                  <div class="title"><%= 모든게시물[i].제목 %></div>
+                  <div class="content"><%= 모든게시물[i].게시글 %></div>
+                  <div class="detail">
+                    <span>작성자: <%= 모든게시물[i].작성자 %> •</span>
+                    <span><%= 모든게시물[i].경기진행날짜 %> •</span>
+                    <span><%= 모든게시물[i].경기진행시간 %>:00 •</span>
+                    <span><%= 모든게시물[i].장소 %> •</span>
+                    <span><%= 모든게시물[i].인원 %> •</span>
+                    <span>남은인원: 9<%= 모든게시물[i].남은인원 %></span>
+                  </div>
+                </div>
+                <button class="btn_fail">매칭실패</button>
+              </div>
+            <% } %>
+          <% } %>
+        <% } %>
+      </div>
+    </main>
+    
+    <footer>
+    </footer>
 
-    <!-- Optional JavaScript; choose one of the two! -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
     crossorigin="anonymous"></script>
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    
-    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
-    -->
+
+    <!-- 별점주기 -->
+    <script>
+      const ratingStars = [...document.getElementsByClassName("rating__star")];
+
+      function executeRating(stars) {
+        const starClassActive = "rating__star fas fa-star";
+        const starClassInactive = "rating__star far fa-star";
+        const starsLength = stars.length;
+        let i;
+
+        stars.map((star) => {
+          star.onclick = () => {
+            i = stars.indexOf(star);
+
+            if (star.className===starClassInactive) {
+              for (i; i >= 0; --i) stars[i].className = starClassActive;
+            } else {
+              for (i; i < starsLength; ++i) stars[i].className = starClassInactive;
+            }
+          };
+        });
+      }
+
+      executeRating(ratingStars);
+    </script>
+
   </body>
 </html>

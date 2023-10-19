@@ -377,6 +377,7 @@ app.put('/request', checklogin, function (req, res) {
             경기진행시간: result.경기진행시간,
             장소: result.장소,
             인원: result.인원,
+            남은인원: result.count,
             여부: parseInt(0)
         })
     })
@@ -486,7 +487,6 @@ app.get('/suggest', checklogin, function (req, res) {
 app.post('/apply', checklogin, function (req, res) {
     console.log(req.body.id);
     console.log(req.body.score);
-    // console.log(req.body.score);
     db.collection('evaluate').insertOne({
         내용: req.body.id,
         작성자: req.user.id,
@@ -510,7 +510,7 @@ app.post('/calendar', checklogin, function (req, res) {
     });
     var day = req.body.date;
 
-    console.log(day); //달력 클릭으로 넘어온 날짜
+    console.log(day); //달력 클릭으로 넘어온 날짜list
     
     db.collection('board').find({ 경기진행날짜: req.body.date }).toArray(function (error, result) {
         for (var i = 0; i < result.length; i++) {
