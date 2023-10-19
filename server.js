@@ -398,6 +398,7 @@ app.put('/request2', checklogin, function (req, res) {
             경기진행시간: result.경기진행시간,
             장소: result.장소,
             인원: result.인원,
+            남은인원: result.count,
             여부: parseInt(0)
         })
     })
