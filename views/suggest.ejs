@@ -220,44 +220,19 @@
   }
 
   .invite-button {
+    color: white;
     padding: 6px;
     background-color: #5da034;
     margin-top: 64.4px;
     border: 0;
     border-radius: 10px;
     box-shadow: 0 0 3px 0 rgb(172, 170, 170);
-    color: white;
     font-size: 16px;
     font-weight: bold;
   }
 
-  #modalOpenButton,
-  #modalCloseButton {
-    cursor: pointer;
-  }
-
-  #modalContainer {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.5);
-  }
-
-  #modalContent {
-    position: absolute;
-    background-color: #ffffff;
-    width: 300px;
-    height: 150px;
-    padding: 15px;
-  }
-
-  #modalContainer.hidden {
-    display: none;
+  .invite-button:hover {
+    color: white;
   }
 
   footer {
@@ -269,8 +244,8 @@
 </style>
 
 <body>
-  <%- include('nav.html') %>
-    <header>
+  <header>
+      <%- include('nav.html') %>
       <div class="menubar">
         <a href="/board">
           <img src="public/imgs/ball.png" alt="전체 매치">
@@ -377,18 +352,11 @@
                   <%= player[i].주발 %>
                 </span>
               </div>
-              <button id="modalOpenButton" type="submit" class="invite-button"
-                data-id="<%= player[i].id %>">초대하기</button>
+              <button type="submit" style="border: 0;">
+                <a href="/boardview2" class="invite-button" data-id="<%= player[i].id %>" style="text-decoration: none;">초대하기</a>
+              </button>
             </li>
             <% } %>
-
-
-        </div>
-        <div id="modalContainer" class="hidden">
-          <div id="modalContent">
-            <p>모달 창 입니다.</p>
-            <button id="modalCloseButton">닫기</button>
-          </div>
         </div>
       </div>
     </section>
@@ -419,34 +387,6 @@
         });
       })
 
-      //모달
-      const modalOpenButton = document.getElementById('modalOpenButton');
-      const modalCloseButton = document.getElementById('modalCloseButton');
-      const modal = document.getElementById('modalContainer');
-
-      modalOpenButton.addEventListener('click', () => {
-        modal.classList.remove('hidden');
-      });
-
-      modalCloseButton.addEventListener('click', () => {
-        modal.classList.add('hidden');
-      });
-      ///////////////////
-      const select = document.querySelector(".select");
-      const currentValue = select.options[select.selectedIndex].value
-
-      // console.log(currentValue);
-      const Gender_LS = "gender";
-      localStorage.setItem(Gender_LS, currentValue);
-
-      const lsValue = localStorage.getItem(Gender_LS);
-
-      function loadValue() {
-        const lsValue = localStorage.getItem(Gender_LS);
-        if (lsValue !== null) {
-          select.value = lsValue;
-        }
-      }
     </script>
     <!-- Optional JavaScript; choose one of the two! -->
 

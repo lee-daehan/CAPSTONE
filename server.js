@@ -270,9 +270,16 @@ app.get('/board', function (req, res) {
 //내가 작성한 게시물 보기
 app.get('/boardview', checklogin, function (req, res) {
     db.collection('board').find().toArray(function (error, result) {
-        console.log(result);
         db.collection('board').findOne({ 작성자: req.user.id }, function (error, result2) {
             res.render('boardview.ejs', { allpost: result, writer: result2 });
+        })
+    });
+});
+
+app.get('/boardview2', function (req, res) {
+    db.collection('board').find().toArray(function (error, result) {
+        db.collection('board').findOne({ 작성자: req.user.id }, function (error, result2) {
+            res.render('boardview2.ejs', { allpost: result, writer: result2 });
         })
     });
 });
@@ -528,14 +535,7 @@ app.post('/calendar', checklogin, function (req, res) {
                 남은인원: result[i].count
             })
         }
-
-        // db.collection('searchdate').insertOne({
-        //         choiceid: req.user.id,
-        //         선택한날짜: req.body.date
-        //     })
     })
-
-    // console.log(date);
     res.write("<script>window.location=\"../list\"</script>");
 })
 
@@ -554,4 +554,7 @@ app.get('/board2', function(req,res) {
 
 app.put('/invite', function(req, res) {
     console.log(req.body.id);//초대할 사람의 아이디
+    app.post('/invite', function(request, res) {
+        console.log(request.body.postNum);//초대할 경기의 게시글 번호
+    })
 })
