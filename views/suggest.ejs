@@ -231,43 +231,33 @@
     font-weight: bold;
   }
 
-  /* 모달팝업을 감싸고 있는 최상위 부모 */
-  #modalWrap {
-    position: fixed;
-    /* Stay in place */
-    z-index: 1;
-    /* Sit on top */
-    padding-top: 100px;
-    /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%;
-    /* Full width */
-    height: 100%;
-    /* Full height */
-    overflow: auto;
-    /* Enable scroll if needed */
-    background-color: rgba(0, 0, 0, 0.4);
-    /* Black w/ opacity */
-  }
-
-  /* 모달 팝업창 */
-  #modalBody {
-    width: 500px;
-    height: 300px;
-    padding: 30px 30px;
-    margin: 0 auto;
-    border: 1px solid #777;
-    background-color: #fff;
-  }
-
-  /* 모달 닫기버튼 */
-  #closeBtn {
-    float: right;
-    font-weight: bold;
-    color: #777;
-    font-size: 25px;
+  #modalOpenButton,
+  #modalCloseButton {
     cursor: pointer;
+  }
+
+  #modalContainer {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  #modalContent {
+    position: absolute;
+    background-color: #ffffff;
+    width: 300px;
+    height: 150px;
+    padding: 15px;
+  }
+
+  #modalContainer.hidden {
+    display: none;
   }
 
   footer {
@@ -368,36 +358,38 @@
     </main>
 
     <section>
-      <div class="user-container">
-        <% for (var i=0; i < player.length; i++ ) { %>
-          <li class="list-group-item">
-            <div class="info">
-              <span style="display: none;">
-                <%= player[i].id %>
-              </span>
-              <span>닉네임: <%= player[i].닉네임 %> / </span>
-              <span>
-                <%= player[i].성별 %> /
-              </span>
-              <span>
-                <%= player[i].선호포지션 %> /
-              </span>
-              <span>
-                <%= player[i].주발 %>
-              </span>
-            </div>
-            <button id="popupBtn" type="submit" class="invite-button" data-id="<%= player[i].id %>">초대하기</button>
-          </li>
-          <% } %>
-            <!-- 모달 팝업창 -->
-            <div id="modalWrap">
-              <div id="modalContent">
-                <div id="modalBody">
-                  <span id="closeBtn">&times;</span>
-                  <p>modal-popup 입니다.</p> //팝업창 내 글귀
-                </div>
+      <div>
+        <div class="user-container">
+          <% for (var i=0; i < player.length; i++ ) { %>
+            <li class="list-group-item">
+              <div class="info">
+                <span style="display: none;">
+                  <%= player[i].id %>
+                </span>
+                <span>닉네임: <%= player[i].닉네임 %> / </span>
+                <span>
+                  <%= player[i].성별 %> /
+                </span>
+                <span>
+                  <%= player[i].선호포지션 %> /
+                </span>
+                <span>
+                  <%= player[i].주발 %>
+                </span>
               </div>
-            </div>
+              <button id="modalOpenButton" type="submit" class="invite-button"
+                data-id="<%= player[i].id %>">초대하기</button>
+            </li>
+            <% } %>
+
+
+        </div>
+        <div id="modalContainer" class="hidden">
+          <div id="modalContent">
+            <p>모달 창 입니다.</p>
+            <button id="modalCloseButton">닫기</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -428,23 +420,18 @@
       })
 
       //모달
-      const btn = document.getElementById('popupBtn');
-      const modal = document.getElementById('modalWrap');
-      const closeBtn = document.getElementById('closeBtn');
+      const modalOpenButton = document.getElementById('modalOpenButton');
+      const modalCloseButton = document.getElementById('modalCloseButton');
+      const modal = document.getElementById('modalContainer');
 
-      btn.onclick = function () {
-        modal.style.display = 'block';
-      }
-      closeBtn.onclick = function () {
-        modal.style.display = 'none';
-      }
+      modalOpenButton.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+      });
 
-      window.onclick = function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      }
-      //////////////////////////////////////////////////////////
+      modalCloseButton.addEventListener('click', () => {
+        modal.classList.add('hidden');
+      });
+      ///////////////////
       const select = document.querySelector(".select");
       const currentValue = select.options[select.selectedIndex].value
 
