@@ -479,7 +479,7 @@ app.post('/recommand', function (req, res) {
 app.get('/suggest', checklogin, function (req, res) {
     db.collection('recommands').findOne({ id: req.user.id }, function (error, result) {
         db.collection('profile').find({ 성별: result.성별, 선호포지션: result.선호포지션, 주발: result.주발 }).toArray(function (error, result1) {
-            res.render('index.ejs', { player: result1 })
+            res.render('suggest.ejs', { player: result1 })
         })
     })
 
@@ -550,4 +550,8 @@ app.get('/list', function (req, res) {
 
 app.get('/board2', function(req,res) {
     console.log(req.body.art_id);
+})
+
+app.put('/invite', function(req, res) {
+    console.log(req.body.id);//초대할 사람의 아이디
 })
