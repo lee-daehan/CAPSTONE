@@ -106,6 +106,13 @@ app.post('/register', function (req, res) {
             }, function (error, result) {
                 res.write("<script>alert('success')</script>");
             })
+            db.collection('invite').insertOne({
+                id: req.body.id,
+                초대받은사람: null,
+                게시글번호: null
+            }, function (error, result) {
+                res.write("<script>alert('success')</script>");
+            })
         }
     })
 });
@@ -174,7 +181,8 @@ function checklogin(req, res, next) {
     if (req.user) {
         next();
     } else {
-        res.send('로그인이 필요합니다.');
+        res.write("<script>alert('please login')</script>");
+        res.write("<script>window.location=\"../login\"</script>");
     }
 }
 
@@ -276,13 +284,8 @@ app.get('/boardview', checklogin, function (req, res) {
     });
 });
 
-app.get('/boardview2', function (req, res) {
-    db.collection('board').find().toArray(function (error, result) {
-        db.collection('board').findOne({ 작성자: req.user.id }, function (error, result2) {
-            res.render('boardview2.ejs', { allpost: result, writer: result2 });
-        })
-    });
-});
+
+
 
 //게시물 등록기능
 //게시물을 검색한다. 검색한 내용에 맞는 경기를 DB에서 불러와 보여준다.
@@ -465,7 +468,7 @@ app.get('/resmatch', checklogin, function (req, res) {
 })
 
 //조건검색 & 추천
-app.post('/recommand', function (req, res) {
+app.post('/recommand', checklogin, function (req, res) {
     console.log(req.body.gender)
     console.log(req.body.position)
     console.log(req.body.foot)
@@ -552,9 +555,105 @@ app.get('/board2', function(req,res) {
     console.log(req.body.art_id);
 })
 
-app.put('/invite', function(req, res) {
-    console.log(req.body.id);//초대할 사람의 아이디
-    app.post('/invite', function(request, res) {
-        console.log(request.body.postNum);//초대할 경기의 게시글 번호
+// app.post('/invite', function(req, res) {
+//     var invited_id = req.body.id; //초대받는 사람의 아이디
+//     console.log(invited_id);
+//     app.post('/invite2', function(req,res) {
+//         var sel_num = req.body.postNum; //게시글 번호
+//         console.log(sel_num);
+//         console.log(invited_id);
+//         db.collection('board').findOne({_id: parseInt(sel_num)}, function(error, result){
+//             db.collection('inviteperson').insertOne({
+//                 게시글번호: parseInt(sel_num),
+//                 초대한사람: req.user.id,
+//                 초대받은사람: invited_id,
+//                 제목: result.제목,
+//                 게시글: result.게시글,
+//                 장소: result.장소,
+//                 인원: result.인원,
+//                 경기진행날짜: result.경기진행날짜,
+//                 경기진행시간: result.경기진행시간,
+//                 남은인원: result.count,                
+//                 여부: parseInt(0)
+//             })
+//         })
+//         app.get('/invitedetail',function(req,res){
+//             db.collection('board').findOne({_id : parseInt(sel_num)},function(error, result){
+//                 res.render('invitedetail.ejs',{board: result, person: invited_id, host: req.user.id });
+//                 invited_id = null;
+//             })
+//             console.log(invited_id)
+//         })
+//     })
+// })
+
+// app.get('/myinvitelist',function(req,res){
+//     db.collection('inviteperson').find({초대한사람: req.user.id}).toArray(function(error,result){
+//         res.render('myinvitelist.ejs',{personlist: result})
+//     })
+// })
+
+app.post('/invite', function(req,res){
+    var invited_id = req.body.id; //초대받는 사람의 아이디
+    console.log(invited_id);
+        db.collection('invite').updateOne({ id: req.user.id }, {
+            $set:
+            {
+                초대받은사람: invited_id
+            }
+        }, function (error, result) {})
+
+
+    // db.collection('invite2').deleteOne({invited: invited_id});
+
+    // app.post('/invite2', function(req,res){
+    //     var art_num = parseInt(req.body.postNum); //게시글번호
+    //     invited_id; //초대받는 사람의 아이디
+
+    //     db.collection('invite').findOne({receiver: invited_id}, function(error,reuslt){
+    //         db.collection('invite2').insertOne({
+    //                 invited: invited_id,
+    //                 sel_art : art_num
+    //             })
+    //         })
+        
+    //         app.get('/invitedetail',function(req,res){
+    //             db.collection('board').findOne({_id :art_num},function(error, result){
+    //                 console.log(result._id)
+    //                 console.log(result.제목)
+    //                 console.log(invited_id);
+    //                 db.collection('invite2').findOne({invited:invited_id}, function(error,result2){
+    //                     console.log(result2.invited)
+    //                     res.render('invitedetail.ejs',{board: result, person: result2, host: req.user.id });
+    //                 })
+    //             })
+    //         })
+    //     })
+});
+
+
+app.get('/boardview2', function (req, res) {
+        db.collection('board').find().toArray(function (error, result) {
+            db.collection('board').findOne({ 작성자: req.user.id }, function (error, result2) {
+                res.render('boardview2.ejs', {allpost: result, writer: result2});
+            })
+        });
+    });
+
+app.post('/invite2', function(req,res){
+    var art_num = parseInt(req.body.postNum); //게시글번호
+    db.collection('invite').updateOne({ id: req.user.id }, {
+        $set:
+        {
+            게시글번호: art_num
+        }
+    }, function (error, result) {})
+})
+
+app.get('/invitedetail',function(req,res){
+    db.collection('invite').findOne({id:req.user.id}, function(error, result){
+        db.collection('board').findOne({_id:result.게시글번호}, function(error, result2) {
+            res.render('invitedetail.ejs',{board: result2, person: result, host: req.user.id });
+        })
     })
 })

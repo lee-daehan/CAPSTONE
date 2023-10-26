@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>초대 최종페이지</h1>
+
+    <li>
+        <p style="display:none;" value="Articlenum">게시글 번호: <%= board._id %>
+        </p>
+        <p>초대한사람: <%= host %></p>
+        <p>제목: <%= board.제목 %>
+        </p>
+        <p>내용: <%= board.게시글 %>
+        </p>
+        <p>장소: <%= board.장소 %>
+        </p>
+        <p>인원: <%= board.인원 %>
+        </p>
+        <span>내가 초대한 사람 : <%= person.초대받은사람 %></span>
+    </li>
+    <a href="/myinvitelist">내가 초대한 목록</a>
+    <a href="/">완료</a>
+</body>
+</html>
