@@ -98,14 +98,14 @@ app.post('/register', function (req, res) {
                 res.write("<script>alert('success')</script>");
                 res.write("<script>window.location=\"../login\"</script>");
             })
+
             db.collection('recommands').insertOne({
                 id: req.body.id,
                 성별: null,
                 선호포지션: null,
                 주발: null
-            }, function (error, result) {
-                res.write("<script>alert('success')</script>");
-            })
+            });
+
             db.collection('invite').insertOne({
                 id: req.body.id,
                 초대받은사람: null,
@@ -555,44 +555,6 @@ app.get('/board2', function(req,res) {
     console.log(req.body.art_id);
 })
 
-// app.post('/invite', function(req, res) {
-//     var invited_id = req.body.id; //초대받는 사람의 아이디
-//     console.log(invited_id);
-//     app.post('/invite2', function(req,res) {
-//         var sel_num = req.body.postNum; //게시글 번호
-//         console.log(sel_num);
-//         console.log(invited_id);
-//         db.collection('board').findOne({_id: parseInt(sel_num)}, function(error, result){
-//             db.collection('inviteperson').insertOne({
-//                 게시글번호: parseInt(sel_num),
-//                 초대한사람: req.user.id,
-//                 초대받은사람: invited_id,
-//                 제목: result.제목,
-//                 게시글: result.게시글,
-//                 장소: result.장소,
-//                 인원: result.인원,
-//                 경기진행날짜: result.경기진행날짜,
-//                 경기진행시간: result.경기진행시간,
-//                 남은인원: result.count,                
-//                 여부: parseInt(0)
-//             })
-//         })
-//         app.get('/invitedetail',function(req,res){
-//             db.collection('board').findOne({_id : parseInt(sel_num)},function(error, result){
-//                 res.render('invitedetail.ejs',{board: result, person: invited_id, host: req.user.id });
-//                 invited_id = null;
-//             })
-//             console.log(invited_id)
-//         })
-//     })
-// })
-
-// app.get('/myinvitelist',function(req,res){
-//     db.collection('inviteperson').find({초대한사람: req.user.id}).toArray(function(error,result){
-//         res.render('myinvitelist.ejs',{personlist: result})
-//     })
-// })
-
 app.post('/invite', function(req,res){
     var invited_id = req.body.id; //초대받는 사람의 아이디
     console.log(invited_id);
@@ -602,33 +564,6 @@ app.post('/invite', function(req,res){
                 초대받은사람: invited_id
             }
         }, function (error, result) {})
-
-
-    // db.collection('invite2').deleteOne({invited: invited_id});
-
-    // app.post('/invite2', function(req,res){
-    //     var art_num = parseInt(req.body.postNum); //게시글번호
-    //     invited_id; //초대받는 사람의 아이디
-
-    //     db.collection('invite').findOne({receiver: invited_id}, function(error,reuslt){
-    //         db.collection('invite2').insertOne({
-    //                 invited: invited_id,
-    //                 sel_art : art_num
-    //             })
-    //         })
-        
-    //         app.get('/invitedetail',function(req,res){
-    //             db.collection('board').findOne({_id :art_num},function(error, result){
-    //                 console.log(result._id)
-    //                 console.log(result.제목)
-    //                 console.log(invited_id);
-    //                 db.collection('invite2').findOne({invited:invited_id}, function(error,result2){
-    //                     console.log(result2.invited)
-    //                     res.render('invitedetail.ejs',{board: result, person: result2, host: req.user.id });
-    //                 })
-    //             })
-    //         })
-    //     })
 });
 
 
@@ -653,7 +588,53 @@ app.post('/invite2', function(req,res){
 app.get('/invitedetail',function(req,res){
     db.collection('invite').findOne({id:req.user.id}, function(error, result){
         db.collection('board').findOne({_id:result.게시글번호}, function(error, result2) {
+            db.collection('inviteList').insertOne({
+                초대한사람: req.user.id,
+                초대받은사람: result.초대받은사람,
+                게시글번호: result2._id,
+                제목:result2.제목,
+                게시글:result2.게시글,
+                장소:result2.장소,
+                인원:result2.인원,
+                경기진행날짜:result2.경기진행날짜,
+                경기진행시간:result2.경기진행시간,
+                count:result2.count,
+                여부:parseInt(0)
+            })
             res.render('invitedetail.ejs',{board: result2, person: result, host: req.user.id });
         })
     })
 })
+
+app.get('/myinvitelist', function(req,res){
+    db.collection('inviteList').find({초대한사람: req.user.id}).toArray(function(error,result){
+        res.render('myinvitelist.ejs', {personlist: result});
+    });
+})
+
+app.get('/invited_match', function(req,res){
+    db.collection('inviteList').find({초대받은사람:req.user.id}).toArray(function(error,result){
+        res.render('invited_match.ejs', {result:result});
+    })
+})
+
+//초대 수락
+app.put('/acc_invite', checklogin, function (req, res) {
+    console.log(req.body.accept);
+        db.collection('inviteList').updateOne({ 초대받은사람:req.user.id , 게시글번호:parseInt(req.body.accept) }, {
+            $set:
+            {
+                여부: parseInt(1)
+            }
+        })
+});
+//초대 거절
+app.put('/ref_invite', checklogin, function (req, res) {
+    console.log(typeof req.body.refuse); //string
+        db.collection('inviteList').updateOne({ 초대받은사람:req.user.id, 게시글번호:parseInt(req.body.refuse) }, {
+            $set:
+            {
+                여부: parseInt(2)
+            }
+        })
+});

@@ -11,7 +11,7 @@
     <h1>내가 초대한 유저 목록</h1>
     <% for (var i=0; i < personlist.length ; i++ ) { %>
         
-        <p>초대한 유저: <%= personlist[i].초대받은사람 %>
+        <p>초대받은 유저: <%= personlist[i].초대받은사람 %>
         </p>
             <p>경기 제목: <%= personlist[i].제목 %>
             </p>
@@ -23,7 +23,7 @@
             </p>
             <p>인원: <%= personlist[i].인원 %>
             </p>
-            <p>남은자리: <%= personlist[i].남은인원 %>명</p>
+            <p>남은자리: <%= personlist[i].count %>명</p>
             <% if(personlist[i].여부==0){ %>
             <button class="btn_wait">매칭대기중</button>
             <% } %>
