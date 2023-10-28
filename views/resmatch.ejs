@@ -215,18 +215,16 @@
                               <button class="btn_complete">매칭완료</button>
                             </div>
                             <div class="group2">
-                              <form action="/apply" method="POST">
                                 <div class="star-container" id="star" >
-                                  <span class="star">★</span>
-                                  <span class="star">★</span>
-                                  <span class="star">★</span>
-                                  <span class="star">★</span>
-                                  <span class="star">★</span>
+                                  <span class="star" data-id="<%= 모든게시물[i].작성자 %>" data-rate="1">★</span>
+                                  <span class="star" data-id="<%= 모든게시물[i].작성자 %>" data-rate="2">★</span>
+                                  <span class="star" data-id="<%= 모든게시물[i].작성자 %>" data-rate="3">★</span>
+                                  <span class="star" data-id="<%= 모든게시물[i].작성자 %>" data-rate="4">★</span>
+                                  <span class="star" data-id="<%= 모든게시물[i].작성자 %>" data-rate="5">★</span>
                                 </div>
                                 <button type="submit" class="score_button" >
                                   <%= 모든게시물[i].작성자 %>님 매너점수 평가하기
                                 </button>
-                              </form>
                             </div>
                           </div>
                           <% } %>
@@ -360,19 +358,37 @@
           rate = score;
           // console.log(rate);
 
-          var id = e.target.dataset.id; //지금 클릭한것
-            $.ajax({
-              method: 'POST',
-              url: '/apply',
-              data: { rate: rate}
-            }).done(function (result) {
-              console.log(data);
-            }).fail(function (xhr, textStatus, errorThrow) {
-              //요청 실패시
-              console.log(xhr, textStatus, errorThrow);
-            });
+            // $.ajax({
+            //   method: 'POST',
+            //   url: '/apply',
+            //   data: { rate: rate}
+            // }).done(function (result) {
+            //   console.log(data);
+            // }).fail(function (xhr, textStatus, errorThrow) {
+            //   //요청 실패시
+            //   console.log(xhr, textStatus, errorThrow);
+            // });
         } 
       })();
+    </script>
+
+    <script>
+      $('.star').click(function (e) {
+                    var id = e.target.dataset.id; //지금 클릭한것
+                    var rate = e.target.dataset.rate; //지금 클릭한것
+                    var nowClick = $(this); // 지금 이벤트가 동작하는 곳
+                    // console.log(id);
+                    $.ajax({
+                        method: 'POST',
+                        url: '/apply',
+                        data: { id: id, rate:rate }
+                    }).done(function (result) {
+                        console.log(data);
+                    }).fail(function (xhr, textStatus, errorThrow) {
+                        //요청 실패시
+                        console.log(xhr, textStatus, errorThrow);
+                    });
+                })
     </script>
 
     <!-- <script>

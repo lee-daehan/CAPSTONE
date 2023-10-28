@@ -105,6 +105,12 @@ app.post('/register', function (req, res) {
                 선호포지션: null,
                 주발: null
             });
+            db.collection('evaluate').insertOne({
+                평가받은사람: req.body.id,
+                점수준사람: null,
+                점수: 0,
+                count: 0
+            });
 
             db.collection('invite').insertOne({
                 id: req.body.id,
@@ -496,16 +502,27 @@ app.get('/suggest', checklogin, function (req, res) {
 })
 
 app.post('/apply', checklogin, function (req, res) {
-    // console.log(req.body.id);
+    console.log(req.body.id);
     console.log(req.body.rate);
-    db.collection('evaluate').insertOne({
-        // 평가받은사람: req.body.id,
-        점수준사람: req.user.id,
-        점수: req.body.rate
-    }, function (error, result) {
-        res.write("<script>window.location=\"../resmatch\"</script>");
+    db.collection('evaluate').findOne({평가받은사람: req.body.id}, function(error,result){
+        db.collection('evaluate').updateOne({평가받은사람: req.body.id},{
+            $set:
+            {
+                점수: result.점수 + parseInt(req.body.rate)
+            } 
+        }, function (error, result){
+           db.collection('evaluate').findOne({평가받은사람:req.body.id}, { $inc: { count: +1 } }, function(error, result){
+                if (error) { return console.log(error) };
+           })
+        })
     })
-
+        // )({
+        //     평가받은사람: req.body.id,
+        //     점수준사람: req.user.id,
+        //     점수: req.body.rate
+        // }, function (error, result) {
+        //     res.write("<script>window.location=\"../resmatch\"</script>");
+        // })
 })
 
 //평가 점수 보기
