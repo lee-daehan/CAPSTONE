@@ -9,24 +9,30 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
     <title>Football Matching for SCH</title>
+    <style>
+      #star {
+      display: flex;
+    }
+
+    .star {
+      font-size: 2rem;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+    </style>
   </head>
   <body>
     <%- include('nav.html') %>
-    <h4><%= user%>님의 점수 페이지</h4>
-    
-    <ul class="list-group">
-        <% nprint : for (var i=0; i < score.length; i++ ) { %>
-            <%if(score[i].내용 != user){%>
-                <% continue nprint; %>
-            <%} %>
-            
-                <li class="list-group-item">
-                  <p><%= score[i].작성자 %>님의 부여 점수: <%= score[i].점수 %></p>
-                </li>
-            
-              <% } %>
-      </ul>
+    <h4><%= result.평가받은사람%> 님의 점수 페이지</h4>
+    <div>
+      <span>내 점수: <%= avg %></span>
+      <% for (var i=0; i < avg; i++ ) { %>
+        <div class="star-container" id="star" >
+          <span class="star">★</span>
 
+        </div>
+        <% } %>
+    </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
 

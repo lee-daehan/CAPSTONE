@@ -119,6 +119,11 @@ app.post('/register', function (req, res) {
             }, function (error, result) {
                 res.write("<script>alert('success')</script>");
             })
+
+            db.collection('work').insertOne({
+                id: req.body.id,
+                other: null
+            })
         }
     })
 });
@@ -394,7 +399,8 @@ app.put('/request', checklogin, function (req, res) {
             장소: result.장소,
             인원: result.인원,
             남은인원: result.count,
-            여부: parseInt(0)
+            여부: parseInt(0),
+            평가여부: parseInt(0)
         })
     })
 });
@@ -466,6 +472,11 @@ app.put('/refuse', checklogin, function (req, res) {
 
 //신청한 경기
 app.get('/resmatch', checklogin, function (req, res) {
+    db.collection('work').findOne({id:req.user.id}, function(error,result1){
+        db.collection('request').findOne({신청자: req.user.id, 작성자: result1.other,},function(error,result2){
+            db.collection('request').deleteOne({평가여부: 1});
+        })
+    })
     db.collection('request').find().toArray(function (error, result1) {
         db.collection('request').findOne({ 신청자: req.user.id }, function (error, result2) {
             res.render('resmatch.ejs', { 모든게시물: result1, 매칭된게시물: result2 });
@@ -502,8 +513,6 @@ app.get('/suggest', checklogin, function (req, res) {
 })
 
 app.post('/apply', checklogin, function (req, res) {
-    console.log(req.body.id);
-    console.log(req.body.rate);
     db.collection('evaluate').findOne({평가받은사람: req.body.id}, function(error,result){
         db.collection('evaluate').updateOne({평가받은사람: req.body.id},{
             $set:
@@ -511,25 +520,16 @@ app.post('/apply', checklogin, function (req, res) {
                 점수: result.점수 + parseInt(req.body.rate)
             } 
         }, function (error, result){
-           db.collection('evaluate').findOne({평가받은사람:req.body.id}, { $inc: { count: +1 } }, function(error, result){
+           db.collection('evaluate').updateOne({평가받은사람:req.body.id}, { $inc: { count: +1 } }, function(error, result){
                 if (error) { return console.log(error) };
            })
         })
     })
-        // )({
-        //     평가받은사람: req.body.id,
-        //     점수준사람: req.user.id,
-        //     점수: req.body.rate
-        // }, function (error, result) {
-        //     res.write("<script>window.location=\"../resmatch\"</script>");
-        // })
-})
-
-//평가 점수 보기
-app.get('/myscore', checklogin, function (req, res) {
-    db.collection('evaluate').find().toArray(function (error, result) {
-        res.render('myscore.ejs', { score: result, user: req.user.id })
-    });
+    db.collection('request').updateOne({작성자:req.body.id , 신청자: req.user.id},{
+        $set: {
+            평가여부: parseInt(1)
+        }
+    })
 })
 
 //달력
@@ -655,3 +655,29 @@ app.put('/ref_invite', checklogin, function (req, res) {
             }
         })
 });
+
+app.post('/before_ev', checklogin, function(req, res) {
+    var id = req.body.id;
+    db.collection('work').updateOne({id: req.user.id},{
+        $set: {
+            other: id
+        }
+    })
+})
+
+app.get('/score', function(req,res){
+
+    db.collection('work').findOne({id: req.user.id},function(error,result1){
+        db.collection('evaluate').findOne({평가받은사람:result1.other} ,function(error,result2){
+            console.log(result2);
+            res.render('score.ejs', {result:result2});
+        })
+    })
+})
+
+//내점수
+app.get('/myscore', function(req, res){
+    db.collection('evaluate').findOne({평가받은사람: req.user.id} ,function(error, result){
+        res.render('myscore.ejs', {result:result, avg: parseFloat(result.점수/result.count)});
+    })
+})

@@ -34,28 +34,25 @@
       border-radius: 10px;
       box-shadow: 0 0 3px 0 rgb(172, 170, 170);
       margin: 10px 10px;
+      padding: 10px;
     }
-
-    .list-item-success {
+    .list-wrap {
       display: grid;
-      grid-gap: 0px;
       grid-template-rows: 1fr 1fr;
+      grid-gap: 10px;
       border: 1px solid #ced4da;
       color: #838589;
       border-radius: 10px;
       box-shadow: 0 0 3px 0 rgb(172, 170, 170);
       margin: 10px 10px;
-    }
+      padding: 10px;
 
-    .group1 {
+    }
+    .list-item-success{
       display: flex;
       justify-content: space-between;
-    }
 
-    .group2 {
-      margin: 10px 10px;
     }
-
     .title {
       color: black;
       font-weight: bold;
@@ -105,16 +102,12 @@
       border-radius: 10px;
       padding: 3px;
     }
-
-    /* #score {
-      display: flex;
-      justify-content: flex-end;
-      margin: 10px;
-    } */
     .score_button {
+      width: fit-content;
+      height: fit-content;
       border: 1px solid #ced4da;
+      padding: 10px;
       background-color: white;
-      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
       font-size: 15px;
     }
 
@@ -186,61 +179,42 @@
                     <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
                       <% if(모든게시물[i].신청자==매칭된게시물.신청자) { %>
                         <% if(모든게시물[i].여부==1) { %>
-                          <div class="list-item-success">
-                            <div class="group1">
-                              <div class="item1">
-                                <div class="title">
-                                  <%= 모든게시물[i].제목 %>
+                          <div class="list-wrap">
+                            <div class="list-item-success">
+                                <div class="item1">
+                                  <div class="title">
+                                    <%= 모든게시물[i].제목 %>
+                                  </div>
+                                  <div class="content">
+                                    <%= 모든게시물[i].게시글 %>
+                                  </div>
+                                  <div class="detail">
+                                    <span>작성자: <%= 모든게시물[i].작성자 %> •</span>
+                                    <span>
+                                      <%= 모든게시물[i].경기진행날짜 %> •
+                                    </span>
+                                    <span>
+                                      <%= 모든게시물[i].경기진행시간 %>:00 •
+                                    </span>
+                                    <span>
+                                      <%= 모든게시물[i].장소 %> •
+                                    </span>
+                                    <span>
+                                      <%= 모든게시물[i].인원 %> •
+                                    </span>
+                                    <span>남은인원: <%= 모든게시물[i].남은인원 %></span>
+                                  </div>
                                 </div>
-                                <div class="content">
-                                  <%= 모든게시물[i].게시글 %>
-                                </div>
-                                <div class="detail">
-                                  <span>작성자: <%= 모든게시물[i].작성자 %> •</span>
-                                  <span>
-                                    <%= 모든게시물[i].경기진행날짜 %> •
-                                  </span>
-                                  <span>
-                                    <%= 모든게시물[i].경기진행시간 %>:00 •
-                                  </span>
-                                  <span>
-                                    <%= 모든게시물[i].장소 %> •
-                                  </span>
-                                  <span>
-                                    <%= 모든게시물[i].인원 %> •
-                                  </span>
-                                  <span>남은인원: <%= 모든게시물[i].남은인원 %></span>
-                                </div>
+                                <button class="btn_complete">매칭완료</button>
                               </div>
-                              <button class="btn_complete">매칭완료</button>
-                            </div>
-                            <div class="group2">
-                                <div class="star-container" id="star" >
-                                  <span class="star" data-id="<%= 모든게시물[i].작성자 %>" data-rate="1">★</span>
-                                  <span class="star" data-id="<%= 모든게시물[i].작성자 %>" data-rate="2">★</span>
-                                  <span class="star" data-id="<%= 모든게시물[i].작성자 %>" data-rate="3">★</span>
-                                  <span class="star" data-id="<%= 모든게시물[i].작성자 %>" data-rate="4">★</span>
-                                  <span class="star" data-id="<%= 모든게시물[i].작성자 %>" data-rate="5">★</span>
-                                </div>
-                                <button type="submit" class="score_button" >
-                                  <%= 모든게시물[i].작성자 %>님 매너점수 평가하기
-                                </button>
-                            </div>
+                              
+                              <div class="score_button">
+                                <a href="/score" data-id="<%= 모든게시물[i].작성자 %>" class="before_ev"><%= 모든게시물[i].작성자 %>님의 매너점수를 평가해주세요!</a>
+                              </div>
                           </div>
                           <% } %>
                             <% } %>
                               <% } %>
-
-
-
-                                <!-- ////////////////////////////// -->
-                                <!-- <select class="form-control" name="score" value="score">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                              </select> -->
 
 
                                 <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
@@ -290,98 +264,15 @@
       integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
       crossorigin="anonymous"></script>
 
-    <!-- 별점주기 -->
-    <!-- <script>
-      const ratingStars = [...document.getElementsByClassName("rating__star")];
-
-      function executeRating(stars) {
-        const starClassActive = "rating__star fas fa-star";
-        const starClassInactive = "rating__star far fa-star";
-        const starsLength = stars.length;
-        let i;
-
-        stars.map((star) => {
-          star.onclick = () => {
-            i = stars.indexOf(star);
-
-            if (star.className===starClassInactive) {
-              for (i; i >= 0; --i) stars[i].className = starClassActive;
-            } else {
-              for (i; i < starsLength; ++i) stars[i].className = starClassInactive;
-            }
-          };
-        });
-      }
-
-      executeRating(ratingStars);
-    </script> -->
-
-    <!-- <script>
-      // // JAVASCRIPT CODE
-      // const drawStar = (target) => {
-      //   document.querySelector(`.star span`).style.width = `${target.value * 10}%`;
-      // }
-
-      //input요소 참조
-      const element = document.querySelector("#myRange");
-
-      //현재 값 가져오기
-      const value = element.value;
-
-      document.querySelector(`.log`).innerHTML = `현재값은 ${value}`;
-    </script> -->
-    <script>
-      // Write Javascript code!
-      (function () {
-        var starEls = document.querySelectorAll('#star span.star');
-        var rate = 0;
-
-        loop(starEls, function (el, index) {
-          el.addEventListener('click', function () {
-            rating(index + 1);
-          });
-        });
-
-        function loop(list, func) {
-          Array.prototype.forEach.call(list, func);
-        }
-
-        function rating(score) {
-          loop(starEls, function (el, index) {
-            if (index < score) {
-              el.classList.add('on');
-            } else {
-              el.classList.remove('on');
-            }
-          });
-
-          rate = score;
-          // console.log(rate);
-
-            // $.ajax({
-            //   method: 'POST',
-            //   url: '/apply',
-            //   data: { rate: rate}
-            // }).done(function (result) {
-            //   console.log(data);
-            // }).fail(function (xhr, textStatus, errorThrow) {
-            //   //요청 실패시
-            //   console.log(xhr, textStatus, errorThrow);
-            // });
-        } 
-      })();
-    </script>
-
-    <script>
-      $('.star').click(function (e) {
+      <script>
+                        $('.before_ev').click(function (e) {
                     var id = e.target.dataset.id; //지금 클릭한것
-                    var rate = e.target.dataset.rate; //지금 클릭한것
+                    console.log(id);
                     var nowClick = $(this); // 지금 이벤트가 동작하는 곳
-                    // console.log(id);
                     $.ajax({
                         method: 'POST',
-                        url: '/apply',
-                        data: { id: id, rate:rate }
+                        url: '/before_ev',
+                        data: { id: id }
                     }).done(function (result) {
                         console.log(data);
                     }).fail(function (xhr, textStatus, errorThrow) {
@@ -389,25 +280,12 @@
                         console.log(xhr, textStatus, errorThrow);
                     });
                 })
-    </script>
 
-    <!-- <script>
-      $('.score_button').click(function (e) {
-        var clickarticle = e.target.dataset.id; //지금 클릭한것
-        var nowClick = $(this); // 지금 이벤트가 동작하는 곳
-        console.log(clickarticle);
-        $.ajax({
-          method: 'POST',
-          url: '/apply',
-          data: { id: clickarticle }
-        }).done(function (result) {
-          console.log(data);
-        }).fail(function (xhr, textStatus, errorThrow) {
-          //요청 실패시
-          console.log(xhr, textStatus, errorThrow);
-        });
-      })
-    </script> -->
+                window.onload = function () {
+                    if (location.href.indexOf('reloaded') == -1) location.replace(location.href + '?reloaded');
+                    //if (parent.location.href.indexOf('reloaded')==-1) parent.location.replace(parent.location.href+'?reloaded');
+                } 
+      </script>
 
 </body>
 
