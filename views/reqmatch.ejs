@@ -18,27 +18,46 @@
     <% const str=" " ; %>
 
       <h1>
-        <%= writer.작성자%>님의 신청받은내역 페이지
+        <%= _id %>님의 신청받은내역 페이지
       </h1>
       <div>
         <ul class="list-group">
+          <% if(writer == null) { %>
+            <p>아직 신청받은 경기가 없습니다.</p>
+            <% }%>
+          
+            <% if(writer != null) { %>
           <% nprint : for (var i=0; i < allpost.length; i++ ) { %>
             <% if(str===allpost[i].신청자 && str===allpost[i].작성자 ) { %>
               <% continue nprint; %>
                 <% } %>
                   <% if(writer.작성자===allpost[i].작성자) { %>
                     <li class="list-group-item">
-                      <h4>작성자: <%= allpost[i].작성자 %></h4>
-                      <p>제목: <%= allpost[i].제목 %></p>
-                      <p>게시글: <%= allpost[i].게시글 %></p>
-                      <p>신청자: <%= allpost[i].신청자 %></p>
-                      <button class="accept" data-id="<%= allpost[i]._id %>" data-articlenum="<%= allpost[i].신청한게시물번호%>">
+                      <h4>작성자: <%= allpost[i].작성자 %>
+                      </h4>
+                      <p>제목: <%= allpost[i].제목 %>
+                      </p>
+                      <p>게시글: <%= allpost[i].게시글 %>
+                      </p>
+                      <p>신청자: <%= allpost[i].신청자 %>
+                      </p>
+          
+                      <span><%= profile.id%> 님의 프로필</span>
+                              <%= profile.선호포지션 %>
+                              <%= profile.성별 %>
+                              <%= profile.신장 %>
+                              <%= profile.주발 %>
+                      <button class="accept" data-id="<%= allpost[i]._id %>"
+                        data-articlenum="<%= allpost[i].신청한게시물번호%>"
+                        onclick="alert('수락되었습니다.')">
                         수락
                       </button>
-                      <button class="refuse" data-id="<%= allpost[i]._id %>">거절</button>
+                      <button class="refuse" data-id="<%= allpost[i]._id %>"
+                        onclick="alert('거절하였습니다.')">거절</button>
                     </li>
                     <% } %>
-                      <% } %>
+                   <% } %>
+                 <% }%>
         </ul>
       </div>
 
@@ -46,21 +65,67 @@
       <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 
       <script>
+        //  $('.modal_btn').click(function (e) {
+        //   var clickarticle = e.target.dataset-id //지금 클릭한것
+        //   var nowClick = $(this); // 지금 이벤트가 동작하는 곳
+        //   console.log(clickarticle);
+
+
+        //   $.ajax({
+        //     method: 'POST',
+        //     url: '/',
+        //     data: { _id: clickarticle }
+        //   }).done(function (result) {
+        //     // console.log(data);
+        //   }).fail(function (xhr, textStatus, errorThrow) {
+        //     //요청 실패시
+        //     console.log(xhr, textStatus, errorThrow);
+        //   });
+
+
+        // })
+        $('.modal_btn').click(function (e) {
+                    var id = e.target.dataset.id; //지금 클릭한것
+                    console.log(id);//나정배라고
+                    var nowClick = $(this); // 지금 이벤트가 동작하는 곳
+                    $.ajax({
+                        method: 'POST',
+                        url: '/modal_btn',
+                        data: { id: id }
+                    }).done(function (result) {
+                        console.log(data);
+                    }).fail(function (xhr, textStatus, errorThrow) {
+                        //요청 실패시
+                        console.log(xhr, textStatus, errorThrow);
+                    });
+                })
+
+                window.onload = function () {
+                    if (location.href.indexOf('reloaded') == -1) location.replace(location.href + '?reloaded');
+                    //if (parent.location.href.indexOf('reloaded')==-1) parent.location.replace(parent.location.href+'?reloaded');
+                } 
+      </script>
+
+      <script>
         $('.accept').click(function (e) {
           var clickarticle = e.target.dataset //지금 클릭한것
           var nowClick = $(this); // 지금 이벤트가 동작하는 곳
           console.log(clickarticle);
 
+         $('.list-group-item').css("display","none");
+
           $.ajax({
             method: 'PUT',
             url: '/accept',
-            data: { _id: clickarticle}
+            data: { _id: clickarticle }
           }).done(function (result) {
-            console.log(data);
+            // console.log(data);
           }).fail(function (xhr, textStatus, errorThrow) {
             //요청 실패시
             console.log(xhr, textStatus, errorThrow);
           });
+
+
         })
       </script>
 
@@ -72,7 +137,7 @@
           $.ajax({
             method: 'PUT',
             url: '/accept',
-            data: { 신청한게시물번호 : clickarticle }
+            data: { 신청한게시물번호: clickarticle }
           }).done(function (result) {
             console.log(data);
           }).fail(function (xhr, textStatus, errorThrow) {

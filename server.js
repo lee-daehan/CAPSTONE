@@ -426,14 +426,25 @@ app.put('/request2', checklogin, function (req, res) {
     })
 });
 
+
+
+
 //신청내역 알림
 app.get('/reqmatch', checklogin, function (req, res) {
-    db.collection('request').find().toArray(function (error, result) {
-        db.collection('request').findOne({ 작성자: req.user.id }, function (error, result2) {//누가 신청했는지 정보를 불러옴
-            res.render('reqmatch.ejs', { allpost: result, writer: result2 });
-        })
-
-    });
+        db.collection('request').find().toArray(function (error, result) {
+            db.collection('request').findOne({ 작성자: req.user.id }, function (error, result2) {//누가 신청했는지 정보를 불러옴
+                if(result2 == null){
+                    res.write("<script>alert('not found')</script>");
+                    res.write("<script>window.location=\"../mypage\"</script>");
+                }else{
+                        console.log(result2)
+                        db.collection('profile').findOne({id: result2.신청자}, function(error, result3) {
+                            // console.log("result2" + result3 + "끝")
+                            res.render('reqmatch.ejs', { allpost: result, writer: result2, profile: result3, _id: req.user.id });
+                        })
+                }
+            })
+        });
 })
 
 //수락 확인

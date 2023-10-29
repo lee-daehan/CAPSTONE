@@ -49,7 +49,7 @@
             url: '/delete',
             data: { _id: postNum }
           }).done(function (result) {
-            console.log('성공')
+            // console.log('성공')
             nowClick.parent('li').fadeOut(); //지금 누른곳의 부모태그중 li를 서서히 사라지게함
           }).fail(function (xhr, textStatus, errorThrow) {
             //요청 실패시
