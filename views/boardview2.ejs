@@ -12,44 +12,204 @@
 
     <title>Football Matching for SCH</title>
     <style>
-        .sel-match {
-            padding: 20px;
-        }
+    @media screen and (max-width: 480px) {
+    #header {
+      grid-area: header;
+    }
+    #main {
+      grid-area: main;
+      display: grid;
+      grid-template-rows: auto auto;
+      grid-gap: 10px;
+    }
+    #footer {
+      grid-area: footer;
+    }
 
-        .sel-match:hover {
-            background-color: burlywood;
-        }
+    #body {
+      display: grid;
+      gap: 10px;
+      grid-template-rows: 1fr;
+      grid-template-areas: 
+        'header'
+        'main'
+        'footer';
+    }
 
-        .sel-match:focus {
-            background: burlywood;
-            background: linear-gradient(90deg, rgba(255, 0, 168, 0.6643032212885154) 0%, rgba(255, 0, 168, 0.5634628851540616) 30%, rgba(255, 0, 168, 0.19371498599439774) 100%);
-            outline: none;
-            border: 0;
-            border-radius: 10px;
-        }
-    </style>
+  #nav {
+    width: 100%;
+  }
+  #menubar {
+    width: 100%;
+  }
+  .menubar {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    align-items: center;
+    margin: 10px 0;
+  }
+  .menubar a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    margin: 0 200px;
+    display: grid;
+    grid-template-rows: auto auto;
+    place-items: center;
+  }
+  .menubar img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .sel-match {
+      padding: 20px;
+  }
+
+  .sel-match:hover {
+      background-color: burlywood;
+  }
+
+  .sel-match:focus {
+      background: burlywood;
+      background: linear-gradient(90deg, rgba(255, 0, 168, 0.6643032212885154) 0%, rgba(255, 0, 168, 0.5634628851540616) 30%, rgba(255, 0, 168, 0.19371498599439774) 100%);
+      outline: none;
+      border: 0;
+      border-radius: 10px;
+  }
+}
+
+@media screen and (min-width: 481px) {
+    header {
+      width: 100%;
+      height: 300px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      display: grid;
+      grid-template-rows: auto auto;
+    }
+
+    .menubar {
+      bottom: 10px;
+      display: grid;
+      grid-template-columns: auto auto auto auto;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      margin-bottom: 20px;
+      height: 100px;
+    }
+
+    .menubar a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+      margin: 0 200px;
+      display: grid;
+      grid-template-rows: auto auto;
+      place-items: center;
+    }
+
+    .menubar img {
+      width: 60px;
+      height: 60px;
+    }
+
+    .menuname {
+      margin-top: 10px;
+    }
+
+    main {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+  .sel-match {
+    padding: 20px;
+    width: 100%;
+    margin: 0 auto;
+    border: 1px solid #8f9194;
+    border-radius: 10px;
+    box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+    color: black;
+  }
+  .sel-match a {
+    text-decoration: none;
+  }
+  
+
+  .sel-match:hover {
+      background-color: rgb(216, 211, 206);
+  }
+
+  /* .sel-match:focus {
+      background: burlywood;
+      background: linear-gradient(90deg, rgba(49, 214, 91, 0.664) 0%, rgba(38, 218, 21, 0.563) 30%, rgba(22, 241, 41, 0.194) 100%);
+      outline: none;
+      border: 0;
+      border-radius: 10px;
+  } */
+  .main-container{
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid #8f9194;
+    border-radius: 10px;
+    box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+  }
+  .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  }
+  .list-group {
+    padding: 10px;
+  }
+}
+</style>
 </head>
 
 <body>
-    <%- include('nav.html') %>
+    <header>
+        <%- include('nav.html') %>
+          <div class="menubar">
+            <a href="/board">
+              <img src="public/imgs/ball.png" alt="전체 매치">
+              <p class="menuname">전체 매치</p>
+            </a>
+            <a href="/boardinput">
+              <img src="public/imgs/write.png" alt="매치등록">
+              <p class="menuname">매치 등록</p>
+            </a>
+            <a href="/">
+              <img src="public/imgs/notification.png" alt="공지사항">
+              <p class="menuname">공지사항</p>
+            </a>
+          </div>
+      </header>
+      <hr style="height: 1px; background: #ccc;">
+        <main>
+            <div class="main-container">
+                <h4 class="title"> 초대할 경기를 선택하세요! </h4>
 
-        <h1 class="ml-2 my-3"> 초대할 경기를 선택하세요! </h1>
-
-        <ul class="list-group">
-            <% for (var i=0; i < allpost.length; i++ ) { %>
-                <% if(writer.작성자===allpost[i].작성자) { %>
-                    <a href="/invitedetail" data-id="<%= allpost[i]._id %>" class="sel-match choice">
-                        작성자: <%= allpost[i].작성자 %>
-                        제목: <%= allpost[i].제목 %>
-                        게시글: <%= allpost[i].게시글 %>
-                        장소: <%= allpost[i].장소 %>
-                        인원: <%= allpost[i].인원 %>
-                        경기진행날짜: <%= allpost[i].경기진행날짜 %>
-                        경기진행시간: <%= allpost[i].경기진행시간 %>
-                    </a>
-                    <% } %>
-                <% } %>
-        </ul>
+                <ul class="list-group">
+                    <% for (var i=0; i < allpost.length; i++ ) { %>
+                        <% if(writer.작성자===allpost[i].작성자) { %>
+                            <a href="/invitedetail" data-id="<%= allpost[i]._id %>" class="sel-match choice">
+                                <span>작성자: <%= allpost[i].작성자 %></span>
+                                <span>제목: <%= allpost[i].제목 %></span>
+                                <span>게시글: <%= allpost[i].게시글 %></span>
+                                <span>장소: <%= allpost[i].장소 %></span>
+                                <span>인원: <%= allpost[i].인원 %></span>
+                                <span>경기진행날짜: <%= allpost[i].경기진행날짜 %></span>
+                                <span>경기진행시간: <%= allpost[i].경기진행시간 %></span>
+                            </a>
+                            <% } %>
+                        <% } %>
+                </ul>
+            </div>
+        </main>
 
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 

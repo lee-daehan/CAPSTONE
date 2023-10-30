@@ -4,6 +4,49 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    @media screen and (max-width: 480px) {
+    #header{
+      width: 100%;
+    }
+    #nav {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      justify-content: space-between;
+      padding: 5px;
+      margin: 0;
+      font-weight: bold;
+      background-color: #5da034;
+      position: relative;
+      height: 120px;
+
+    }
+    
+    .logo a{
+      color: black;
+      text-decoration: none;
+    }
+    .logo img {
+      width: 80px;
+      height: 60px;
+      position: absolute;
+      top: 10px;
+    }
+
+    .menu {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      grid-gap: 5px;
+      justify-content: end;
+    }
+
+    .menu a{
+      color: white;
+      font-size: 13px;
+    }
+  }
+
+  @media screen and (min-width: 481px) {
     nav {
       display: grid;
       grid-template-columns: auto auto;
@@ -39,10 +82,12 @@
       position: absolute;
       top: 10px;
     }
+  }
+    
   </style>
 </head>
 <body>
-  <nav>
+  <nav id="nav">
     <div class="logo">
       <a href="/">
       <img src="public/imgs/logo3.png" alt="logo">
@@ -52,7 +97,7 @@
     <div class="menu">
       <a href="/register">회원가입</a>
       <a href="/login">로그인</a>
-        <a href="/mypage">마이페이지</a>
+      <a href="/mypage">마이페이지</a>
     </div>
   </nav>
 
