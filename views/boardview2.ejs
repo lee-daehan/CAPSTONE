@@ -197,13 +197,13 @@
                     <% for (var i=0; i < allpost.length; i++ ) { %>
                         <% if(writer.작성자===allpost[i].작성자) { %>
                             <a href="/invitedetail" data-id="<%= allpost[i]._id %>" class="sel-match choice">
-                                <span>작성자: <%= allpost[i].작성자 %></span>
-                                <span>제목: <%= allpost[i].제목 %></span>
-                                <span>게시글: <%= allpost[i].게시글 %></span>
-                                <span>장소: <%= allpost[i].장소 %></span>
-                                <span>인원: <%= allpost[i].인원 %></span>
-                                <span>경기진행날짜: <%= allpost[i].경기진행날짜 %></span>
-                                <span>경기진행시간: <%= allpost[i].경기진행시간 %></span>
+                                <span class="choice">작성자: <%= allpost[i].작성자 %></span>
+                                <span class="choice">제목: <%= allpost[i].제목 %></span>
+                                <span class="choice">게시글: <%= allpost[i].게시글 %></span>
+                                <span class="choice">장소: <%= allpost[i].장소 %></span>
+                                <span class="choice">인원: <%= allpost[i].인원 %></span>
+                                <span class="choice">경기진행날짜: <%= allpost[i].경기진행날짜 %></span>
+                                <span class="choice">경기진행시간: <%= allpost[i].경기진행시간 %></span>
                             </a>
                             <% } %>
                         <% } %>
