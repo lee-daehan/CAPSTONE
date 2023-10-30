@@ -33,6 +33,16 @@
                       <button class="refuse" data-articlenum_ref="<%= result[i].게시글번호%>">
                         거절
                       </button>
+                      <% if(result[i].여부 == 1) { %>
+                      <button type="button">
+                        매칭완료
+                      </button>
+                      <% } %>
+                      <% if(result[i].여부 == 2) { %>
+                      <button type="button">
+                        매칭실패
+                      </button>
+                      <% } %>
                     </li>
             <% } %>
         </ul>
@@ -57,6 +67,11 @@
             console.log(xhr, textStatus, errorThrow);
           });
         })
+
+        window.onload = function () {
+            if (location.href.indexOf('reloaded') == -1) location.replace(location.href + '?reloaded');
+            //if (parent.location.href.indexOf('reloaded')==-1) parent.location.replace(parent.location.href+'?reloaded');
+        }
       </script>
 
       <script>
@@ -76,6 +91,10 @@
           });
         })
 
+        window.onload = function () {
+            if (location.href.indexOf('reloaded') == -1) location.replace(location.href + '?reloaded');
+            //if (parent.location.href.indexOf('reloaded')==-1) parent.location.replace(parent.location.href+'?reloaded');
+        }
       </script>
       <!-- Optional JavaScript; choose one of the two! -->
 
