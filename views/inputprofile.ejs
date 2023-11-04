@@ -8,11 +8,11 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
-    <title>Football Matching for SCH</title>
+    <title>순풋</title>
+
     <style>
-       h1{
-        padding: 0px 25px;
-       }
+    @media screen and (min-width:481px) {
+
         .big_box {
             border: 1px solid #ced4da;
             border-radius: 5px;
@@ -32,6 +32,7 @@
             background-color: #5da034;
             margin-top: 20px;
         }
+    }
     </style>
   </head>
   <body>
@@ -39,9 +40,6 @@
     <%- include('nav.html') %>
     
     <div class="big_box mt-3">
-        <!-- 메인컨텐츠 -->
-        <h1>프로필수정</h1>
-        
         <form action="/editprofile?_method=PUT" method="POST" class="m-4">
             <div class="form-group">
                 <label>닉네임</label>

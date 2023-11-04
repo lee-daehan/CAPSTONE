@@ -187,7 +187,7 @@ app.get('/logout', (req, res) => {
 app.get('/mypage', checklogin, function (req, res) {
     db.collection('profile').findOne({id: req.user.id}, function(error, result){
         db.collection('evaluate').findOne({평가받은사람: req.user.id} ,function(error, score){
-            res.render('mypage.ejs', { user : result, score: parseFloat(score.점수/score.count)});
+            res.render('mypage.ejs', { user : result, score: score, avg: parseFloat(parseFloat(score.점수)/score.count) });
         })
     })
 })

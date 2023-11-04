@@ -18,23 +18,23 @@
                 height: 80%;
             }
             #container {
-                width: 80%;
-                height: 90%;
+                width: 55%;
+                height: 70%;
                 margin: 50px auto;
                 display: grid;
                 grid-template-columns: 1fr 2fr;
                 grid-gap: 20px;
             }
             #profileBox {
+                display: grid;
+                grid-template-rows: 1fr 1.5fr 1fr;
+                grid-gap: 30px;
+            }
+            #userName {
+                padding: 15px;
                 border: 1px solid #ced4da;
                 border-radius: 10px;
                 box-shadow: 0 0 3px 0 rgb(172, 170, 170);
-                display: grid;
-                grid-template-rows: 1fr 3fr 2fr;
-                grid-gap: 10px;
-            }
-            #userName {
-                padding: 10px;
             }
             #user_id{
                 font-size: 24px;
@@ -46,27 +46,57 @@
             #user_department {
                 color: #727F88;
             }
-            #profileBtn {
+            #profile {
+                border: 1px solid #ced4da;
+                border-radius: 10px;
+                box-shadow: 0 0 3px 0 rgb(172, 170, 170);
                 display: grid;
+                grid-template-rows: 0.5fr 2fr;
+                padding: 15px;
+                font-weight: bold;
+            }
+            #profilemenu {
+                /* display: grid;
                 grid-template-rows: 1fr 1fr 1fr;
-                grid-gap: 10px;
-                padding: 10px;
-            }
-            #profileBtn button{
-                border-radius: 10px;
-                background-color: #8bc269;
-                border: 0;
-                font-weight: bold;
-            }
-            #userScore {
+                grid-gap: 10px; */
+                list-style: none;
                 height: 30%;
+            }
+            #profilemenu:hover {
+                cursor: pointer;
+            }
+            /* #profileBtn button{
                 border-radius: 10px;
                 background-color: #8bc269;
                 border: 0;
-                margin: 10px;
-                padding: 10px;
                 font-weight: bold;
+            } */
+            #userScore {
+                border: 1px solid #ced4da;
+                border-radius: 10px;
+                box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+                height: 100%;
+                padding: 15px;
+                font-weight: bold;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
             }
+            #score {
+                height: fit-content;
+                margin: 20px;
+            }
+            #detail {
+                font-size: 14px;
+            }
+            #score_img {
+                width: 50px;
+                height: 50px;
+                place-content: center;
+                align-items: center;
+                margin: 5px;
+            }
+
             #menuBox ul {
                 display: grid;
                 grid-template-rows: auto auto auto auto auto auto;
@@ -78,6 +108,9 @@
             }
             #menuBox ul li {
                 list-style: none;
+            }
+            #menuBox ul li:hover {
+                cursor: pointer;
             }
             #item {
                 display: flex;
@@ -142,15 +175,45 @@
                 <span id="user_department"><%= user.department %></span>
                 </div>
 
-                <div id="profileBtn">
-                <button type="button" onclick="location.href='/inputprofile'">프로필 설정</button>
-                <button type="button" onclick="location.href='/myprofile'">프로필 보기</button>
-                <button type="button" onclick="location.href='/editprofile'">프로필 수정</button>
+                <div id="profile">
+                    <div id="por_title">
+                        <span>프로필</span>
+                    </div>
+                    <div id="profilemenu">
+                        <li onclick="location.href='/inputprofile'">프로필 설정</button>
+                        <li onclick="location.href='/myprofile'">프로필 보기</button>
+                        <li onclick="location.href='/editprofile'">프로필 수정</button>
+                    </div>
                 </div>
 
                 <div id="userScore">
-                 <span id="score">나의 매너점수</span><br>
-                 <span> <%= score %>/5</span>
+                    <div id="score">
+                        <span>나의 매너점수 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <% if(score.count == 0 ) { %>
+                            <span> 0 / 5.0</span><br><br>
+                            <span id="detail">아직 평가를 받은 내용이 없습니다</span>
+                        <% } %>
+                        <% if( avg <= 3 ) { %>
+                            <span> <%= avg.toFixed(1) %> / 5.0</span><br><br>
+                            <span id="detail"> 조금 더 매너게임을 해봐요!</span>
+                        <% } %>
+                        <% if( avg >= 4 ) { %>
+                            <span> <%= avg.toFixed(1) %> / 5.0</span><br><br>
+                            <span id="detail"> 매너점수가 훌륭합니다!</span>
+                        <% } %>
+                    </div>
+
+                    <div id="score_img">
+                        <% if(score.count == 0 ) { %>
+                            <img src="public/imgs/noscore.png" alt="">
+                        <% } %>
+                        <% if( avg <= 3 ) { %>
+                            <img src="public/imgs/avg.png" alt="">
+                        <% } %>
+                        <% if( avg >= 4 ) { %>
+                            <img src="public/imgs/best.png" alt="">
+                        <% } %>
+                    </div>
                 </div>
             </div>
 
