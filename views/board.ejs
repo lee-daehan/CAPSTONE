@@ -11,6 +11,53 @@
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
     <title>순풋</title>
+    <style>
+        .container{
+            margin: auto auto;
+        }
+        .list-group-item{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-gap: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+        .finish{
+           
+            border-radius: 20px;    
+            border: 1px solid silver;
+        }
+        .apply{
+           
+            border-radius: 20px;    
+            border: 1px solid silver;
+        }
+        .info_box{
+            font-size: 12px;
+            color: #727F88;
+            margin-top: 3px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-gap: 5px;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        span{
+            width: 90px;
+        }
+        .btn{
+            color: white;
+            font-weight: bold;
+            
+            width: 90px;
+            height: 38px;
+            border-radius: 5px;
+            border: 0;
+            background-color: #5da034;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,7 +66,7 @@
 
         <%- include('nav.html') %>
             <ul class="list-group">
-                <form action="/select1" method="POST">
+                <!-- <form action="/select1" method="POST">
                     <select onchange="this.form.submit()" name="select">
                         <option>--인원 선택--</option>
                         <option>5vs5</option>
@@ -34,54 +81,87 @@
                         <option>대운동장 풋살장(체육관 옆)</option>
                         <option>소운동장</option>
                     </select>
-                </form>
-                <% nprint : for(var i=0;i < board.length; i++) { %>
-                    <% if(str===board[i].게시글 && str===board[i].제목 ) { %>
-                        <% continue nprint; %>
-                            <% } else {%>
-                                        <% if(board[i].남은인원===0 ) { %>
-                                            <li class="list-group-item">
-                                                <p style="display:none;" value="Articlenum">게시글 번호: <%= board[i]._id %>
-                                                </p>
-                                                <p>작성자: <%= board[i].작성자 %>
-                                                </p>
-                                                <p>제목: <%= board[i].제목 %>
-                                                </p>
-                                                <p>내용: <%= board[i].게시글 %>
-                                                </p>
-                                                <p>장소: <%= board[i].장소 %>
-                                                </p>
-                                                <p>인원: <%= board[i].인원 %>
-                                                </p>
-                                                <p>마감되었습니다.</p>
-                                            </li>
-                                            <% } %>
-                                                <% if(board[i].남은인원 !=0 ) { %>
+                </form>-->
+                <div class="container">
+                    <% nprint : for(var i=0;i < board.length; i++) { %>
+                        <% if(str===board[i].게시글 && str===board[i].제목 ) { %>
+                            <% continue nprint; %>
+                                <% } else {%>
+                                            <% if(board[i].count===0 ) { %>
+                                                <div class="finish">
                                                     <li class="list-group-item">
-                                                        <p style="display:none;" value="Articlenum">게시글 번호: <%=
-                                                                board[i]._id %>
-                                                        </p>
-                                                        <p>작성자: <%= board[i].작성자 %>
-                                                        </p>
-                                                        <p>제목: <%= board[i].제목 %>
-                                                        </p>
-                                                        <p>내용: <%= board[i].게시글 %>
-                                                        </p>
-                                                        <p>장소: <%= board[i].장소 %>
-                                                        </p>
-                                                        <p>인원: <%= board[i].인원 %>
-                                                        </p>
-                                                        <p>남은인원: <%= board[i].count %>
-                                                        </p>
-                                                        <button class="request" onclick="alert('신청되었습니다.')"
-                                                            data-id="<%= board[i]._id %>">신청</button>
+                                                        <div class="time" style="margin: auto auto;">
+                                                            <p style="display:none;" value="Articlenum">게시글 번호: <%= board[i]._id %>
+                                                            </p>
+                                                            <p style="font-weight: bold; font-size:xx-large;"><%= board[i].경기진행시간 %>:00
+                                                            </p>
+                                                        </div>
+                                                        <div class="explain" style="margin: auto auto;">
+                                                            <h3 style="font-weight: bold;">
+                                                                제목: <%= board[i].제목 %>
+                                                            </h3>
+                                                            <p>
+                                                                내용: <%= board[i].게시글 %>
+                                                            </p>
+                                                            <div class="info_box" style="margin: auto auto;">
+                                                                <span>
+                                                                    ⦁ 작성자: <%= board[i].작성자 %>
+                                                                </span>
+                                                                <span>
+                                                                    ⦁ 장소: <%= board[i].장소 %>
+                                                                </span>
+                                                                <span>
+                                                                    ⦁ 인원: <%= board[i].인원 %>
+                                                                </span>
+                                                                <span>
+                                                                    ⦁ 남은인원: <%= board[i].count %>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                            <button class="btn" style="margin: auto auto;">마감</button>
                                                     </li>
-                                                    <% } %>
-                                    </div>
-                                        <% } %>
+                                                </div>
+                                                <% } %>
+                                                    <% if(board[i].count !=0 ) { %>
+                                                        <div  class="apply">
+                                                            <li class="list-group-item">
+                                                                <div class="time" style="margin: auto auto;">
+                                                                    <p style="display:none;" value="Articlenum">게시글 번호: <%=
+                                                                            board[i]._id %>
+                                                                    </p>
+                                                                    <p style="font-weight: bold; font-size:xx-large;"><%= board[i].경기진행시간 %>:00
+                                                                    </p>
+                                                                </div>
+                                                                <div class="explain" style="margin: auto auto;">
+                                                                    <h3 style="font-weight: bold;">
+                                                                        제목: <%= board[i].제목 %>
+                                                                    </h3>
+                                                                    <p>
+                                                                        내용: <%= board[i].게시글 %>
+                                                                    </p>
+                                                                    <div class="info_box" style="margin: auto auto;">
+                                                                        <span>
+                                                                            ⦁ 작성자: <%= board[i].작성자 %>
+                                                                        </span>
+                                                                        <span>
+                                                                            ⦁ 장소: <%= board[i].장소 %>
+                                                                        </span>
+                                                                        <span>
+                                                                            ⦁ 인원: <%= board[i].인원 %>
+                                                                        </span>
+                                                                        <span>
+                                                                            ⦁ 남은인원: <%= board[i].count %>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                    <button class="request btn" style="margin: auto auto;" onclick="alert('신청되었습니다.')"
+                                                                        data-id="<%= board[i]._id %>">신청</button>
+                                                            </li>
+                                                        </div>
+                                                        <% } %>
                                             <% } %>
-                                                </div>
-                                                </div>
+                                                <% } %>
+                </div>
             </ul>
 
             <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>

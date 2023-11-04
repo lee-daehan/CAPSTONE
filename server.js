@@ -185,7 +185,11 @@ app.get('/logout', (req, res) => {
 })
 
 app.get('/mypage', checklogin, function (req, res) {
-    res.render('mypage.ejs', { User: req.user });
+    db.collection('profile').findOne({id: req.user.id}, function(error, result){
+        db.collection('evaluate').findOne({평가받은사람: req.user.id} ,function(error, score){
+            res.render('mypage.ejs', { user : result, score: parseFloat(score.점수/score.count)});
+        })
+    })
 })
 
 function checklogin(req, res, next) {
@@ -687,8 +691,8 @@ app.get('/score', function(req,res){
 })
 
 //내점수
-app.get('/myscore', function(req, res){
-    db.collection('evaluate').findOne({평가받은사람: req.user.id} ,function(error, result){
-        res.render('myscore.ejs', {result:result, avg: parseFloat(result.점수/result.count)});
-    })
-})
+// app.get('/myscore', function(req, res){
+//     db.collection('evaluate').findOne({평가받은사람: req.user.id} ,function(error, result){
+//         res.render('myscore.ejs', {result:result, avg: parseFloat(result.점수/result.count)});
+//     })
+// })

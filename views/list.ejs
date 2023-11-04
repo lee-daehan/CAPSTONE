@@ -490,6 +490,7 @@
       <div class="container1" id="container1">
         <%- include('calendar.ejs') %>
           <div class="list-container" id="list-container">
+                        <div class="Date_title">경기 진행 날짜: <%= result.경기진행날짜 %> </div>
                     <%result.sort((prev, cur) => { %>
                       <%if (prev.경기진행시간 > cur.경기진행시간) return 1; %>
                       <%if (prev.경기진행시간 < cur.경기진행시간) return -1; %>

@@ -10,7 +10,91 @@
 
     <title>순풋</title>
     <style>
-        .menubutton{
+        @media screen and (min-width:481px) {
+            * {
+                height: 100%;
+            }
+            #main {
+                height: 80%;
+            }
+            #container {
+                width: 80%;
+                height: 90%;
+                margin: 50px auto;
+                display: grid;
+                grid-template-columns: 1fr 2fr;
+                grid-gap: 20px;
+            }
+            #profileBox {
+                border: 1px solid #ced4da;
+                border-radius: 10px;
+                box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+                display: grid;
+                grid-template-rows: 1fr 3fr 2fr;
+                grid-gap: 10px;
+            }
+            #userName {
+                padding: 10px;
+            }
+            #user_id{
+                font-size: 24px;
+                font-weight: bold;
+            }
+            #user_name {
+                color: #727F88;
+            }
+            #user_department {
+                color: #727F88;
+            }
+            #profileBtn {
+                display: grid;
+                grid-template-rows: 1fr 1fr 1fr;
+                grid-gap: 10px;
+                padding: 10px;
+            }
+            #profileBtn button{
+                border-radius: 10px;
+                background-color: #8bc269;
+                border: 0;
+                font-weight: bold;
+            }
+            #userScore {
+                height: 30%;
+                border-radius: 10px;
+                background-color: #8bc269;
+                border: 0;
+                margin: 10px;
+                padding: 10px;
+                font-weight: bold;
+            }
+            #menuBox ul {
+                display: grid;
+                grid-template-rows: auto auto auto auto auto auto;
+                border: 1px solid #ced4da;
+                border-radius: 10px;
+                box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+                margin: 0;
+                padding: 20px;
+            }
+            #menuBox ul li {
+                list-style: none;
+            }
+            #item {
+                display: flex;
+                align-items: center;
+            }
+            #item span{
+                display: flex;
+                align-items: center;
+            }
+            #menuBox li img {
+                width: 30px;
+                height: 30px;
+                margin: 0 10px;
+            }
+            
+        }
+        /* .menubutton{
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
             margin: 20px 50px;
@@ -42,14 +126,66 @@
         }
         .btn a:hover{
             color: white;
-        }
+        } */
         
     </style>
   </head>
   <body>
     <!-- NavBar -->
     <%- include('nav.html') %>
-    <div class="menubutton">
+    <main id="main">
+        <div id="container">
+            <div id="profileBox">
+                <div id="userName">
+                <span id="user_id"><%= user.id %></span><br><br>
+                <span id="user_name"><%= user.name %> /</span>
+                <span id="user_department"><%= user.department %></span>
+                </div>
+
+                <div id="profileBtn">
+                <button type="button" onclick="location.href='/inputprofile'">프로필 설정</button>
+                <button type="button" onclick="location.href='/myprofile'">프로필 보기</button>
+                <button type="button" onclick="location.href='/editprofile'">프로필 수정</button>
+                </div>
+
+                <div id="userScore">
+                 <span id="score">나의 매너점수</span><br>
+                 <span> <%= score %>/5</span>
+                </div>
+            </div>
+
+            <div id="menuBox">
+                <ul>
+                    <li onclick="location.href='/resmatch'">
+                        <div id="item"><img src="public/imgs/apply.png" alt="신청한경기"><span>신청한 경기</span></div>
+                    </li>
+                    <li onclick="location.href='/reqmatch'">
+                        <div id="item"><img src="public/imgs/receive.png" alt="신청받은경기"><span>신청받은 경기</span></div>
+                    </li>
+                    <li onclick="location.href='/boardview'">
+                        <div id="item"><img src="public/imgs/board.png" alt="내 게시물"><span>내 게시물</span></div>
+                    </li>
+                    <li onclick="location.href='/myinvitelist'">
+                        <div id="item"><img src="public/imgs/receive.png" alt="초대한 유저 목록"><span>초대한 유저 목록</span></div>
+                    </li>
+                    <li onclick="location.href='/invited_match'">
+                        <div id="item"><img src="public/imgs/receive.png" alt="초대받은경기"><span>초대받은경기</span></div>
+                    </li>
+                    <li onclick="location.href='/logout'">
+                        <div id="item"><img src="public/imgs/logout.png" alt="로그아웃"><span>로그아웃</span></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+
+
+
+
+
+
+    <!-- <div class="menubutton">
 
         <div class="btn_box">
             <button type="button" class="btn">
@@ -103,7 +239,7 @@
                 <a class="text-decoration-none" href="/invited_match"><img src="public/imgs/receive.png" alt="초대받은경기">초대받은경기</a>
             </button>
         </div>
-    </div>
+    </div> -->
     
     
     

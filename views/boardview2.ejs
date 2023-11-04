@@ -193,21 +193,21 @@
             <div class="main-container">
                 <h4 class="title"> 초대할 경기를 선택하세요! </h4>
 
-                <ul class="list-group">
                     <% for (var i=0; i < allpost.length; i++ ) { %>
                         <% if(writer.작성자===allpost[i].작성자) { %>
-                            <a href="/invitedetail" data-id="<%= allpost[i]._id %>" class="sel-match choice">
-                                <span class="choice">작성자: <%= allpost[i].작성자 %></span>
-                                <span class="choice">제목: <%= allpost[i].제목 %></span>
-                                <span class="choice">게시글: <%= allpost[i].게시글 %></span>
-                                <span class="choice">장소: <%= allpost[i].장소 %></span>
-                                <span class="choice">인원: <%= allpost[i].인원 %></span>
-                                <span class="choice">경기진행날짜: <%= allpost[i].경기진행날짜 %></span>
-                                <span class="choice">경기진행시간: <%= allpost[i].경기진행시간 %></span>
-                            </a>
+                            <li onclick="location.href='/invitedetail'" data-id="<%= allpost[i]._id %>" class="sel-match choice">
+                                <div class="choice">
+                                  <span >작성자: <%= allpost[i].작성자 %></span>
+                                  <span class="choice">제목: <%= allpost[i].제목 %></span>
+                                  <span class="choice">게시글: <%= allpost[i].게시글 %></span>
+                                  <span class="choice">장소: <%= allpost[i].장소 %></span>
+                                  <span class="choice">인원: <%= allpost[i].인원 %></span>
+                                  <span class="choice">경기진행날짜: <%= allpost[i].경기진행날짜 %></span>
+                                  <span class="choice">경기진행시간: <%= allpost[i].경기진행시간 %></span>
+                                </div>
+                            </li>
                             <% } %>
                         <% } %>
-                </ul>
             </div>
         </main>
 
