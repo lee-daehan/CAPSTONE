@@ -12,8 +12,48 @@
 
     <title>순풋</title>
     <style>
+        header {
+      width: 100%;
+      height: 300px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      display: grid;
+      grid-template-rows: auto auto;
+    }
+
+    .menubar {
+      bottom: 10px;
+      display: grid;
+      grid-template-columns: auto auto auto auto;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      margin-bottom: 20px;
+      height: 100px;
+    }
+
+    .menubar a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+      margin: 0 200px;
+      display: grid;
+      grid-template-rows: auto auto;
+      place-items: center;
+    }
+
+    .menubar img {
+      width: 60px;
+      height: 60px;
+    }
+
+    .menuname {
+      margin-top: 10px;
+    }
         .container{
-            margin: auto auto;
+            width: 60%;
+            margin: 40px auto;
         }
         .list-group-item{
             display: grid;
@@ -36,9 +76,9 @@
             font-size: 12px;
             color: #727F88;
             margin-top: 3px;
-            display: grid;
+            /* display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
-            grid-gap: 5px;
+            grid-gap: 5px; */
             align-items: center;
             justify-content: flex-start;
             flex-wrap: wrap;
@@ -63,8 +103,24 @@
 <body>
 
     <% const str=" " ; %>
-
-        <%- include('nav.html') %>
+    <header id="header">
+    <%- include('nav.html') %>
+      <div class="menubar" id="menubar">
+        <a href="/board">
+          <img src="public/imgs/ball.png" alt="전체 매치">
+          <p class="menuname">전체 매치</p>
+        </a>
+        <a href="/boardinput">
+          <img src="public/imgs/write.png" alt="매치등록">
+          <p class="menuname">매치 등록</p>
+        </a>
+        <a href="/">
+          <img src="public/imgs/notification.png" alt="공지사항">
+          <p class="menuname">공지사항</p>
+        </a>
+      </div>
+    </header>
+    <hr style="height: 1px; background: #ccc;">
             <ul class="list-group">
                 <!-- <form action="/select1" method="POST">
                     <select onchange="this.form.submit()" name="select">
@@ -97,24 +153,24 @@
                                                             </p>
                                                         </div>
                                                         <div class="explain" style="margin: auto auto;">
-                                                            <h3 style="font-weight: bold;">
+                                                            <h4 style="font-weight: bold;">
                                                                 제목: <%= board[i].제목 %>
-                                                            </h3>
+                                                            </h4>
                                                             <p>
                                                                 내용: <%= board[i].게시글 %>
                                                             </p>
                                                             <div class="info_box" style="margin: auto auto;">
                                                                 <span>
-                                                                    ⦁ 작성자: <%= board[i].작성자 %>
+                                                                    작성자: <%= board[i].작성자 %> /
                                                                 </span>
                                                                 <span>
-                                                                    ⦁ 장소: <%= board[i].장소 %>
+                                                                    장소: <%= board[i].장소 %>
+                                                                </span><br>
+                                                                <span>
+                                                                    인원: <%= board[i].인원 %> /
                                                                 </span>
                                                                 <span>
-                                                                    ⦁ 인원: <%= board[i].인원 %>
-                                                                </span>
-                                                                <span>
-                                                                    ⦁ 남은인원: <%= board[i].count %>
+                                                                    남은인원: <%= board[i].count %>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -133,24 +189,24 @@
                                                                     </p>
                                                                 </div>
                                                                 <div class="explain" style="margin: auto auto;">
-                                                                    <h3 style="font-weight: bold;">
-                                                                        제목: <%= board[i].제목 %>
-                                                                    </h3>
+                                                                    <h4 style="font-weight: bold;">
+                                                                        <%= board[i].제목 %>
+                                                                    </h4>
                                                                     <p>
-                                                                        내용: <%= board[i].게시글 %>
+                                                                        <%= board[i].게시글 %>
                                                                     </p>
                                                                     <div class="info_box" style="margin: auto auto;">
                                                                         <span>
-                                                                            ⦁ 작성자: <%= board[i].작성자 %>
+                                                                            작성자: <%= board[i].작성자 %> /
                                                                         </span>
                                                                         <span>
-                                                                            ⦁ 장소: <%= board[i].장소 %>
+                                                                            장소: <%= board[i].장소 %> 
+                                                                        </span><br>
+                                                                        <span>
+                                                                            인원: <%= board[i].인원 %> /
                                                                         </span>
                                                                         <span>
-                                                                            ⦁ 인원: <%= board[i].인원 %>
-                                                                        </span>
-                                                                        <span>
-                                                                            ⦁ 남은인원: <%= board[i].count %>
+                                                                            남은인원: <%= board[i].count %>
                                                                         </span>
                                                                     </div>
                                                                 </div>

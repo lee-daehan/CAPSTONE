@@ -12,8 +12,57 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
   <title>순풋</title>
   <style>
+  @media screen and (min-width: 481px) {
+    header {
+      width: 100%;
+      height: 300px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      display: grid;
+      grid-template-rows: auto auto;
+    }
+    .menubar {
+      bottom: 10px;
+      display: grid;
+      grid-template-columns: auto auto auto auto;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      margin-bottom: 20px;
+      height: 100px;
+    }
+
+    .menubar a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+      margin: 0 200px;
+      display: grid;
+      grid-template-rows: auto auto;
+      place-items: center;
+    }
+
+    .menubar img {
+      width: 60px;
+      height: 60px;
+    }
+
+    .menuname {
+      margin-top: 10px;
+    }
+    #main-title {
+      width: 80%;
+      color: black;
+      margin: 30px auto;
+      display: flex;
+      justify-content: center;
+      font-size:x-large;
+      font-weight: bold;
+    }
     .list-container {
-      height: 850px;
+      width: 60%;
+      height: 600px;
       border: 1px solid #ced4da;
       color: #838589;
       border-radius: 10px;
@@ -23,7 +72,10 @@
       align-items: center;
       font-size: 20px;
       overflow-y: scroll;
-      margin: 40px 20px;
+      margin: 10px auto;
+    }
+    .list-container::-webkit-scrollbar {
+      display: none;
     }
 
     .list-item {
@@ -37,9 +89,9 @@
       padding: 10px;
     }
     .list-wrap {
-      display: grid;
+      /* display: grid;
       grid-template-rows: 1fr 1fr;
-      grid-gap: 10px;
+      grid-gap: 10px; */
       border: 1px solid #ced4da;
       color: #838589;
       border-radius: 10px;
@@ -69,7 +121,7 @@
 
     .btn_wait {
       width: 120px;
-      height: 30px;
+      height: 100%;
       border: 0;
       background-color: rgb(66, 66, 236);
       font-size: 18px;
@@ -81,7 +133,7 @@
 
     .btn_fail {
       width: 120px;
-      height: 30px;
+      height: 100%;
       border: 0;
       background-color: red;
       font-size: 18px;
@@ -93,7 +145,7 @@
 
     .btn_complete {
       width: 120px;
-      height: 30px;
+      height: 100%;
       border: 0;
       background-color: #5da034;
       font-size: 18px;
@@ -105,10 +157,16 @@
     .score_button {
       width: fit-content;
       height: fit-content;
-      border: 1px solid #ced4da;
-      padding: 10px;
       background-color: white;
+      margin-top: 10px;
+      margin-left: 60%;
       font-size: 15px;
+    }
+    .score_button a{
+      color: black;
+      font-weight: bold;
+      list-style: none;
+      text-decoration: none;
     }
 
     #star {
@@ -128,19 +186,55 @@
     .star.on {
       color: orange;
     }
-
+    #mat-stat{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .wait {
+            font-weight: bold;
+            color: green;
+    }
+    .complete {
+     font-weight: bold;
+     color: blue;
+    }
+    .fail {
+      font-weight: bold;
+      color: red;
+    }
     footer {
       width: 100%;
       height: 300px;
       margin: 0 auto;
       background-color: #282B33;
     }
+  }
   </style>
 </head>
 
 <body>
-  <%- include('nav.html') %>
+  <header id="header">
+    <%- include('nav.html') %>
+      <div class="menubar" id="menubar">
+        <a href="/board">
+          <img src="public/imgs/ball.png" alt="전체 매치">
+          <p class="menuname">전체 매치</p>
+        </a>
+        <a href="/boardinput">
+          <img src="public/imgs/write.png" alt="매치등록">
+          <p class="menuname">매치 등록</p>
+        </a>
+        <a href="/">
+          <img src="public/imgs/notification.png" alt="공지사항">
+          <p class="menuname">공지사항</p>
+        </a>
+      </div>
+    </header>
+    <hr style="height: 1px; background: #ccc;">
+
     <main>
+      <div id="main-title"> <%= 매칭된게시물.신청자 %>님의 신청한 매치</div>
       <div class="list-container">
         <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
           <% if(모든게시물[i].신청자==매칭된게시물.신청자) { %>
@@ -170,7 +264,9 @@
                     <span>남은인원: <%= 모든게시물[i].남은인원 %></span>
                   </div>
                 </div>
-                <button class="btn_wait">매칭대기중</button>
+                <div id="mat-stat">
+                  <span class="wait">매칭대기중</span>
+                </div>
               </div>
               <% } %>
                 <% } %>
@@ -205,12 +301,15 @@
                                     <span>남은인원: <%= 모든게시물[i].남은인원 %></span>
                                   </div>
                                 </div>
-                                <button class="btn_complete">매칭완료</button>
-                              </div>
-                              
-                              <div class="score_button">
-                                <a href="/score" data-id="<%= 모든게시물[i].작성자 %>" class="before_ev"><%= 모든게시물[i].작성자 %>님의 매너점수를 평가해주세요!</a>
-                              </div>
+
+                                <div id="mat-stat">
+                                  <span class="complete">매칭 완료</span>
+                                </div>
+                            </div>
+
+                            <div class="score_button">
+                              <a href="/score" data-id="<%= 모든게시물[i].작성자 %>" class="before_ev">> <%= 모든게시물[i].작성자 %>님의 매너점수 평가하러가기</a>
+                            </div>
                           </div>
                           <% } %>
                             <% } %>
@@ -245,7 +344,9 @@
                                             <span>남은인원: <%= 모든게시물[i].남은인원 %></span>
                                           </div>
                                         </div>
-                                        <button class="btn_fail">매칭실패</button>
+                                        <div id="mat-stat">
+                                        <span class="fail">매칭 실패</span>
+                                        </div>
                                       </div>
                                       <% } %>
                                         <% } %>

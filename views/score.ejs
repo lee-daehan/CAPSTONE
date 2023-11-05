@@ -57,7 +57,10 @@
     }
 
     .title {
+      width: 60%;
+      margin: 0 auto;
       color: black;
+      font-size: large;
       font-weight: bold;
     }
 
@@ -105,17 +108,28 @@
       border-radius: 10px;
       padding: 3px;
     }
-
-    /* #score {
-      display: flex;
-      justify-content: flex-end;
-      margin: 10px;
-    } */
+    #main-container{
+      display: block;
+      align-items: center;
+      justify-content: center;
+      width: 50%;
+      border: 1px solid #ced4da;
+      border-radius: 10px;
+      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+      margin: 10% auto;
+      padding: 20px;
+    }
     .score_button {
       border: 1px solid #ced4da;
       background-color: white;
       box-shadow: 0 0 3px 0 rgb(172, 170, 170);
       font-size: 15px;
+      margin-left: 90%;
+    }
+    .score_button a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
     }
 
     #star {
@@ -148,15 +162,18 @@
 <body>
   <%- include('nav.html') %>
     <main>
-        <h1><%= result.평가받은사람 %> 님의 매너점수는?</h1>
-                                <div class="star-container" id="star" >
-                                  <span class="star" data-id="<%= result.평가받은사람 %>" data-rate="1">★</span>
-                                  <span class="star" data-id="<%= result.평가받은사람 %>" data-rate="2">★</span>
-                                  <span class="star" data-id="<%= result.평가받은사람 %>" data-rate="3">★</span>
-                                  <span class="star" data-id="<%= result.평가받은사람 %>" data-rate="4">★</span>
-                                  <span class="star" data-id="<%= result.평가받은사람 %>" data-rate="5">★</span>
-                                </div>
-                                <button onclick="alert('평가를 완료하였습니다.')"><a href="/resmatch" data-id="<%= result.평가받은사람 %>">완료</a></button>
+      <div id="main-container">
+        <div id="title"><span style="font-size: large; font-weight: bold;"><%= result.평가받은사람 %> 님의 매너점수를 평가해주세요</span></div>
+        <div class="star-container" id="star" >
+          <span class="star" data-id="<%= result.평가받은사람 %>" data-rate="1">★</span>
+          <span class="star" data-id="<%= result.평가받은사람 %>" data-rate="2">★</span>
+          <span class="star" data-id="<%= result.평가받은사람 %>" data-rate="3">★</span>
+          <span class="star" data-id="<%= result.평가받은사람 %>" data-rate="4">★</span>
+          <span class="star" data-id="<%= result.평가받은사람 %>" data-rate="5">★</span>
+        </div>
+        <button onclick="alert('평가를 완료하였습니다.')" class="score_button"><a href="/resmatch" data-id="<%= result.평가받은사람 %>">완료</a></button>
+      </div>
+
                                                 
     </main>
 

@@ -4,34 +4,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>순풋</title>
     <style>
+    @media screen and (min-width: 481px) {    
+    header {
+      width: 100%;
+      height: 300px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      display: grid;
+      grid-template-rows: auto auto;
+    }
+
+    .menubar {
+      bottom: 10px;
+      display: grid;
+      grid-template-columns: auto auto auto auto;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      margin-bottom: 20px;
+      height: 100px;
+    }
+
+    .menubar a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+      margin: 0 200px;
+      display: grid;
+      grid-template-rows: auto auto;
+      place-items: center;
+    }
+
+    .menubar img {
+      width: 60px;
+      height: 60px;
+    }
+
+    .menuname {
+      margin-top: 10px;
+    }
+    main {
+        height: 700px;
+    }
+
+    #main-container {
+        width: 60%;
+        margin: 0 auto;
+        border: 1px solid silver;
+        border-radius: 20px;
+        box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+    }
         .box_line{
-            border: 1px solid silver;
-            margin: auto auto;
-            width: 750px;
-            border-radius: 20px;
-            box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+            margin: 0 auto;
+            overflow-y: scroll;
         }
+        .box_line::-webkit-scrollbar {
+            display: none;
+        }
+
         .head_box{
+            width: 60%;
+            height: fit-content;
             margin: 20px auto;
+            display: flex;
             align-items: center;
-            justify-items: center;
-            width: 290px;
+            justify-content: center;
+        }
+        #listhead{
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            grid-gap: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        #titleBox{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: large;
+            font-weight: bold;
         }
         .info_box{
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 3fr 1fr;
             grid-gap: 10px;
-            margin: auto auto;
-            width: 750px;
+            margin: 0 auto;
+            width: 100%;
             border: 1px solid silver;
             border-top: none;
             border-right: none;
             border-left: none;
+            padding-top: 10px;
+            padding-bottom: 10px;
         }
         .main_info{
             margin: auto auto;
+        }
+        #art_detail {
+            display: grid;
+            grid-template-rows: 1fr 1fr 1fr;
+            grid-gap: 5px;
         }
         .sub_info{
             font-size: 12px;
@@ -44,85 +120,90 @@
             justify-content: flex-start;
             flex-wrap: wrap;
         }
-        
-       
-        .btn_wait {
-      width: 120px;
-      height: 30px;
-      border: 0;
-      background-color: rgb(66, 66, 236);
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      border-radius: 10px;
-      padding: 3px;
-    }
-        .btn_complete {
-      width: 120px;
-      height: 30px;
-      border: 0;
-      background-color: #5da034;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      border-radius: 10px;
-      padding: 3px;
-    }
-        .btn_fail {
-      width: 120px;
-      height: 30px;
-      border: 0;
-      background-color: red;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      border-radius: 10px;
-      padding: 3px;
-    }
-    </style>
+        .wait {
+            font-weight: bold;
+            color: green;
+        }
+        .complete {
+            font-weight: bold;
+            color: blue;
+        }
+        .fail {
+            font-weight: bold;
+            color: red;
+        }
+}
+</style>
 </head>
 
 <body style="margin: 0; padding: 0;">
-    <%- include('nav.html') %>
+    <header id="header">
+        <%- include('nav.html') %>
+        <div class="menubar" id="menubar">
+            <a href="/board">
+                <img src="public/imgs/ball.png" alt="전체 매치">
+                <p class="menuname">전체 매치</p>
+            </a>
+            <a href="/boardinput">
+                <img src="public/imgs/write.png" alt="매치등록">
+                <p class="menuname">매치 등록</p>
+            </a>
+            <a href="/">
+                <img src="public/imgs/notification.png" alt="공지사항">
+                <p class="menuname">공지사항</p>
+            </a>
+        </div>
+    </header>
+    <hr style="height: 1px; background: #ccc;">
+
+    <main>
             <div class="head_box">
-                <h1 style="margin: auto; padding: auto;">초대한 유저 목록</h1>
+                <h2>초대한 유저 목록</h2>
             </div>
+        <div id="main-container">
+            <div id="listhead">
+                <div id="titleBox"><span>닉네임</span></div>
+                <div id="titleBox"><span>초대한 매치정보</span></div>
+                <div id="titleBox"><span>매칭상태</span></div>
+            </div>
+            <hr style="height: 1px; background: #ccc;">
+            
             <div class="box_line">
                 <% for (var i=0; i < personlist.length ; i++ ) { %>
                 <div class="info_box">
                     <div class="main_info" style="font-weight: bold;">
-                        <h3>이름: <%= personlist[i].초대받은사람 %>
-                        </h3>
+                        <span><%= personlist[i].초대받은사람 %></span>
                     </div>
-                    <div>
-                     <p>경기 제목: <%= personlist[i].제목 %>
-                     </p>
-                     <p>날짜: <%= personlist[i].경기진행날짜 %>
-                     </p>
-                        <div class="sub_info">
-                            <span>시간: <%= personlist[i].경기진행시간 %>:00
-                            </span>
-                            <span>장소: <%= personlist[i].장소 %>
-                            </span>
-                            <span>인원: <%= personlist[i].인원 %>
-                            </span>
+                    <div id="art_detail">
+                        <div>
+                            <span style="font-weight: bold;"><%= personlist[i].제목 %></span>
+                        </div>
+                        <div>
+                            <span>경기 날짜: <%= personlist[i].경기진행날짜 %> /</span>
+                            <span>시간: <%= personlist[i].경기진행시간 %>:00</span><br>
+                        </div>
+                        <div>
+                            <span><%= personlist[i].장소 %> /</span>
+                            <span><%= personlist[i].인원 %> /</span>
                             <span>남은자리: <%= personlist[i].count %>명</span>
                         </div>
                     </div>
                     <div class="btn_box" style="margin: auto auto;">
                         <% if(personlist[i].여부==0){ %>
-                        <button class="btn_wait">매칭대기중</button>
+                        <span class="wait">매칭대기중</span>
                          <% } %>
                         <% if(personlist[i].여부==1){ %>
-                        <button class="btn_wait btn_complete">매칭완료</button>
+                        <span class="complete">매칭완료</span>
                         <% } %>
                         <% if(personlist[i].여부==2){ %>
-                        <button class="btn_wait btn_fail">매칭실패</button>
+                        <span class="fail">매칭실패</span>
                          <% } %>
                     </div>
                 </div>
                 <% } %>
             </div>
+        </div>
+    </main>
 </body>
 
 </html>
