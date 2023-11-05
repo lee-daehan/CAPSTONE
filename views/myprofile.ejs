@@ -8,20 +8,90 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
-    <title>Football Matching for SCH</title>
+    <title>순풋</title>
+    <style>
+      @media screen and (min-width:480px) {
+        header {
+          width: 100%;
+          height: 300px;
+          margin: 0;
+          padding: 0;
+          border: 0;
+          display: grid;
+          grid-template-rows: auto auto;
+        }
+
+      .menubar {
+        bottom: 10px;
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
+        margin-bottom: 20px;
+        height: 100px;
+      }
+
+      .menubar a {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        margin: 0 200px;
+        display: grid;
+        grid-template-rows: auto auto;
+        place-items: center;
+      }
+
+      .menubar img {
+        width: 60px;
+        height: 60px;
+      }
+
+      .menuname {
+        margin-top: 10px;
+      }
+
+      #main-container{
+        width: 60%;
+        height: fit-content;
+        margin: 0 auto;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+      }
+    }
+    </style>
   </head>
   <body>
-    <%- include('nav.html') %>
+    <header id="header">
+      <%- include('nav.html') %>
+        <div class="menubar" id="menubar">
+          <a href="/board">
+            <img src="public/imgs/ball.png" alt="전체 매치">
+            <p class="menuname">전체 매치</p>
+          </a>
+          <a href="/boardinput">
+            <img src="public/imgs/write.png" alt="매치등록">
+            <p class="menuname">매치 등록</p>
+          </a>
+          <a href="/">
+            <img src="public/imgs/notification.png" alt="공지사항">
+            <p class="menuname">공지사항</p>
+          </a>
+        </div>
+      </header>
+      <hr style="height: 1px; background: #ccc;">
 
-    <div>
-      <ul>
+    <div id="main-container">
+        <div id="userName">
+          <p><%= User.id %></p>
+        </div>
         <li>닉네임: <%= User.닉네임 %></li>
         <li>성별: <%= User.성별 %></li>
         <li>선호포지션: <%= User.선호포지션 %></li>
         <li>주 사용 발: <%= User.주발 %></li>
         <li>신장: <%= User.신장 %></li>
         <li>몸무게: <%= User.몸무게 %></li>
-      </ul>
     </div>
   
 

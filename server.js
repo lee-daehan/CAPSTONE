@@ -225,7 +225,7 @@ app.post('/inputprofile', function (req, res) {
 });
 
 //내 프로필 보기
-app.get('/myprofile', function (req, res) {
+app.get('/myprofile', checklogin, function (req, res) {
     // console.log(req.user);
     db.collection('profile').findOne({ _id: req.user._id }, function (error, result) {
         res.render('myprofile.ejs', { User: result });
