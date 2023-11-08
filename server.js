@@ -292,11 +292,15 @@ app.get('/board', function (req, res) {
 app.get('/boardview', checklogin, function (req, res) {
     db.collection('board').find().toArray(function (error, result) {
         db.collection('board').findOne({ 작성자: req.user.id }, function (error, result2) {
-            res.render('boardview.ejs', { allpost: result, writer: result2 });
+                if(result2 == null){
+                    res.render('boardview.ejs',{ allpost: result, writer: result2 });
+                }
+                if(result2 != null){
+                    res.render('boardview.ejs', { allpost: result, writer: result2 });
+                }
         })
     });
 });
-
 
 
 
@@ -351,7 +355,7 @@ app.post('/boardinput', checklogin, function (req, res) {
         
     });
     //마이페이지로 돌아가게함
-    res.write("<script>window.location=\"../boardview\"</script>");
+    res.write("<script>window.location=\"../board\"</script>");
 });
 
 //게시물 삭제
@@ -571,7 +575,7 @@ app.post('/calendar', checklogin, function (req, res) {
     });
     var day = req.body.date;
 
-    console.log(day); //달력 클릭으로 넘어온 날짜list
+    //console.log(day); //달력 클릭으로 넘어온 날짜list
     
     db.collection('board').find({ 경기진행날짜: req.body.date }).toArray(function (error, result) {
         for (var i = 0; i < result.length; i++) {
@@ -708,9 +712,41 @@ app.get('/score', function(req,res){
     })
 })
 
-//내점수
-// app.get('/myscore', function(req, res){
-//     db.collection('evaluate').findOne({평가받은사람: req.user.id} ,function(error, result){
-//         res.render('myscore.ejs', {result:result, avg: parseFloat(result.점수/result.count)});
-//     })
-// })
+app.get('/selDate', function(req,res){
+
+    res.render('selDate.ejs');
+})
+
+app.post('/calendar2', checklogin, function (req, res) {
+    var day = req.body.date;
+
+    console.log(day); //달력 클릭으로 넘어온 날짜
+    db.collection('addmatch').insertOne({id:req.user.id, date: day, place: "소운동장"}, function(error, result){
+        console.log("1 document inserted");
+    })
+    res.write("<script>window.location=\"../matchlist\"</script>");
+})
+
+app.get('/matchlist', checklogin, function(req, res){
+    db.collection('addmatch').findOne({id:req.user.id} ,function(error, result) {
+        db.collection('board').find({장소: result.place}).toArray(function(error,result2){
+            res.render('matchlist.ejs', {result2:result2});
+            console.log("success");
+        })
+    })
+})
+
+app.post('/matchlist', checklogin, function(req,res){
+    var place = req.body.place;
+    console.log(place);
+    
+    db.collection('addmatch').updateOne({id:req.user.id},{
+        $set:
+        {
+            place : place
+        }
+    })
+    // db.collection('addmatch').deleteOne({id:req.user.id} ,function(error,result){
+    //     console.log("delete success")
+    // });
+});

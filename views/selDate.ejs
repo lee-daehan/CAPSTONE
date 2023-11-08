@@ -408,91 +408,15 @@
 </style>
 
 <body id="body">
-  <header id="header">
     <%- include('nav.html') %>
-      <div class="menubar" id="menubar">
-        <a href="/board">
-          <img src="public/imgs/ball.png" alt="전체 매치">
-          <p class="menuname">전체 매치</p>
-        </a>
-        <a href="/selDate">
-          <img src="public/imgs/write.png" alt="매치등록">
-          <p class="menuname">매치 등록</p>
-        </a>
-        <a href="/">
-          <img src="public/imgs/notification.png" alt="공지사항">
-          <p class="menuname">공지사항</p>
-        </a>
-      </div>
-    </header>
-    <hr style="height: 1px; background: #ccc;">
 
   <main id="main">
     <section id="sec_1">
       <div class="container1" id="container1">
-        <%- include('calendar.ejs') %>
+        <%- include('Calendar2.ejs') %>
           <div class="list-container" id="list-container">
-            <p class="listContainer-item">캘린더에서 날짜를 선택하여 원하는 경기를 찾아보세요.</p>
+            <p class="listContainer-item">날짜를 선택한 후 매치 진행 장소를 선택하고 등록가능한 시간대에 매치를 등록하세요.</p>
           </div>
-      </div>
-    </section>
-
-    <section id="sec_2">
-      <div class="recommand-container">
-        <div class="recommand-title">
-          <span>원하는 조건의 팀원을 찾아보세요!</span>
-        </div>
-        <form action="/recommand" method="POST">
-          <div class="select-container">
-            <div class="select">
-              <p class="sub_title">
-                <img src="public/imgs/gender.png" alt="">
-                <span>성별</span>
-              </p>
-              <div class="radio-container-gender">
-                <input type="radio" name="gender" id="male" value="남성"><label class="genderlabel" for="male"
-                  required>남성</label>
-                <input type="radio" name="gender" id="female" value="여성"><label class="genderlabel" for="female"
-                  required>여성</label>
-              </div>
-            </div>
-
-            <div class="select">
-              <p class="sub_title">
-                <img src="public/imgs/position.png" alt="">
-                <span>선호포지션</span>
-              </p>
-              <div class="radio-container-position">
-                <input type="radio" name="position" id="FW" value="FW"><label class="genderlabel" for="FW"
-                  required>FW</label>
-                <input type="radio" name="position" id="MD" value="MD"><label class="genderlabel" for="MD"
-                  required>MD</label>
-                <input type="radio" name="position" id="DF" value="DF"><label class="genderlabel" for="DF"
-                  required>DF</label>
-                <input type="radio" name="position" id="GK" value="GK"><label class="genderlabel" for="GK"
-                  required>GK</label>
-              </div>
-            </div>
-
-            <div class="select">
-              <p class="sub_title">
-                <img src="public/imgs/foot.png" alt="">
-                <span>주발</span>
-              </p>
-              <div class="radio-container-foot">
-                <input type="radio" name="foot" id="left" value="왼발"><label class="genderlabel" for="left"
-                  required>왼발</label>
-                <input type="radio" name="foot" id="right" value="오른발"><label class="genderlabel" for="right"
-                  required>오른발</label>
-                <input type="radio" name="foot" id="any" value="양발"><label class="genderlabel" for="any"
-                  required>양발</label>
-              </div>
-            </div>
-            <div class="submit">
-              <input type="submit" value="검색하기">
-            </div>
-          </div>
-        </form>
       </div>
     </section>
   </main>
@@ -505,15 +429,6 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 
   <script>
-    const select = document.querySelector(".select");
-    const currentValue = select.options[select.selectedIndex].value
-
-    // console.log(currentValue);
-    const Gender_LS = "gender";
-    localStorage.setItem(Gender_LS, currentValue);
-
-    const lsValue = localStorage.getItem(Gender_LS);
-
     function loadValue() {
       const lsValue = localStorage.getItem(Gender_LS);
       if (lsValue !== null) {

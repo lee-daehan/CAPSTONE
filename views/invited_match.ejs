@@ -328,6 +328,12 @@
           </div>
           <hr style="height: 1px; background: #ccc;">
 
+          <%if(result.length == 0) {%>
+              <div>
+                아직 초대받은 경기가 없습니다.
+              </div>
+          <%}%>
+          <%if(result.length != 0) {%>
           <div class="box_line">
             <% for (var i=0; i < result.length; i++ ) { %>
               <div class="info_box">
@@ -368,6 +374,7 @@
               </div>
               <% } %>
           </div>
+        <% } %> 
         </div>
       </div>
     </main>

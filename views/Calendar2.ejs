@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>순풋</title>
+   <style>
+      @media screen and (max-width: 480px) {
+         .calendar2 {
+         width: 100%;
+         border: 1px solid #ced4da;
+         border-radius: 10px;
+         box-shadow: 0 0 3px 0 rgb(172,170,170);
+         padding: 10px;
+         margin: 0 auto;
+      }
+
+      .calendar2 table {
+         width: 100%;
+      }
+
+      .calendar2 table>caption {
+         font-size: larger;
+         font-weight: bolder;
+         color: red;
+         text-align: left;
+         padding: 10px 20px;
+      }
+
+      .calendar2 table>tbody>tr>td {
+         padding: 10px 10px;
+         text-align: center;
+      }
+
+      .calendar2 table>tbody>tr>td>a:hover {
+         border-radius: 60%;
+         background-color: #ccc;
+      }
+
+      .calendar2 table>thead>tr>th {
+         text-align: center;
+         font-weight: bold;
+      }
+
+      .calendar2 table>tbody>tr>td>a {
+         display: block;
+         padding: 10px 10px;
+         text-decoration: none;
+         color: black;
+         font-weight: bold;
+      }
+
+      .calendar2 table>tbody>tr>td>a.today {
+         border: 0;
+         border-radius: 10px;
+         color: black;
+         background-color: rgb(15, 110, 233);
+         padding: 9px 9px;
+         background-image: url(public/imgs/today.png);
+      }
+
+      .calendar2>.calendar-header {
+         position: relative;
+         height: 70px;
+         margin: 0px 20px;
+         display: grid;
+         grid-template-columns: auto auto;
+      }
+
+      .calendar2>.calendar-header>.calendar-controls>.calendar-yearmonth {
+         font-size: larger;
+         font-weight: bolder;
+         color: rgb(15, 110, 233);
+         line-height: 50px;
+         text-decoration: none;
+      }
+
+      .calendar2>.calendar-header>.calendar-controls {
+         position: absolute;
+         left: 118px;
+         top: 10px;
+         display: grid;
+         grid-template-columns: auto auto auto;
+         align-items: center;
+      }
+
+      .calendar2>.calendar-header>.calendar-controls>button {
+         width: 25px;
+         height: 28px;
+         padding: 1px 4px 0 4px;
+         margin: 0 10px;
+         border: 1px solid #dbe8f7;
+         border-radius: 50%;
+         background-color: #dbe8f7;
+         font-size: 12px;
+         cursor: pointer;
+         font-weight: bold;
+      }
+
+      .calendar2>.calendar-header>.calendar-today {
+         width: 50px;
+         height: 28px;
+         position: absolute;
+         right: 0;
+         top: 22.5px;
+         font-size: 14px;
+         border: 1px solid #ccc;
+         border-radius: 3px;
+         align-items: center;
+      }
+
+      .sunday {
+         color: red;
+      }
+
+      .saturday {
+         color:blue;
+      }
+
+      .c {
+         background-color: #ccc;
+      }
+         
+      }
+
+      @media screen and (min-width: 481px) {
+
+         .calendar2 {
+         width: 100%;
+         border: 1px solid #ced4da;
+         border-radius: 10px;
+         box-shadow: 0 0 3px 0 rgb(172,170,170);
+         padding: 10px;
+      }
+
+      .calendar2 table {
+         width: 100%;
+      }
+
+      .calendar2 table>caption {
+         font-size: larger;
+         font-weight: bolder;
+         color: red;
+         text-align: left;
+         padding: 10px 20px;
+      }
+
+      .calendar2 table>tbody>tr>td {
+         padding: 10px 10px;
+         text-align: center;
+      }
+
+      .calendar2 table>tbody>tr>td>a:hover {
+         border-radius: 60%;
+         background-color: #ccc;
+      }
+
+      .calendar2 table>thead>tr>th {
+         text-align: center;
+         font-weight: bold;
+      }
+
+      .calendar2 table>tbody>tr>td>a {
+         display: block;
+         padding: 10px 10px;
+         text-decoration: none;
+         color: black;
+         font-weight: bold;
+      }
+
+      .calendar2 table>tbody>tr>td>a.today {
+         border: 0;
+         border-radius: 10px;
+         color: black;
+         background-color: rgb(15, 110, 233);
+         padding: 9px 9px;
+         background-image: url(public/imgs/today.png);
+      }
+
+      .calendar2>.calendar-header {
+         position: relative;
+         height: 70px;
+         margin: 0px 20px;
+         display: grid;
+         grid-template-columns: auto auto;
+      }
+
+      .calendar2>.calendar-header>.calendar-controls>.calendar-yearmonth {
+         font-size: larger;
+         font-weight: bolder;
+         color: rgb(15, 110, 233);
+         line-height: 50px;
+         text-decoration: none;
+      }
+
+      .calendar2>.calendar-header>.calendar-controls {
+         position: absolute;
+         left: 152px;
+         top: 10px;
+         display: grid;
+         grid-template-columns: auto auto auto;
+         align-items: center;
+      }
+
+      .calendar2>.calendar-header>.calendar-controls>button {
+         width: 25px;
+         height: 28px;
+         padding: 1px 4px 0 4px;
+         margin: 0 10px;
+         border: 1px solid #dbe8f7;
+         border-radius: 50%;
+         background-color: #dbe8f7;
+         font-size: 12px;
+         cursor: pointer;
+         font-weight: bold;
+      }
+
+      .calendar2>.calendar-header>.calendar-today {
+         width: 50px;
+         height: 28px;
+         position: absolute;
+         right: 0;
+         top: 22.5px;
+         font-size: 14px;
+         border: 1px solid #ccc;
+         border-radius: 3px;
+         align-items: center;
+      }
+
+      .sunday {
+         color: red;
+      }
+
+      .saturday {
+         color:blue;
+      }
+
+      .c {
+         background-color: #ccc;
+      }
+      }
+     
+   </style>
+   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+</head>
+
+<body>
+   <div class="calendar2" id="cal">
+      <div class="calendar-header">
+         <div class="calendar-controls">
+            <button type="button" class="calendar-prev">&lt;</button>
+            <a href="/matchlist", class="calendar-yearmonth"></a>
+            <button type="button" class="calendar-next">&gt;</button>
+         </div>
+         <button type="button" class="calendar-today">오늘</button>
+      </div>
+
+      <div id="calendar2" id="cal"></div>
+   </div>
+   <script>
+      // 날짜 클릭
+      $(document).on("click", ".calendar2 table > tbody > tr > td > a", function (e) {
+         var yearmonth = $(".calendar-yearmonth").text().split(".");
+         var clickvalue = yearmonth[0] + "-" + yearmonth[1] + "-" + $(e.target).text();
+         fetch("/calendar2", {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json"
+            },
+            body: JSON.stringify({date : clickvalue})
+         }).then(res => {
+            if(res.status==200) {
+               res.text().then(text=>console.log(text))
+            }
+            else{
+               console.log(res.statusText)
+            }
+         })
+         .catch(err=>console.log(err));
+      });
+
+      // $(document).on("click", ".calendar table > tbody > tr > td > a", function (e) {
+      //    //선택한 날짜 표시
+      // });
+      // 이전 달 이동 버튼 클릭
+      $(".calendar-controls > .calendar-prev").on("click", function () {
+         var yearmonth = $(".calendar-yearmonth").text().split(".");
+         calendar(new Date(parseInt(yearmonth[0]), parseInt(yearmonth[1]) - 2, 1));
+      });
+
+      // 다음 달 이동 버튼 클릭
+      $(".calendar-controls > .calendar-next").on("click", function () {
+         var yearmonth = $(".calendar-yearmonth").text().split(".");
+         calendar(new Date(parseInt(yearmonth[0]), parseInt(yearmonth[1]), 1));
+      });
+
+      // 오늘 이동 버튼 클릭
+      $(".calendar-header > .calendar-today").on("click", function () {
+         calendar(new Date());
+      });
+      function calendar(date) {
+         // 달력 연도
+         var calendarYear = date.getFullYear();
+         // 달력 월
+         var calendarMonth = date.getMonth() + 1;
+         // 달력 일
+         var calendarToday = date.getDate();
+
+         var monthLastDate = new Date(calendarYear, calendarMonth, 0);
+         // 달력 월의 마지막 일
+         var calendarMonthLastDate = monthLastDate.getDate();
+
+         var monthStartDay = new Date(calendarYear, date.getMonth(), 1);
+         // 달력 월의 시작 요일
+         var calendarMonthStartDay = monthStartDay.getDay();
+
+         // 주 카운트   
+         var calendarWeekCount = Math.ceil((calendarMonthStartDay + calendarMonthLastDate) / 7);
+
+         // 년월
+         $(".calendar-yearmonth").html(calendarYear + "." + calendarMonth);
+
+         // 오늘
+         var today = new Date();
+
+         var html = "";
+         html += "<table>";
+         html += "<thead>";
+         html += "<tr>";
+         html += "<th class=\"sunday\">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th class=\"saturday\">토</th>";
+         html += "</tr>";
+         html += "</thead>";
+         html += "<tbody>";
+         // 위치
+         var calendarPos = 0;
+         // 날짜
+         var calendarDay = 0;
+         for (var index1 = 0; index1 < calendarWeekCount; index1++) {
+            html += "<tr>";
+            for (var index2 = 0; index2 < 7; index2++) {
+               html += "<td>";
+               if (calendarMonthStartDay <= calendarPos && calendarDay < calendarMonthLastDate) {
+                  calendarDay++;
+                  html += "<a";
+                  if (calendarYear == today.getFullYear() && calendarMonth == today.getMonth() + 1
+                     && calendarDay == today.getDate()) {
+                     html += " class=\"today\"";
+                     html += "href=/matchlist";
+                  }
+                  else {
+                     html += " href=/matchlist";
+                  }
+                  html += ">" + calendarDay + "</a>";
+               }
+               html += "</td>";
+               calendarPos++;
+            }
+            html += "</tr>";
+         }
+         html += "</tbody>";
+         html += "</table>";
+         $("#calendar2").html(html);
+      }
+
+      calendar(new Date());
+   </script>
+</body>
+
+</html>

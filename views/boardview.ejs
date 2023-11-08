@@ -12,7 +12,9 @@
 
   <title>순풋</title>
   <script>
-    
+    if(!location.search.match('a=1')){
+      location.href='?a=1';
+    }
   </script>
   <style>
   @media screen and (min-width: 481px) {
@@ -150,9 +152,17 @@
   <hr style="height: 1px; background: #ccc;">
 
 <main>
-    <div id="main-title"> <%= writer.작성자 %>님이 등록한 매치 </div>
-      
-      <div class="list-container">
+    <div id="main-title">  등록한 매치 </div>
+    <div class="list-container">
+        <% if(writer ==null) { %>
+          <div class="title">
+            <div class="content">
+              <div class="detail"><p style="margin: auto auto;">작성한 게시글이 없습니다.</p></div>
+            </div>
+          </div>
+          <% } %>
+
+    <% if( writer !=null) { %>
         <% for (var i=0; i < allpost.length; i++ ) { %>
           <% if(writer.작성자===allpost[i].작성자) { %>
           <div class="list-item">
@@ -175,6 +185,7 @@
           </div>
           <% } %>
         <% } %>
+      <% } %>
       </div>
     </div>
 </main>

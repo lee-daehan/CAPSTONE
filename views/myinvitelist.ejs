@@ -167,41 +167,49 @@
                 <div id="titleBox"><span>매칭상태</span></div>
             </div>
             <hr style="height: 1px; background: #ccc;">
-            
-            <div class="box_line">
-                <% for (var i=0; i < personlist.length ; i++ ) { %>
-                <div class="info_box">
-                    <div class="main_info" style="font-weight: bold;">
-                        <span><%= personlist[i].초대받은사람 %></span>
-                    </div>
-                    <div id="art_detail">
-                        <div>
-                            <span style="font-weight: bold;"><%= personlist[i].제목 %></span>
-                        </div>
-                        <div>
-                            <span>경기 날짜: <%= personlist[i].경기진행날짜 %> /</span>
-                            <span>시간: <%= personlist[i].경기진행시간 %>:00</span><br>
-                        </div>
-                        <div>
-                            <span><%= personlist[i].장소 %> /</span>
-                            <span><%= personlist[i].인원 %> /</span>
-                            <span>남은자리: <%= personlist[i].count %>명</span>
-                        </div>
-                    </div>
-                    <div class="btn_box" style="margin: auto auto;">
-                        <% if(personlist[i].여부==0){ %>
-                        <span class="wait">매칭대기중</span>
-                         <% } %>
-                        <% if(personlist[i].여부==1){ %>
-                        <span class="complete">매칭완료</span>
-                        <% } %>
-                        <% if(personlist[i].여부==2){ %>
-                        <span class="fail">매칭실패</span>
-                         <% } %>
+            <%  if(personlist.length == 0){%>
+                <div>
+                    <div class="main_info" style="font-weight: bold; margin: auto auto;">
+                        <span style="display: inline-block; margin: auto auto; align-items: center; justify-content: center;">초대한 유저가 없습니다.</span>
                     </div>
                 </div>
-                <% } %>
-            </div>
+                <%  } %>
+            <%  if(personlist != 0){%>
+                <div class="box_line">
+                    <% for (var i=0; i < personlist.length ; i++ ) { %>
+                    <div class="info_box">
+                        <div class="main_info" style="font-weight: bold;">
+                            <span><%= personlist[i].초대받은사람 %></span>
+                        </div>
+                        <div id="art_detail">
+                            <div>
+                                <span style="font-weight: bold;"><%= personlist[i].제목 %></span>
+                            </div>
+                            <div>
+                                <span>경기 날짜: <%= personlist[i].경기진행날짜 %> /</span>
+                                <span>시간: <%= personlist[i].경기진행시간 %>:00</span><br>
+                            </div>
+                            <div>
+                                <span><%= personlist[i].장소 %> /</span>
+                                <span><%= personlist[i].인원 %> /</span>
+                                <span>남은자리: <%= personlist[i].count %>명</span>
+                            </div>
+                        </div>
+                        <div class="btn_box" style="margin: auto auto;">
+                            <% if(personlist[i].여부==0){ %>
+                            <span class="wait">매칭대기중</span>
+                             <% } %>
+                            <% if(personlist[i].여부==1){ %>
+                            <span class="complete">매칭완료</span>
+                            <% } %>
+                            <% if(personlist[i].여부==2){ %>
+                            <span class="fail">매칭실패</span>
+                             <% } %>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+           <%  }%>
         </div>
     </main>
 </body>
