@@ -435,15 +435,15 @@
                 <form action="" method="" name="selPlace">
                   <label for="소운동장">
                     <input type="radio" id="소운동장" name="place" value="소운동장">
-                    <a id="소운동장" href="/small_playground" onclick="check(this.id)">소운동장</a>
+                    <a id="소운동장" href="/small_playground2" onclick="check(this.id)">소운동장</a>
                   </label>
                   <label for="대운동장 풋살장(체육관 옆)">
                     <input type="radio" id="대운동장 풋살장(체육관 옆)" name="place" value="대운동장 풋살장(체육관 옆)" checked>
-                    <a id="대운동장 풋살장(체육관 옆)" href="/gym" onclick="check(this.id)">대운동장 풋살장(체육관 옆)</a>
+                    <a id="대운동장 풋살장(체육관 옆)" href="/gym2" onclick="check(this.id)">대운동장 풋살장(체육관 옆)</a>
                   </label>
                   <label for="대운동장 풋살장(농구골대 옆)">
                     <input type="radio" id="대운동장 풋살장(농구골대 옆)" name="place" value="대운동장 풋살장(농구골대 옆)">
-                    <a id="대운동장 풋살장(농구골대 옆)" href="/basket" onclick="check(this.id)">대운동장 풋살장(농구골대 옆)</a>
+                    <a id="대운동장 풋살장(농구골대 옆)" href="/basket2" onclick="check(this.id)">대운동장 풋살장(농구골대 옆)</a>
                   </label>
                 </form>
               </div>
@@ -623,7 +623,7 @@
       function check(place) {
         $.ajax({
           method: 'POST',
-          url: '/selplace',
+          url: '/selplace2',
           data: { place: place }
         }).done(function (result) {
           console.log(data);

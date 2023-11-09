@@ -460,7 +460,8 @@
 
                   <% var time1=result2.find(isTime_1); %>
                     <% if(time1==null ) { %>
-                      <button>등록가능</button>
+                      <button onclick="location.href='/boardinput'" class="addBtn"
+                      data-place="<%= result.place %>" data-date="<%= date %>" data-time="08:00">등록가능</button>
                     <% } else { %>
                       <button>마감</button>
                     <% } %>
@@ -477,7 +478,8 @@
 
                   <% var time2=result2.find(isTime_2); %>
                     <% if(time2==null ) { %>
-                      <button>등록가능</button>
+                      <button onclick="location.href='/boardinput'" class="addBtn"
+                      data-place="<%= result.place %>" data-date="<%= date %>" data-time="10:00">등록가능</button>
                     <% } else { %>
                       <button>마감</button>
                     <% } %>
@@ -494,7 +496,8 @@
 
                   <% var time3=result2.find(isTime_3); %>
                     <% if(time3==null ) { %>
-                      <button>등록가능</button>
+                      <button onclick="location.href='/boardinput'" class="addBtn"
+                      data-place="<%= result.place %>" data-date="<%= date %>" data-time="12:00">등록가능</button>
                     <% } else { %>
                       <button>마감</button>
                     <% } %>
@@ -511,7 +514,8 @@
 
                   <% var time4=result2.find(isTime_4); %>
                     <% if(time4==null ) { %>
-                      <button>등록가능</button>
+                      <button onclick="location.href='/boardinput'" class="addBtn"
+                      data-place="<%= result.place %>" data-date="<%= date %>" data-time="14:00">등록가능</button>
                     <% } else { %>
                       <button>마감</button>
                     <% } %>
@@ -528,7 +532,8 @@
 
                   <% var time5=result2.find(isTime_5); %>
                     <% if(time5==null ) { %>
-                      <button>등록가능</button>
+                      <button onclick="location.href='/boardinput'" class="addBtn"
+                      data-place="<%= result.place %>" data-date="<%= date %>" data-time="16:00">등록가능</button>
                     <% } else { %>
                       <button>마감</button>
                     <% } %>
@@ -545,7 +550,8 @@
 
                   <% var time6=result2.find(isTime_6); %>
                     <% if(time6==null ) { %>
-                      <button>등록가능</button>
+                      <button onclick="location.href='/boardinput'" class="addBtn"
+                      data-place="<%= result.place %>" data-date="<%= date %>" data-time="18:00">등록가능</button>
                     <% } else { %>
                       <button>마감</button>
                     <% } %>
@@ -555,14 +561,15 @@
                   <span>장소: <%= result.place %></span>
                   <span>시간: 20</span>
                   <% function isTime_7(element) { %>
-                    <% if(element.경기진행시간==208 ) { %>
+                    <% if(element.경기진행시간==20 ) { %>
                       <% return true; %>
                     <% } %>
                   <% } %>
 
                   <% var time7=result2.find(isTime_7); %>
                     <% if(time7==null ) { %>
-                      <button>등록가능</button>
+                      <button onclick="location.href='/boardinput'" class="addBtn"
+                      data-place="<%= result.place %>" data-date="<%= date %>" data-time="20:00">등록가능</button>
                     <% } else { %>
                       <button>마감</button>
                     <% } %>
@@ -579,7 +586,8 @@
 
                   <% var time8=result2.find(isTime_8); %>
                     <% if(time8==null ) { %>
-                      <button>등록가능</button>
+                      <button onclick="location.href='/boardinput'" class="addBtn"
+                      data-place="<%= result.place %>" data-date="<%= date %>" data-time="22:00">등록가능</button>
                     <% } else { %>
                       <button>마감</button>
                     <% } %>
@@ -596,7 +604,8 @@
 
                   <% var time9=result2.find(isTime_9); %>
                     <% if(time9==null ) { %>
-                      <button>등록가능</button>
+                      <button onclick="location.href='/boardinput'" class="addBtn"
+                      data-place="<%= result.place %>" data-date="<%= date %>" data-time="24:00">등록가능</button>
                     <% } else { %>
                       <button>마감</button>
                     <% } %>
@@ -623,6 +632,26 @@
           console.log(xhr, textStatus, errorThrow);
         });
       }
+
+      $('.addBtn').click(function (e) {
+        var place = e.target.dataset.place; //지금 클릭한것
+        var date = e.target.dataset.date; //지금 클릭한것
+        var time = e.target.dataset.time; //지금 클릭한것 
+        console.log(place);
+        console.log(date);
+        console.log(time);
+        var nowClick = $(this); // 지금 이벤트가 동작하는 곳
+        $.ajax({
+          method: 'POST',
+          url: '/boardwrite',
+          data: { place: place, date:date, time:time }
+        }).done(function (result) {
+          console.log('성공')
+        }).fail(function (xhr, textStatus, errorThrow) {
+          //요청 실패시
+          console.log(xhr, textStatus, errorThrow);
+        });
+      })
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>

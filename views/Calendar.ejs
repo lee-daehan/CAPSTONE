@@ -249,7 +249,7 @@
       <div class="calendar-header">
          <div class="calendar-controls">
             <button type="button" class="calendar-prev">&lt;</button>
-            <a href="/list", class="calendar-yearmonth"></a>
+            <a href="#", class="calendar-yearmonth"></a>
             <button type="button" class="calendar-next">&gt;</button>
          </div>
          <button type="button" class="calendar-today">오늘</button>
@@ -258,6 +258,15 @@
       <div id="calendar" id="cal"></div>
    </div>
    <script>
+      //오늘날짜 생성
+      var today = new Date();
+
+      var year = today.getFullYear();
+      var month = ('0' + (today.getMonth() + 1)).slice(-2);
+      var day = ('0' + today.getDate()).slice(-2);
+
+      var dateString = year + '-' + month  + '-' + day;
+/////////////////////////////////////////////////
       // 날짜 클릭
       $(document).on("click", ".calendar table > tbody > tr > td > a", function (e) {
          var yearmonth = $(".calendar-yearmonth").text().split(".");
@@ -265,7 +274,9 @@
             var clickvalue1 = yearmonth[0] + "-" + '0' + yearmonth[1] + "-" + '0' + $(e.target).text();
          } else if(($(e.target).text()).length == 1){
             var clickvalue1 = yearmonth[0] + "-" + yearmonth[1] + "-" + '0' + $(e.target).text();
-         } else {
+         } else if(($(e.target).text()) == "오늘") {
+            var clickvalue1 = dateString;
+         }else {
             var clickvalue1 = yearmonth[0] + "-" + yearmonth[1] + "-"  + $(e.target).text();
          }
          fetch("/calendar", {

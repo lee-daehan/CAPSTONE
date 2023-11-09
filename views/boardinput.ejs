@@ -11,6 +11,11 @@
     integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
   <title>순풋</title>
+  <script>
+    if(!location.search.match('a=1')){
+      location.href='?a=1';
+    }
+  </script>
   <style>
     @media screen and (min-width: 481px) {
       header {
@@ -91,7 +96,7 @@
           <img src="public/imgs/ball.png" alt="전체 매치">
           <p class="menuname">전체 매치</p>
         </a>
-        <a href="/boardinput">
+        <a href="/selDate">
           <img src="public/imgs/write.png" alt="매치등록">
           <p class="menuname">매치 등록</p>
         </a>
@@ -120,11 +125,7 @@
       </div>
       <div class="form-group">
         <label>진행 장소</label>
-        <select class="form-control" name="place">
-          <option>소운동장</option>
-          <option>대운동장 풋살장(체육관 옆)</option>
-          <option>대운동장 풋살장(농구골대 옆)</option>
-        </select>
+        <input value="<%= result.place %>" class="form-control" name="place" readonly>
       </div>
       <div class="form-group">
         <label>매치 인원</label>
@@ -136,21 +137,11 @@
       </div>
       <div class="form-group">
         <label>경기 진행 날짜</label>
-        <input value="" type="text" class="form-control" name="date" placeholder="예) 2023-8-6">
+        <input value="<%= result.date %>" type="text" class="form-control" name="date" readonly>
       </div>
       <div class="form-group">
         <label>경기 진행 시간</label>
-        <select class="form-control" name="matchtime">
-          <option value="08">08:00</option>
-          <option value="10">10:00</option>
-          <option value="12">12:00</option>
-          <option value="14">14:00</option>
-          <option value="16">16:00</option>
-          <option value="18">18:00</option>
-          <option value="20">20:00</option>
-          <option value="22">22:00</option>
-          <option value="24">24:00</option>
-        </select>
+        <input class="form-control" name="matchtime" value="<%= result.time %>" readonly>
       </div>
       <button id="saveBtn" type="submit" class="btn-primary" onclick="savealte()">저장</button>
     </form>
