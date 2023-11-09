@@ -107,16 +107,6 @@
     color: black;
   }
 
-  .request2 {
-    border: 0;
-    border-radius: 10px;
-    color: white;
-    background-color: #5da034;
-    font-weight: bold;
-    font-size: 17px;
-    padding: 10px;
-    width: 70px;
-  }
 
   
   .menu {
@@ -330,17 +320,6 @@
     color: black;
   }
 
-  .request2 {
-    border: 0;
-    border-radius: 10px;
-    color: white;
-    background-color: #5da034;
-    font-weight: bold;
-    font-size: 17px;
-    padding: 10px;
-    width: 70px;
-  }
-
   .recommand-container {
     margin: 10px;
     border: 1px solid #ced4da;
@@ -468,23 +447,183 @@
 
 <body>
   <hr style="height: 1px; background: #ccc;">
+  <%- include('nav.html') %>
   <main>
     <section>
       <div class="container1" id="container1">
         <%- include('Calendar2.ejs') %>
           <div class="list-container" id="list-container">
-            <div>
-              <label for="소운동장">
-                <input type="radio" id="소운동장" name="place" value="소운동장" checked>소운동장
-              </label>
-              <label for="대운동장 풋살장(체육관 옆)">
-                <input type="radio" id="대운동장 풋살장(체육관 옆)" name="place" value="대운동장 풋살장(체육관 옆)">대운동장 풋살장(체육관 옆)
-              </label>
-              <label for="대운동장 풋살장(농구골대 옆)">
-                <input type="radio" id="대운동장 풋살장(농구골대 옆)" name="place" value="대운동장 풋살장(농구골대 옆)">대운동장 풋살장(농구골대 옆)
-              </label>
+            <div id="">
+              <form action="" method="" name="selPlace">
+                <label for="소운동장">
+                  <input type="radio" id="소운동장" name="place" value="소운동장"  checked>
+                  <a id="소운동장" href="/small_playground2" onclick="check(this.id)">소운동장</a>
+                </label>
+                <label for="대운동장 풋살장(체육관 옆)">
+                  <input type="radio" id="대운동장 풋살장(체육관 옆)" name="place" value="대운동장 풋살장(체육관 옆)">
+                  <a id="대운동장 풋살장(체육관 옆)" href="/gym2" onclick="check(this.id)">대운동장 풋살장(체육관 옆)</a>
+                </label>
+                <label for="대운동장 풋살장(농구골대 옆)">
+                  <input type="radio" id="대운동장 풋살장(농구골대 옆)" name="place" value="대운동장 풋살장(농구골대 옆)">
+                  <a id="대운동장 풋살장(농구골대 옆)" href="/basket2" onclick="check(this.id)">대운동장 풋살장(농구골대 옆)</a>
+                </label>
+              </form>
             </div>
-            <div><%= result2.경기진행시간 %></div>
+            <div id="matchlistContainer">
+              <div>
+                <span>날짜: <%= date %> </span>
+                <span>장소: <%= place %></span>
+                <span>시간: 08</span>
+                <% function isTime_1(element) { %>
+                  <% if(element.경기진행시간==08 ) { %>
+                    <% return true; %>
+                  <% } %>
+                <% } %>
+
+                <% var time1=result2.find(isTime_1); %>
+                  <% if(time1==null ) { %>
+                    <button>등록가능</button>
+                  <% } else { %>
+                    <button>마감</button>
+                  <% } %>
+              </div>
+              <div>
+                <span>날짜: <%= date %></span>
+                <span>장소: <%= place %></span>
+                <span>시간: 10</span>
+                <% function isTime_2(element) { %>
+                  <% if(element.경기진행시간==10 ) { %>
+                    <% return true; %>
+                  <% } %>
+                <% } %>
+
+                <% var time2=result2.find(isTime_2); %>
+                  <% if(time2==null ) { %>
+                    <button>등록가능</button>
+                  <% } else { %>
+                    <button>마감</button>
+                  <% } %>
+              </div>
+              <div>
+                <span>날짜: <%= date %></span>
+                <span>장소: <%= place %></span>
+                <span>시간: 12</span>
+                <% function isTime_3(element) { %>
+                  <% if(element.경기진행시간==12 ) { %>
+                    <% return true; %>
+                  <% } %>
+                <% } %>
+
+                <% var time3=result2.find(isTime_3); %>
+                  <% if(time3==null ) { %>
+                    <button>등록가능</button>
+                  <% } else { %>
+                    <button>마감</button>
+                  <% } %>
+              </div>
+              <div>
+                <span>날짜: <%= date %></span>
+                <span>장소: <%= place %></span>
+                <span>시간: 14</span>
+                <% function isTime_4(element) { %>
+                  <% if(element.경기진행시간==14 ) { %>
+                    <% return true; %>
+                  <% } %>
+                <% } %>
+
+                <% var time4=result2.find(isTime_4); %>
+                  <% if(time4==null ) { %>
+                    <button>등록가능</button>
+                  <% } else { %>
+                    <button>마감</button>
+                  <% } %>
+              </div>
+              <div>
+                <span>날짜: <%= date %></span>
+                <span>장소: <%= place %></span>
+                <span>시간: 16</span>
+                <% function isTime_5(element) { %>
+                  <% if(element.경기진행시간==16 ) { %>
+                    <% return true; %>
+                  <% } %>
+                <% } %>
+
+                <% var time5=result2.find(isTime_5); %>
+                  <% if(time5==null ) { %>
+                    <button>등록가능</button>
+                  <% } else { %>
+                    <button>마감</button>
+                  <% } %>
+              </div>
+              <div>
+                <span>날짜: <%= date %></span>
+                <span>장소: <%= place %></span>
+                <span>시간: 18</span>
+                <% function isTime_6(element) { %>
+                  <% if(element.경기진행시간==18 ) { %>
+                    <% return true; %>
+                  <% } %>
+                <% } %>
+
+                <% var time6=result2.find(isTime_6); %>
+                  <% if(time6==null ) { %>
+                    <button>등록가능</button>
+                  <% } else { %>
+                    <button>마감</button>
+                  <% } %>
+              </div>
+              <div>
+                <span>날짜: <%= date %></span>
+                <span>장소: <%= place %></span>
+                <span>시간: 20</span>
+                <% function isTime_7(element) { %>
+                  <% if(element.경기진행시간==20 ) { %>
+                    <% return true; %>
+                  <% } %>
+                <% } %>
+
+                <% var time7=result2.find(isTime_7); %>
+                  <% if(time7==null ) { %>
+                    <button>등록가능</button>
+                  <% } else { %>
+                    <button>마감</button>
+                  <% } %>
+              </div>
+              <div>
+                <span>날짜: <%= date %></span>
+                <span>장소: <%= place %></span>
+                <span>시간: 22</span>
+                <% function isTime_8(element) { %>
+                  <% if(element.경기진행시간==22 ) { %>
+                    <% return true; %>
+                  <% } %>
+                <% } %>
+
+                <% var time8=result2.find(isTime_8); %>
+                  <% if(time8==null ) { %>
+                    <button>등록가능</button>
+                  <% } else { %>
+                    <button>마감</button>
+                  <% } %>
+              </div>
+              <div>
+                <span>날짜: <%= date %></span>
+                <span>장소: <%= place %></span>
+                <span>시간: 24</span>
+                <% function isTime_9(element) { %>
+                  <% if(element.경기진행시간==24 ) { %>
+                    <% return true; %>
+                  <% } %>
+                <% } %>
+
+                <% var time9=result2.find(isTime_9); %>
+                  <% if(time9==null ) { %>
+                    <button>등록가능</button>
+                  <% } else { %>
+                    <button>마감</button>
+                  <% } %>
+              </div>
+            </div>
             
           </div>
       </div>
@@ -498,68 +637,18 @@
   </footer>
 
   <script>
-    var place = document.getElementsByName("place");
-    for(var i=0; i<place.length;i++) {
-      place[i].addEventListener('click', function(){
-        console.log(this.value); //라디오버튼 클릭시 해당 value 값들
-
-        switch(this.value) {
-          case "소운동장" :
-          $.ajax({
-              method: 'POST',
-              url: '/matchlist',
-              data: { place: this.value }
-            }).done(function (result) {
-              console.log(data);
-            }).fail(function (xhr, textStatus, errorThrow) {
-              //요청 실패시
-              console.log(xhr, textStatus, errorThrow);
-            });
-            break;
-          case "대운동장 풋살장(체육관 옆)" :
-          $.ajax({
-              method: 'POST',
-              url: '/matchlist',
-              data: { place: this.value }
-            }).done(function (result) {
-              console.log(data);
-            }).fail(function (xhr, textStatus, errorThrow) {
-              //요청 실패시
-              console.log(xhr, textStatus, errorThrow);
-            });
-            break;
-          case "대운동장 풋살장(농구골대 옆)" :
-          $.ajax({
-              method: 'POST',
-              url: '/matchlist',
-              data: { place: this.value }
-            }).done(function (result) {
-              console.log(data);
-            }).fail(function (xhr, textStatus, errorThrow) {
-              //요청 실패시
-              console.log(xhr, textStatus, errorThrow);
-            });
-            break;
-        }
-      })
-    }
-
-
-    $('.request2').click(function (e) {
-      var art_id = e.target.dataset.id; //지금 클릭 게시글의 글 번호
-      var nowClick = $(this); // 지금 이벤트가 동작하는 곳
-      console.log(art_id);
+    function check(place) {
       $.ajax({
-        method: 'PUT',
-        url: '/request2',
-        data: { _id: art_id }
+        method: 'POST',
+        url: '/selplace2',
+        data: { place: place }
       }).done(function (result) {
         console.log(data);
       }).fail(function (xhr, textStatus, errorThrow) {
         //요청 실패시
         console.log(xhr, textStatus, errorThrow);
       });
-    })
+    }
 
     window.onload = function () {
       if (location.href.indexOf('reloaded') == -1) location.replace(location.href + '?reloaded');

@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 const methodOverride = require('method-override');
 const { count } = require('console');
+const { type } = require('os');
 app.use(methodOverride('_method'))
 app.use(session({
     secret: '비밀코드', //암호 키 저장, 이 키를 통하여 Session id를 암호화
@@ -121,6 +122,12 @@ app.post('/register', function (req, res) {
             db.collection('work').insertOne({
                 id: req.body.id,
                 other: null
+            })
+
+            db.collection('addmatch').insertOne({
+                id: req.body.id,
+                date: null,
+                place: null
             })
         }
     })
@@ -313,8 +320,6 @@ app.get('/boardinput', function (req, res) {
     res.render('boardinput.ejs');
 });
 
-let today = new Date();
-let date = today.getDate(); // 날짜구하기
 
 app.post('/boardinput', checklogin, function (req, res) {
     console.log(req.user._id);
@@ -575,7 +580,7 @@ app.post('/calendar', checklogin, function (req, res) {
     });
     var day = req.body.date;
 
-    //console.log(day); //달력 클릭으로 넘어온 날짜list
+    console.log(day); //달력 클릭으로 넘어온 날짜list
     
     db.collection('board').find({ 경기진행날짜: req.body.date }).toArray(function (error, result) {
         for (var i = 0; i < result.length; i++) {
@@ -666,6 +671,13 @@ app.get('/myinvitelist', function(req,res){
     });
 })
 
+app.post('/cancelinvite',function(req,res){
+    db.collection('inviteList').findOne({초대받은사람:req.body.reciever, 게시글번호:req.body.articlenum},function(error,result){
+        db.collection('inviteList').deleteOne({초대한사람: req.body.sender});
+    })
+    res.write("<script>window.location=\"../myinvitelist\"</script>");
+})
+
 app.get('/invited_match', function(req,res){
     db.collection('inviteList').find({초대받은사람:req.user.id}).toArray(function(error,result){
         res.render('invited_match.ejs', {result:result});
@@ -712,28 +724,151 @@ app.get('/score', function(req,res){
     })
 })
 
-app.get('/selDate', function(req,res){
 
-    res.render('selDate.ejs');
+//내가 원하는 조건의 팀원 자동추천 리스트 보기 페이지
+app.get('/autorecommand', checklogin, function(req, res){
+    db.collection('profile').findOne({id: req.user.id}, function(error,result){
+        db.collection('profile').find({선호포지션: result.팀원선호포지션, 주발: result.팀원주발, 성별: result.팀원성별}).toArray(function(error,result2){
+            db.collection('evaluate').find().toArray(function(error,result3){
+                db.collection('board').find({작성자: req.user.id}).toArray(function(error,result4){
+                    res.render('autorecommand.ejs', {board: result4 ,score: result3 ,autolist: result2 , myprofile: result})
+                })
+            })
+        })
+    })
+})
+////////////////////////////////////////////////////////////
+app.get('/autoeditpage',function(req,res){
+    res.render('autoeditpage.ejs');
+})
+
+app.post('/autoeditpage',function(req,res){
+    db.collection('profile').updateOne({id:req.user.id}, {
+        $set:
+        {
+            팀원선호포지션: req.body.team_position,
+            팀원성별: req.body.team_identityGender,
+            팀원주발: req.body.team_foot
+        }
+    }, function(error,result){
+        res.write("<script>window.location=\"../autorecommand\"</script>");
+    })
+   
+})
+
+app.post('/autoinvite',function(req,res){
+    var user = req.body.id//초대버튼 누른 유저 아이디값
+    db.collection('board').find({작성자:req.user.id}).toArray(function(error,result){
+        for(var i=0; i<result.length; i++){
+            if(result[i].count != 0){
+                db.collection('inviteList').insertOne({
+                    초대한사람: req.user.id,
+                    초대받은사람: req.body.id,
+                    게시글번호: result[i]._id,
+                    제목:result[i].제목,
+                    게시글:result[i].게시글,
+                    장소:result[i].장소,
+                    인원:result[i].인원,
+                    경기진행날짜:result[i].경기진행날짜,
+                    경기진행시간:result[i].경기진행시간,
+                    count:result[i].count,
+                    여부:parseInt(0)
+                })
+            }
+        }
+    })
+})
+//////////////// 여기서부터 중복 등록 방지 코드 ///////////////////////
+var today = new Date();
+
+var year = today.getFullYear();
+var month = ('0' + (today.getMonth() + 1)).slice(-2);
+var day = ('0' + today.getDate()).slice(-2);
+
+var dateString = year + '-' + month  + '-' + day;
+
+// console.log(dateString); 
+
+app.get('/selDate', function(req,res){
+    dateString // 현재날짜
+    var place = "소운동장";
+    // console.log(typeof place); //String
+    db.collection('board').find({장소:place}).toArray(function(error,result){
+        res.render('selDate.ejs', {date:dateString, place:place, result:result});
+        // console.log(result);
+    }) 
+})
+
+app.post('/selplace', function(req,res) {
+    console.log(req.body.place);
+    var date = dateString // 현재날짜
+        db.collection('addmatch').updateOne({id:req.user.id}, {
+            $set: 
+            {
+                place:req.body.place
+            }
+        }, function(error, result){
+            console.log("place updated")
+        })
+    if(req.body.place == "소운동장") {
+        res.write("<script>window.location=\"../small_playground\"</script>");
+    }
+    else if( req.body.place == "대운동장 풋살장(체육관 옆)") {
+        res.write("<script>window.location=\"../gym\"</script>");
+    } else if ( req.body.place == "대운동장 풋살장(농구골대 옆)") {
+        res.write("<script>window.location=\"../basket\"</script>");
+    }
+})
+
+app.get('/small_playground', function(req,res){
+    var date = dateString
+    db.collection('addmatch').findOne({id:req.user.id}, function(error,result){
+        db.collection('board').find({장소:result.place, 경기진행날짜:date}).toArray(function(error, result2){
+            res.render('small_playground.ejs', {result: result, date:date, result2:result2})
+        })
+    })
+})
+app.get('/gym', function(req,res){
+    var date = dateString
+    db.collection('addmatch').findOne({id:req.user.id}, function(error,result){
+        db.collection('board').find({장소:result.place, 경기진행날짜:date}).toArray(function(error, result2) {
+            res.render('gym.ejs', {result: result, date:date, result2:result2})
+        })
+    })
+})
+app.get('/basket', function(req,res){
+    var date = dateString
+    db.collection('addmatch').findOne({id:req.user.id}, function(error,result){
+        db.collection('board').find({장소:result.place, 경기진행날짜:date}).toArray(function(error,result2){
+            res.render('basket.ejs', {result: result, date:date, result2:result2})
+        })
+    })
 })
 
 app.post('/calendar2', checklogin, function (req, res) {
     var day = req.body.date;
 
     console.log(day); //달력 클릭으로 넘어온 날짜
-    db.collection('addmatch').insertOne({id:req.user.id, date: day, place: "소운동장"}, function(error, result){
-        console.log("1 document inserted");
+    db.collection('addmatch').updateOne({id:req.user.id}, {
+        $set:
+        {
+            date: day
+        }
+    }, function(error, result) {
+        console.log("1 document updated");
     })
     res.write("<script>window.location=\"../matchlist\"</script>");
 })
 
 app.get('/matchlist', checklogin, function(req, res){
+    var place = "소운동장";
     db.collection('addmatch').findOne({id:req.user.id} ,function(error, result) {
-        db.collection('board').find({장소: result.place}).toArray(function(error,result2){
-            res.render('matchlist.ejs', {result2:result2});
-            console.log("success");
+        console.log(result);
+        db.collection('board').find({장소:place, 경기진행날짜:result.date}).toArray(function(error,result2){
+            res.render('matchlist.ejs', {result2:result2, date:result.date, place:place});
+            console.log(result2);
         })
-    })
+    }) 
 })
 
 app.post('/matchlist', checklogin, function(req,res){
@@ -750,3 +885,47 @@ app.post('/matchlist', checklogin, function(req,res){
     //     console.log("delete success")
     // });
 });
+
+app.post('/selplace2', function(req,res) {
+    console.log(req.body.place);
+        db.collection('addmatch').updateOne({id:req.user.id}, {
+            $set: 
+            {
+                place:req.body.place
+            }
+        }, function(error, result){
+            console.log("place updated")
+        })
+    if(req.body.place == "소운동장") {
+        res.write("<script>window.location=\"../small_playground2\"</script>");
+    }
+    else if( req.body.place == "대운동장 풋살장(체육관 옆)") {
+        res.write("<script>window.location=\"../gym\"</script>");
+    } else if ( req.body.place == "대운동장 풋살장(농구골대 옆)") {
+        res.write("<script>window.location=\"../basket\"</script>");
+    }
+})
+
+app.get('/small_playground2', function(req,res){
+    db.collection('addmatch').findOne({id:req.user.id}, function(error,result){
+        db.collection('board').find({장소:result.place, 경기진행날짜:result.date}).toArray(function(error, result2){
+            res.render('small_playground2.ejs', {result: result, date:result.date, result2:result2})
+        })
+    })
+})
+app.get('/gym', function(req,res){
+    var date = dateString
+    db.collection('addmatch').findOne({id:req.user.id}, function(error,result){
+        db.collection('board').find({장소:result.place, 경기진행날짜:date}).toArray(function(error, result2) {
+            res.render('gym.ejs', {result: result, date:date, result2:result2})
+        })
+    })
+})
+app.get('/basket', function(req,res){
+    var date = dateString
+    db.collection('addmatch').findOne({id:req.user.id}, function(error,result){
+        db.collection('board').find({장소:result.place, 경기진행날짜:date}).toArray(function(error,result2){
+            res.render('basket.ejs', {result: result, date:date, result2:result2})
+        })
+    })
+})

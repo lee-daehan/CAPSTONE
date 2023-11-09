@@ -53,12 +53,11 @@
       }
 
       .calendar2 table>tbody>tr>td>a.today {
-         border: 0;
-         border-radius: 10px;
-         color: black;
-         background-color: rgb(15, 110, 233);
-         padding: 9px 9px;
-         background-image: url(public/imgs/today.png);
+         color: rgb(15, 110, 233);
+         display: inline-block;
+         font-size: 16px;
+         font-weight:bolder;
+         padding: 0;
       }
 
       .calendar2>.calendar-header {
@@ -154,7 +153,7 @@
 
       .calendar2 table>tbody>tr>td>a:hover {
          border-radius: 60%;
-         background-color: #ccc;
+         background-color: rgb(0, 68, 255);
       }
 
       .calendar2 table>thead>tr>th {
@@ -171,12 +170,11 @@
       }
 
       .calendar2 table>tbody>tr>td>a.today {
-         border: 0;
-         border-radius: 10px;
-         color: black;
-         background-color: rgb(15, 110, 233);
-         padding: 9px 9px;
-         background-image: url(public/imgs/today.png);
+         color: rgb(15, 110, 233);
+         display: inline-block;
+         font-size: 16px;
+         font-weight:bolder;
+         padding: 0;
       }
 
       .calendar2>.calendar-header {
@@ -263,7 +261,13 @@
       // 날짜 클릭
       $(document).on("click", ".calendar2 table > tbody > tr > td > a", function (e) {
          var yearmonth = $(".calendar-yearmonth").text().split(".");
-         var clickvalue = yearmonth[0] + "-" + yearmonth[1] + "-" + $(e.target).text();
+         if(($(e.target).text()).length == 1 && yearmonth[1].length == 1 ) {
+            var clickvalue = yearmonth[0] + "-" + '0' + yearmonth[1] + "-" + '0' + $(e.target).text();
+         } else if(($(e.target).text()).length == 1){
+            var clickvalue = yearmonth[0] + "-" + yearmonth[1] + "-" + '0' + $(e.target).text();
+         } else {
+            var clickvalue = yearmonth[0] + "-" + yearmonth[1] + "-"  + $(e.target).text();
+         }
          fetch("/calendar2", {
             method: "POST",
             headers: {
@@ -346,13 +350,15 @@
                   html += "<a";
                   if (calendarYear == today.getFullYear() && calendarMonth == today.getMonth() + 1
                      && calendarDay == today.getDate()) {
+                     html += " href=/matchlist";
                      html += " class=\"today\"";
-                     html += "href=/matchlist";
+                     html += ">" + "오늘" + "</a>";
                   }
                   else {
                      html += " href=/matchlist";
+                     html += " class=\"click\"";
+                     html += ">" + calendarDay + "</a>";
                   }
-                  html += ">" + calendarDay + "</a>";
                }
                html += "</td>";
                calendarPos++;

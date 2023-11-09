@@ -1,0 +1,36 @@
+<html>
+<head>
+<script language="JavaScript">
+<!-- JavaScript
+function settag1(form){
+document.all["acttag1"].style.display = "";
+document.all["acttag2"].style.display = "none";
+}
+
+function settag2(form){
+document.all["acttag1"].style.display = "none";
+document.all["acttag2"].style.display = "";
+}
+//-->
+</script>
+</head>
+
+<body>
+<form name="form1">
+<table>
+<tr>
+<td>
+<input type="radio" name="radiobtn" value="N" onclick="settag1(this.form)">적용A
+<input type="radio" name="radiobtn" value="Y" checked onclick="settag2(this.form)">적용B
+</td>
+
+<tr  id="acttag1" style="display:none">
+<td>첫번째 태그 활성화</td>
+</tr>
+<tr  id="acttag2" style="display:none">
+<td>두번째 태그 활성화</td>
+</tr>
+</table>
+</form>
+</body>
+</html>

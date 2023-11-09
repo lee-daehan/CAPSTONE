@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>순풋</title>
+    <script>
+        if(!location.search.match('a=1')){
+          location.href='?a=1';
+        }
+        location.replace()
+      </script>
     <style>
     @media screen and (min-width: 481px) {    
     header {
@@ -132,6 +138,11 @@
             font-weight: bold;
             color: red;
         }
+        .cancel {
+            font-weight: bold;
+            color: green;
+            margin-left: 10px;
+        }
 }
 </style>
 </head>
@@ -197,7 +208,7 @@
                         </div>
                         <div class="btn_box" style="margin: auto auto;">
                             <% if(personlist[i].여부==0){ %>
-                            <span class="wait">매칭대기중</span>
+                            <span class="wait">매칭대기중</span><button id="cancelTag" onClick="alert('취소되었습니다.')" type="submit" class="cancel" value="취소" data-sender="<%= personlist[i].초대한사람 %>" data-articlenum="<%= personlist[i].게시글번호 %>" data-reciever="<%= personlist[i].초대받은사람 %>">취소</button>
                              <% } %>
                             <% if(personlist[i].여부==1){ %>
                             <span class="complete">매칭완료</span>
@@ -212,6 +223,36 @@
            <%  }%>
         </div>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script>
+        
+        
+        //초대 취소하기
+        $('.cancel').click(function (e) {
+            var sender = e.target.dataset.sender; //지금 클릭한것
+            var reciever = e.target.dataset.reciever;
+            var articlenum = e.target.dataset.articlenum;
+            console.log(articlenum);
+          
+              $.ajax({
+                method: 'POST',
+                url: '/cancelinvite',
+                data: { sender: sender, reciever: reciever, articlenum: articlenum }
+              }).done(function (result) {
+                  console.log('성공')
+              }).fail(function (xhr, textStatus, errorThrow) {
+                //요청 실패시
+                console.log(xhr, textStatus, errorThrow);
+              });
+        })
+
+
+        // $('#cancelTag').click(function() {
+        //     location.reload();
+        // });
+        
+    </script>
 </body>
 
 </html>

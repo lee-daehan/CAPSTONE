@@ -10,6 +10,11 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
     integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
   <title>순풋</title>
+  <script>
+    if(!location.search.match('a=1')){
+      location.href='?a=1';
+    }
+  </script>
 </head>
 <style>
   @media screen and (max-width: 480px) {
@@ -429,7 +434,7 @@
               <div id="">
                 <form action="" method="" name="selPlace">
                   <label for="소운동장">
-                    <input type="radio" id="소운동장" name="place" value="소운동장"  checked>
+                    <input type="radio" id="소운동장" name="place" value="소운동장">
                     <a id="소운동장" href="/small_playground" onclick="check(this.id)">소운동장</a>
                   </label>
                   <label for="대운동장 풋살장(체육관 옆)">
@@ -437,7 +442,7 @@
                     <a id="대운동장 풋살장(체육관 옆)" href="/gym" onclick="check(this.id)">대운동장 풋살장(체육관 옆)</a>
                   </label>
                   <label for="대운동장 풋살장(농구골대 옆)">
-                    <input type="radio" id="대운동장 풋살장(농구골대 옆)" name="place" value="대운동장 풋살장(농구골대 옆)">
+                    <input type="radio" id="대운동장 풋살장(농구골대 옆)" name="place" value="대운동장 풋살장(농구골대 옆)" checked>
                     <a id="대운동장 풋살장(농구골대 옆)" href="/basket" onclick="check(this.id)">대운동장 풋살장(농구골대 옆)</a>
                   </label>
                 </form>
@@ -445,7 +450,7 @@
               <div id="acttag1">
                 <div>
                   <span>날짜: <%= date %></span>
-                  <span>장소: <%= place %></span>
+                  <span>장소: <%= result.place %></span>
                   <span>시간: 08</span>
                   <% function isTime_1(element) { %>
                     <% if(element.경기진행시간==08 ) { %>
@@ -453,7 +458,7 @@
                     <% } %>
                   <% } %>
 
-                  <% var time1=result.find(isTime_1); %>
+                  <% var time1=result2.find(isTime_1); %>
                     <% if(time1==null ) { %>
                       <button>등록가능</button>
                     <% } else { %>
@@ -462,139 +467,139 @@
                 </div>
                 <div>
                   <span>날짜: <%= date %></span>
-                  <span>장소: <%= place %></span>
+                  <span>장소: <%= result.place %></span>
                   <span>시간: 10</span>
                   <% function isTime_2(element) { %>
                     <% if(element.경기진행시간==10 ) { %>
                       <% return true; %>
-                        <% } %>
-                          <% } %>
+                    <% } %>
+                  <% } %>
 
-                            <% var time2=result.find(isTime_2); %>
-                              <% if(time2==null ) { %>
-                                <button>등록가능</button>
-                                <% } else { %>
-                                  <button>마감</button>
-                                  <% } %>
+                  <% var time2=result2.find(isTime_2); %>
+                    <% if(time2==null ) { %>
+                      <button>등록가능</button>
+                    <% } else { %>
+                      <button>마감</button>
+                    <% } %>
                 </div>
                 <div>
                   <span>날짜: <%= date %></span>
-                  <span>장소: <%= place %></span>
+                  <span>장소: <%= result.place %></span>
                   <span>시간: 12</span>
                   <% function isTime_3(element) { %>
                     <% if(element.경기진행시간==12 ) { %>
                       <% return true; %>
-                        <% } %>
-                          <% } %>
+                    <% } %>
+                  <% } %>
 
-                            <% var time3=result.find(isTime_3); %>
-                              <% if(time3==null ) { %>
-                                <button>등록가능</button>
-                                <% } else { %>
-                                  <button>마감</button>
-                                  <% } %>
+                  <% var time3=result2.find(isTime_3); %>
+                    <% if(time3==null ) { %>
+                      <button>등록가능</button>
+                    <% } else { %>
+                      <button>마감</button>
+                    <% } %>
                 </div>
                 <div>
                   <span>날짜: <%= date %></span>
-                  <span>장소: <%= place %></span>
+                  <span>장소: <%= result.place %></span>
                   <span>시간: 14</span>
                   <% function isTime_4(element) { %>
                     <% if(element.경기진행시간==14 ) { %>
                       <% return true; %>
-                        <% } %>
-                          <% } %>
+                    <% } %>
+                  <% } %>
 
-                            <% var time4=result.find(isTime_4); %>
-                              <% if(time4==null ) { %>
-                                <button>등록가능</button>
-                                <% } else { %>
-                                  <button>마감</button>
-                                  <% } %>
+                  <% var time4=result2.find(isTime_4); %>
+                    <% if(time4==null ) { %>
+                      <button>등록가능</button>
+                    <% } else { %>
+                      <button>마감</button>
+                    <% } %>
                 </div>
                 <div>
                   <span>날짜: <%= date %></span>
-                  <span>장소: <%= place %></span>
+                  <span>장소: <%= result.place %></span>
                   <span>시간: 16</span>
                   <% function isTime_5(element) { %>
                     <% if(element.경기진행시간==16 ) { %>
                       <% return true; %>
-                        <% } %>
-                          <% } %>
+                    <% } %>
+                  <% } %>
 
-                            <% var time5=result.find(isTime_5); %>
-                              <% if(time5==null ) { %>
-                                <button>등록가능</button>
-                                <% } else { %>
-                                  <button>마감</button>
-                                  <% } %>
+                  <% var time5=result2.find(isTime_5); %>
+                    <% if(time5==null ) { %>
+                      <button>등록가능</button>
+                    <% } else { %>
+                      <button>마감</button>
+                    <% } %>
                 </div>
                 <div>
                   <span>날짜: <%= date %></span>
-                  <span>장소: <%= place %></span>
+                  <span>장소: <%= result.place %></span>
                   <span>시간: 18</span>
                   <% function isTime_6(element) { %>
                     <% if(element.경기진행시간==18 ) { %>
                       <% return true; %>
-                        <% } %>
-                          <% } %>
+                    <% } %>
+                  <% } %>
 
-                            <% var time6=result.find(isTime_6); %>
-                              <% if(time6==null ) { %>
-                                <button>등록가능</button>
-                                <% } else { %>
-                                  <button>마감</button>
-                                  <% } %>
+                  <% var time6=result2.find(isTime_6); %>
+                    <% if(time6==null ) { %>
+                      <button>등록가능</button>
+                    <% } else { %>
+                      <button>마감</button>
+                    <% } %>
                 </div>
                 <div>
                   <span>날짜: <%= date %></span>
-                  <span>장소: <%= place %></span>
+                  <span>장소: <%= result.place %></span>
                   <span>시간: 20</span>
                   <% function isTime_7(element) { %>
-                    <% if(element.경기진행시간==20 ) { %>
+                    <% if(element.경기진행시간==208 ) { %>
                       <% return true; %>
-                        <% } %>
-                          <% } %>
+                    <% } %>
+                  <% } %>
 
-                            <% var time7=result.find(isTime_7); %>
-                              <% if(time7==null ) { %>
-                                <button>등록가능</button>
-                                <% } else { %>
-                                  <button>마감</button>
-                                  <% } %>
+                  <% var time7=result2.find(isTime_7); %>
+                    <% if(time7==null ) { %>
+                      <button>등록가능</button>
+                    <% } else { %>
+                      <button>마감</button>
+                    <% } %>
                 </div>
                 <div>
                   <span>날짜: <%= date %></span>
-                  <span>장소: <%= place %></span>
+                  <span>장소: <%= result.place %></span>
                   <span>시간: 22</span>
                   <% function isTime_8(element) { %>
                     <% if(element.경기진행시간==22 ) { %>
                       <% return true; %>
-                        <% } %>
-                          <% } %>
+                    <% } %>
+                  <% } %>
 
-                            <% var time8=result.find(isTime_8); %>
-                              <% if(time8==null ) { %>
-                                <button>등록가능</button>
-                                <% } else { %>
-                                  <button>마감</button>
-                                  <% } %>
+                  <% var time8=result2.find(isTime_8); %>
+                    <% if(time8==null ) { %>
+                      <button>등록가능</button>
+                    <% } else { %>
+                      <button>마감</button>
+                    <% } %>
                 </div>
                 <div>
                   <span>날짜: <%= date %></span>
-                  <span>장소: <%= place %></span>
+                  <span>장소: <%= result.place %></span>
                   <span>시간: 24</span>
                   <% function isTime_9(element) { %>
                     <% if(element.경기진행시간==24 ) { %>
                       <% return true; %>
-                        <% } %>
-                          <% } %>
+                    <% } %>
+                  <% } %>
 
-                            <% var time9=result.find(isTime_9); %>
-                              <% if(time9==null ) { %>
-                                <button>등록가능</button>
-                                <% } else { %>
-                                  <button>마감</button>
-                                  <% } %>
+                  <% var time9=result2.find(isTime_9); %>
+                    <% if(time9==null ) { %>
+                      <button>등록가능</button>
+                    <% } else { %>
+                      <button>마감</button>
+                    <% } %>
                 </div>
               </div>
             </div>
