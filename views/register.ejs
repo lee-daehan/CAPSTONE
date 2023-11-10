@@ -129,6 +129,35 @@
             <input type="radio" name="identityGender" id="select2" value="여성"><label class="genderlabel" for="select2">여자</label>
           </div>
         </div>
+        <hr style="border: 2px solid black;">
+        <div style="margin: 10px auto; font-weight: bold;">
+          내가 원하는 팀원의 조건
+        </div>
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label style="font-weight: bold;">선호포지션</label>
+          <select class="form-control" name="team_position" aria-placeholder="선호포지션">
+              <option>FW</option>
+              <option>MD</option>
+              <option>DF</option>
+              <option>GK</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label style="font-weight: bold;">주 사용 발</label>
+          <select class="form-control" name="team_foot" aria-placeholder="주 사용 발">
+              <option>왼발</option>
+              <option>오른발</option>
+              <option>양발</option>
+            </select>
+        </div>
+        <label style="font-weight: bold;">성별</label>
+        <div class="form-control" id="gender">
+          <div class="select">
+            <input type="radio" name="team_identityGender" id="team_select" value="남성"><label class="genderlabel" for="team_select" required>남자</label>
+            <input type="radio" name="team_identityGender" id="team_select2" value="여성"><label class="genderlabel" for="team_select2">여자</label>
+          </div>
+        </div>
+
         <div class="submitButton">
         <button id="register" type="submit" class="btn btn-outline-dark" onclick="success()">회원가입</button>
         <a href="/login" class="btn btn-outline-primary">뒤로</a>
