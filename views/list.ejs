@@ -83,11 +83,12 @@
   }
   .listContainer-item{
     width: 100%;
+    height: 110px;
     display: grid;
     grid-template-columns: 1fr 4fr;
     border: 1px solid #ced4da;
     border-radius: 10px;
-    padding: 10px;
+    padding: 5px;
   }
   .list-container p{
     font-size: 16px;
@@ -95,9 +96,17 @@
     padding: 5px 0;
   }
   .list-main-content {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    place-content: center;
+    grid-template-columns: 3fr 1fr;
     font-size: 16px;
+    font-weight: bold;
+    position: relative;
+    color: black;
+  }
+  #listtitle {
+    font-size: 20px;
+    font-weight: bold;
   }
   .list-time{
     display: flex;
@@ -116,15 +125,17 @@
     font-size: 17px;
     padding: 10px;
     width: 70px;
+    position: absolute;
+    right: 0;
+    bottom: 25px;
   }
 
-  
   .menu {
     display: grid;
     grid-template-columns: 1fr;
   }  
     .recommand-container{
-      width: 90%;
+      width: 94%;
       display: grid;
       grid-template-rows: auto auto;
       border: 1px solid #ced4da;
@@ -490,7 +501,6 @@
       <div class="container1" id="container1">
         <%- include('calendar.ejs') %>
           <div class="list-container" id="list-container">
-                        <div class="Date_title">경기 진행 날짜: <%= result.경기진행날짜 %> </div>
                     <%result.sort((prev, cur) => { %>
                       <%if (prev.경기진행시간 > cur.경기진행시간) return 1; %>
                       <%if (prev.경기진행시간 < cur.경기진행시간) return -1; %>
@@ -512,16 +522,13 @@
                               </div>
                               <div>
                                 <span>
-                                  <%= result[i].장소 %> •
+                                  <%= result[i].장소 %> /
                                 </span>
                                 <span>
-                                  <%= result[i].인원 %> •
+                                  <%= result[i].인원 %>
                                 </span>
-                                <span>남은인원: <%= result[i].남은인원 %></span>
-                                <p>마감되었습니다.</p>
                               </div>
-                              <button class="request2" onclick="alert('신청되었습니다.')" data-id="<%= result[i].art_id %>"
-                                style="display: none;">신청</button>
+                              <button>마감</button>
                             </div>
                           </div>
                           <% } %>
@@ -536,9 +543,8 @@
                                       <h4 id="listtitle"><%= result[i].제목 %></h4>
                                     </div>
                                     <div>
-                                      <span><%= result[i].장소 %> •</span>
-                                      <span><%= result[i].인원 %> •</span>
-                                      <span>남은인원: <%= result[i].남은인원 %></span>
+                                      <span><%= result[i].장소 %> /</span>
+                                      <span><%= result[i].인원 %> </span>
                                     </div>
                                   </div>
                                   <button class="request2" onclick="alert('신청되었습니다.')"

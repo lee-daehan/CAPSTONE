@@ -12,6 +12,187 @@
         location.replace()
       </script>
     <style>
+    @media screen and (max-width: 480px) {
+        #header {
+        grid-area: header;
+        }
+        #main {
+        grid-area: main;
+        display: grid;
+        grid-template-rows: auto auto;
+        grid-gap: 10px;
+
+        }
+        #footer {
+        grid-area: footer;
+        }
+
+        #body {
+        display: grid;
+        gap: 10px;
+        grid-template-rows: 1fr;
+        grid-template-areas: 
+            'header'
+            'main'
+            'footer';
+        }
+        main {
+            margin-bottom: 10px;
+        }
+    #nav {
+        width: 100%;
+    }
+    #menubar {
+        width: 100%;
+    }
+    .menubar {
+        display: grid;
+        grid-template-rows: auto auto auto;
+        align-items: center;
+        margin: 10px 0;
+    }
+    .menubar a {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        margin: 0 200px;
+        display: grid;
+        grid-template-rows: auto auto;
+        place-items: center;
+    }
+    .menubar img {
+        width: 50px;
+        height: 50px;
+    }
+
+    #main-container {
+        width: 95%;
+        margin: 0 auto;
+        border: 1px solid silver;
+        border-radius: 20px;
+        box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+        justify-content: center;
+    }
+        .box_line{
+            margin: 0 auto;
+            overflow-y: scroll;
+        }
+        .box_line::-webkit-scrollbar {
+            display: none;
+        }
+
+        .head_box{
+            width: 60%;
+            height: fit-content;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #titleBox{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        #listhead{
+            width: 100%;
+            display: inline-flex;
+            /* grid-template-columns: 1fr 2fr 1fr;
+            grid-gap: 80px; */
+            margin: 0 auto;
+            font-size: 12px;
+            padding: 0 15px;
+            font-weight: bold;
+        }
+        #titleBox1{
+            width: 15%;
+        }
+        #titleBox2{
+            width: 65%;
+        }
+        #titleBox3{
+            width: 20%;
+        }
+        .info_box{
+            width: 100%;
+            /* display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            grid-gap: 80px; */
+            display: inline-flex;
+            margin: 0 auto;
+            border: 1px solid silver;
+            border-top: none;
+            border-right: none;
+            border-left: none;
+            padding: 0 15px;
+            font-size: 12px;
+        }
+
+        .main_info{
+            width: 15%;
+            margin: auto auto;
+        }
+        #art_detail {
+            width: 65%;
+            display: grid;
+            grid-template-rows: 1fr 1fr 1fr;
+            grid-gap: 5px;
+        }
+        #detail_info{
+            font-size: 12px;
+            color:#706f6f"
+        }
+        .sub_info{
+            font-size: 12px;
+            color: #727F88;
+            margin-top: 3px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-gap: 5px;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .btn_box {
+            width: 20%;
+            position: relative;
+        }
+        .wait {
+            font-size: 12px;
+            font-weight: bold;
+            color: green;
+        }
+        .complete {
+            font-size: 12px;
+            font-weight: bold;
+            color: blue;
+        }
+        .fail {
+            font-size: 12px;
+            font-weight: bold;
+            color: red;
+        }
+        .cancel {
+            font-weight: bold;
+            /* position: absolute; */
+            /* right: 0; */
+            margin-top: 5px;
+            margin-left: 30px;
+            border: 1px solid silver;
+            border-radius: 5px;
+            box-shadow: 0 0 1px 0 rgb(172, 170, 170);
+            padding: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        footer {
+            width: 100%;
+            height: 300px;
+            margin: 0 auto;
+            background-color: #282B33;
+        }
+  }
     @media screen and (min-width: 481px) {    
     header {
       width: 100%;
@@ -82,8 +263,8 @@
         #listhead{
             width: 100%;
             display: grid;
-            grid-template-columns: 1fr 3fr 1fr;
-            grid-gap: 10px;
+            grid-template-columns: 1fr 2fr 1fr;
+            grid-gap: 80px;
             margin-top: 10px;
             margin-bottom: 10px;
         }
@@ -96,8 +277,8 @@
         }
         .info_box{
             display: grid;
-            grid-template-columns: 1fr 3fr 1fr;
-            grid-gap: 10px;
+            grid-template-columns: 1fr 2fr 1fr;
+            grid-gap: 80px;
             margin: 0 auto;
             width: 100%;
             border: 1px solid silver;
@@ -115,6 +296,10 @@
             grid-template-rows: 1fr 1fr 1fr;
             grid-gap: 5px;
         }
+        #detail_info{
+            font-size: 14px;
+            color:#706f6f"
+        }
         .sub_info{
             font-size: 12px;
             color: #727F88;
@@ -125,6 +310,9 @@
             align-items: center;
             justify-content: flex-start;
             flex-wrap: wrap;
+        }
+        .btn_box {
+            position: relative;
         }
         .wait {
             font-weight: bold;
@@ -140,8 +328,20 @@
         }
         .cancel {
             font-weight: bold;
-            color: green;
-            margin-left: 10px;
+            position: absolute;
+            right: 0;
+            margin-top: 5px;
+            border: 1px solid silver;
+            border-radius: 5px;
+            box-shadow: 0 0 1px 0 rgb(172, 170, 170);
+            padding: 3px;
+            cursor: pointer;
+        }
+        footer {
+            width: 100%;
+            height: 300px;
+            margin: 0 auto;
+            background-color: #282B33;
         }
 }
 </style>
@@ -173,9 +373,9 @@
             </div>
         <div id="main-container">
             <div id="listhead">
-                <div id="titleBox"><span>닉네임</span></div>
-                <div id="titleBox"><span>초대한 매치정보</span></div>
-                <div id="titleBox"><span>매칭상태</span></div>
+                <div id="titleBox1"><span>닉네임</span></div>
+                <div id="titleBox2" style="display: flex; justify-content: flex-start;"><span>초대한 매치정보</span></div>
+                <div id="titleBox3"><span>매칭상태</span></div>
             </div>
             <hr style="height: 1px; background: #ccc;">
             <%  if(personlist.length == 0){%>
@@ -196,11 +396,11 @@
                             <div>
                                 <span style="font-weight: bold;"><%= personlist[i].제목 %></span>
                             </div>
-                            <div>
+                            <div id="detail_info">
                                 <span>경기 날짜: <%= personlist[i].경기진행날짜 %> /</span>
-                                <span>시간: <%= personlist[i].경기진행시간 %>:00</span><br>
+                                <span>경기 시간: <%= personlist[i].경기진행시간 %></span><br>
                             </div>
-                            <div>
+                            <div id="detail_info">
                                 <span><%= personlist[i].장소 %> /</span>
                                 <span><%= personlist[i].인원 %> /</span>
                                 <span>남은자리: <%= personlist[i].count %>명</span>
@@ -208,7 +408,8 @@
                         </div>
                         <div class="btn_box" style="margin: auto auto;">
                             <% if(personlist[i].여부==0){ %>
-                            <span class="wait">매칭대기중</span><button id="cancelTag" onClick="alert('취소되었습니다.')" type="submit" class="cancel" value="취소" data-sender="<%= personlist[i].초대한사람 %>" data-articlenum="<%= personlist[i].게시글번호 %>" data-reciever="<%= personlist[i].초대받은사람 %>">취소</button>
+                            <span class="wait">매칭대기중</span><br>
+                            <button id="cancelTag" onClick="alert('취소되었습니다.')" type="submit" class="cancel" value="취소" data-sender="<%= personlist[i].초대한사람 %>" data-articlenum="<%= personlist[i].게시글번호 %>" data-reciever="<%= personlist[i].초대받은사람 %>">취소</button>
                              <% } %>
                             <% if(personlist[i].여부==1){ %>
                             <span class="complete">매칭완료</span>
@@ -222,8 +423,12 @@
                 </div>
            <%  }%>
         </div>
-    </main>
 
+
+    </main>
+  <footer id="footer">
+    footer
+  </footer>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
     <script>
         

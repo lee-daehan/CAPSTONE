@@ -124,7 +124,8 @@ app.post('/register', function (req, res) {
 
             db.collection('work').insertOne({
                 id: req.body.id,
-                other: null
+                other: null,
+                게시글번호: null
             })
             db.collection('addmatch').insertOne({
                 id: req.body.id,
@@ -527,13 +528,25 @@ app.put('/refuse', checklogin, function (req, res) {
     })
 });
 
-//신청한 경기
+//신청한 경기, 신청한 경기에서 매칭완료된거 점수 주면 request디비에서 삭제를 시킴 board에서 게시글이 지워지는거 아님 걱정 ㄴㄴ
 app.get('/resmatch', checklogin, function (req, res) {
     db.collection('work').findOne({id:req.user.id}, function(error,result1){
         db.collection('request').findOne({신청자: req.user.id, 작성자: result1.other,},function(error,result2){
             db.collection('request').deleteOne({평가여부: 1});
         })
     })
+    //위에 내용은 신청한 경기에 한하여 신청자가 경기 작성자를 평가하고 평가여부가 1이 되었을때 request컬렉션에서 삭제하는것, 다행히 해당 컬렉션에 게시글 번호가 박혀있어 따로따로 삭제가 가능함
+
+    //회원가입할때 work컬렉션에 게시글 번호도 박히게 해야함
+    //내가 하려는건 신청하거나 신청 받았거나 초대 하거나 초대 받았거나 매칭이 완료가 되서 날짜비교(여기서하는거 아님)해서 경기 날이 지났으면 이미 경기를 한걸로 간주
+    //그 후에 점수를 평가하는 것이기 때문에 evaluate.ejs페이지에 같이 뛴 유저들을 평가할 수 있도록 출력, 거기서 평가하러 가기 버튼이든 링크든 클릭하면
+    // before_ev경로로 post요청해서 update(클릭한 유저id값은 = work컬렉션의 other에 업데이트, 클릭한 게시글번호는 = work컬렉션의 게시글번호에 업데이트)
+    //score페이지로 이동, score페이지에서 평가 받은 사람의 id값과 점수값을 apply경로로 넘김, 점수를 evaluate컬렉션에 업데이트할 땐 게시글 번호 안필요함
+    //work에 게시글 번호를 박은 이유는 만약 내가 방금 누군가를 평가했다면 request컬렉션 또는 inviteList컬렉션에 평가여부가 1인 녀석이면서 내가 누른 게시글의 번호 값을 가져와야 평가완료하고
+    //request,inviteList컬렉션에서 deleteOne을 할 수 있음 board를 지우는게 아님 이런 완료된 경기의 요청들을 지워야 함,
+    //삭제하는건 이따 해보고 일단 evaluate에 매칭완료 되었고 현재 날짜랑
+    //비교해서 지난 경기들이면 출력이 가능하고 평가하러 갈 수 있게끔 화면에 띄어주는거 하면됨
+
     db.collection('request').find().toArray(function (error, result1) {
         db.collection('request').findOne({ 신청자: req.user.id }, function (error, result2) {
             if(result2 == null){
@@ -577,6 +590,11 @@ app.get('/suggest', checklogin, function (req, res) {
 })
 
 app.post('/apply', checklogin, function (req, res) {
+    //req.body.id는 평가 받은 사람 값임
+    //score페이지에서 점수를 받는 사람의 id값과 점수 값을 가져옴
+    
+    var articlenum = req.body.articlenum;
+    console.log(articlenum)
     db.collection('evaluate').findOne({평가받은사람: req.body.id}, function(error,result){
         db.collection('evaluate').updateOne({평가받은사람: req.body.id},{
             $set:
@@ -588,8 +606,37 @@ app.post('/apply', checklogin, function (req, res) {
                 if (error) { return console.log(error) };
            })
         })
+    })//점수 주는 과정
+
+    //점수 줬으니 평가여부 바꾸는 과정, 중복제거도 할 수 있게 평가여부를 request의 두가지 경우와 inviteList의 두가지 경우를 조건검색해서 있다면 평가여부를 1로 바꿔야 중복 제거가능
+    //중복 없으면 없는대로도 실행 가능, 없다면 조건이 안맞으면 실행을 안시키니까 문제 없
+    //내가 신청했을때
+    db.collection('request').updateOne({작성자:req.body.id , 신청자: req.user.id, 신청한게시물번호: articlenum},{
+        $set: {
+            평가여부: parseInt(1)
+        }
     })
-    db.collection('request').updateOne({작성자:req.body.id , 신청자: req.user.id},{
+    //내가 신청 받았을 때
+    db.collection('request').updateOne({작성자:req.user.id , 신청자: req.body.id, 신청한게시물번호: articlenum},{
+        $set: {
+            평가여부: parseInt(1)
+        }
+    })
+    //내가 초대했을때
+    db.collection('inviteList').updateOne({초대한사람:req.user.id , 초대받은사람: req.body.id, 게시글번호: articlenum},{
+        $set: {
+            평가여부: parseInt(1)
+        }
+    })
+    //내가 초대받았을때
+    db.collection('inviteList').updateOne({초대한사람:req.body.id , 초대받은사람: req.user.id, 게시글번호: articlenum},{
+        $set: {
+            평가여부: parseInt(1)
+        }
+    })
+    
+    //중복 문제 해결, 내가 초대한거, 내가 신청 받은거가 중복이 일어날 경우가 있음
+    db.collection('request').updateOne({작성자:req.user.id , 신청자: req.body.id, 신청한게시물번호: articlenum},{
         $set: {
             평가여부: parseInt(1)
         }
@@ -666,6 +713,8 @@ app.post('/invite2', function(req,res){
     }, function (error, result) {})
 })
 
+
+//메인페이지에서의 조건 검색으로 inviteList 컬렉션에 inser하는 부분
 app.get('/invitedetail', checklogin, function(req,res){
     db.collection('invite').findOne({id:req.user.id}, function(error, result){
         db.collection('board').findOne({_id:result.게시글번호}, function(error, result2) {
@@ -729,9 +778,12 @@ app.put('/ref_invite', checklogin, function (req, res) {
 
 app.post('/before_ev', checklogin, function(req, res) {
     var id = req.body.id;
+    var articlenum = req.body.articlenum;
+    console.log(articlenum)//4잘뜸, 클릭한 게시글이 당시 4였음
     db.collection('work').updateOne({id: req.user.id},{
         $set: {
-            other: id
+            other: id,
+            게시글번호: articlenum
         }
     })
 })
@@ -740,8 +792,7 @@ app.get('/score', function(req,res){
 
     db.collection('work').findOne({id: req.user.id},function(error,result1){
         db.collection('evaluate').findOne({평가받은사람:result1.other} ,function(error,result2){
-            console.log(result2);
-            res.render('score.ejs', {result:result2});
+            res.render('score.ejs', {result:result2, articlenum: result1.게시글번호});
         })
     })
 })
@@ -778,6 +829,8 @@ app.post('/autoeditpage',function(req,res){
    
 })
 
+
+//초대에서의 inviteList컬렉션 insert부분
 app.post('/autoinvite',function(req,res){
     var user = req.body.id//초대버튼 누른 유저 아이디값
     db.collection('board').find({작성자:req.user.id}).toArray(function(error,result){
@@ -794,7 +847,8 @@ app.post('/autoinvite',function(req,res){
                     경기진행날짜:result[i].경기진행날짜,
                     경기진행시간:result[i].경기진행시간,
                     count:result[i].count,
-                    여부:parseInt(0)
+                    여부:parseInt(0),
+                    평가여부:parseInt(0)
                 })
             }
         }
@@ -809,7 +863,7 @@ var day = ('0' + today.getDate()).slice(-2);
 
 var dateString = year + '-' + month  + '-' + day;
 
-// console.log(dateString);
+console.log(dateString);
 
 app.get('/selDate', function(req,res){
      // 현재날짜
@@ -948,5 +1002,34 @@ app.get('/basket2', function(req,res){
             console.log(result2);
             res.render('basket2.ejs', {result: result, date:result.date, result2:result2})
         })
+    })
+})
+
+//dateString이 위에서 현재날짜를 담은 변수임
+app.get('/evaluate',function(req,res){
+
+    //신청한사람,신청자: req.user.id
+    db.collection('request').find({신청자: req.user.id, 여부: 1}).toArray(function(error,result){//result에 신청자가 로그인유저고 여부1인 값들이 담겨옴
+        //console.log(result)//값 제대로 출력됨
+
+        //신청받은사람, 작성자: req.user.id
+        db.collection('request').find({작성자: req.user.id, 여부: 1}).toArray(function(error,result2){//result2에 작성자가 로그인유저고 여부1인 값들이 담겨옴
+            //console.log(result2)//값 제대로 출력됨
+
+            //초대한사람
+            db.collection('inviteList').find({초대한사람: req.user.id, 여부: 1}).toArray(function(error,result3){//result3에 초대한사람이 로그인유저고 여부1인 값들이 담겨옴
+                //console.log(result3)//값 제대로 출력됨
+
+                //초대받은사람
+                db.collection('inviteList').find({초대받은사람: req.user.id, 여부: 1}).toArray(function(error,result4){//result3에 초대한사람이 로그인유저고 여부1인 값들이 담겨옴
+                    //console.log(result4)//값 제대로 출력됨
+                    // console.log(dateString > result4[0].경기진행날짜)//11월10일 11월 15일 비교, false가 뜨면 맞음
+                    // console.log(dateString > result4[1].경기진행날짜)//11월10일 11월 09일 비교, true가 뜨면 맞음
+                    res.render('evaluate.ejs', {user: req.user.id, date: dateString, apply_sender: result, apply_receiver: result2, invite_sender: result3, invite_receiver: result4})
+                })
+            })
+
+        })
+
     })
 })

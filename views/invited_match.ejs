@@ -13,6 +13,189 @@
   <title>순풋</title>
   
   <style>
+    @media screen and (max-width: 480px) {
+      #header {
+      grid-area: header;
+    }
+    #main {
+      grid-area: main;
+      display: grid;
+      grid-template-rows: auto auto;
+      grid-gap: 10px;
+    }
+    #footer {
+      grid-area: footer;
+    }
+
+    #body {
+      display: grid;
+      gap: 10px;
+      grid-template-rows: 1fr;
+      grid-template-areas: 
+        'header'
+        'main'
+        'footer';
+    }
+
+  #nav {
+    width: 100%;
+  }
+  #menubar {
+    width: 100%;
+  }
+  .menubar {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    align-items: center;
+    margin: 10px 0;
+  }
+  .menubar a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    margin: 0 200px;
+    display: grid;
+    grid-template-rows: auto auto;
+    place-items: center;
+  }
+  .menubar img {
+    width: 50px;
+    height: 50px;
+  }
+  footer {
+    width: 100%;
+    height: 300px;
+    margin: 0 auto;
+    background-color: #282B33;
+  }
+  #main-title {
+      width: 80%;
+      color: black;
+      margin: 30px auto;
+      display: flex;
+      justify-content: center;
+      font-size:x-large;
+      font-weight: bold;
+    }
+    #main-container {
+        width: 95%;
+        margin: 10px auto;
+        border: 1px solid silver;
+        border-radius: 20px;
+        box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+    }
+      .box_line{
+            margin: 0 auto;
+            overflow-y: scroll;
+        }
+        .box_line::-webkit-scrollbar {
+            display: none;
+        }
+
+        .head_box{
+            width: 60%;
+            height: fit-content;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #listhead{
+            width: 95%;
+            display: grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            grid-gap: 10px;
+            margin: 10px auto;
+        }
+        #titleBox{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .info_box{
+            display: grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            grid-gap: 10px;
+            margin: 0 auto;
+            width: 95%;
+            border: 1px solid silver;
+            border-bottom: none;
+            border-right: none;
+            border-left: none;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        .btn_box {
+          display: grid;
+          grid-row: 1fr 1fr;
+          grid-gap: 10px;
+        }
+        #buttonBox {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-gap: 5px;
+        }
+        .accept_btn{
+        width: 40px;
+        height: 30px;
+        border: 0;
+        background-color: #a9c7e5;
+        font-size: 14px;
+        font-weight: bold;
+        color: black;
+        border-radius: 10px;
+        padding: 3px;
+      }
+      .refuse_btn{
+        width: 40px;
+        height: 30px;
+        border: 0;
+        background-color: #a9c7e5;
+        font-size: 14px;
+        font-weight: bold;
+        color: black;
+        border-radius: 10px;
+        padding: 3px;
+      }
+        .main_info{
+            margin: auto auto;
+        }
+        #art_detail {
+            display: grid;
+            grid-template-rows: 1fr 1fr 1fr;
+            grid-gap: 5px;
+        }
+        #detailcon {
+          font-size: 14px;
+        }
+        .sub_info{
+            font-size: 12px;
+            color: #727F88;
+            margin-top: 3px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-gap: 5px;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .wait {
+            font-weight: bold;
+            color: green;
+        }
+        .complete {
+            font-weight: bold;
+            color: blue;
+        }
+        .fail {
+            font-weight: bold;
+            color: red;
+        }
+
+    }
+
     @media screen and (min-width: 481px) {
       header {
         width: 100%;
@@ -150,24 +333,24 @@
         padding: 3px;
       }
       .accept_btn{
-        width: 120px;
+        width: 60px;
         height: 30px;
         border: 0;
-        background-color: #5da034;
-        font-size: 18px;
+        background-color: #a9c7e5;
+        font-size: 14px;
         font-weight: bold;
-        color: white;
+        color: black;
         border-radius: 10px;
         padding: 3px;
       }
       .refuse_btn{
-        width: 120px;
+        width: 60px;
         height: 30px;
         border: 0;
-        background-color: #5da034;
-        font-size: 18px;
+        background-color: #a9c7e5;
+        font-size: 14px;
         font-weight: bold;
-        color: white;
+        color: black;
         border-radius: 10px;
         padding: 3px;
       }
@@ -207,7 +390,7 @@
       }
       #main-container {
         width: 60%;
-        margin: 0 auto;
+        margin: 10px auto;
         border: 1px solid silver;
         border-radius: 20px;
         box-shadow: 0 0 3px 0 rgb(172, 170, 170);
@@ -250,7 +433,7 @@
             margin: 0 auto;
             width: 100%;
             border: 1px solid silver;
-            border-top: none;
+            border-bottom: none;
             border-right: none;
             border-left: none;
             padding-top: 10px;
@@ -263,6 +446,7 @@
             display: grid;
             grid-template-rows: 1fr 1fr 1fr;
             grid-gap: 5px;
+            margin: 0 auto;
         }
         .sub_info{
             font-size: 12px;
@@ -275,18 +459,36 @@
             justify-content: flex-start;
             flex-wrap: wrap;
         }
+        .btn_box {
+          display: grid;
+          grid-row: 1fr 1fr;
+          grid-gap: 10px;
+        }
+        #buttonBox {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-gap: 5px;
+        }
         .wait {
-            font-weight: bold;
-            color: green;
+          font-size: 18px;
+          font-weight: bold;
+          color: green;
+          margin: 0 auto;
         }
         .complete {
-            font-weight: bold;
-            color: blue;
+          font-weight: bold;
+          color: blue;
+          font-size: 18px;
+          margin: 0 auto;
         }
         .fail {
-            font-weight: bold;
-            color: red;
+          font-size: 18px;
+          font-weight: bold;
+          color: red;
+          margin: 0 auto;
+
         }
+
       footer {
         width: 100%;
         height: 300px;
@@ -326,7 +528,6 @@
             <div id="titleBox"><span>초대받은 매치정보</span></div>
             <div id="titleBox"><span>매칭상태</span></div>
           </div>
-          <hr style="height: 1px; background: #ccc;">
 
           <%if(result.length == 0) {%>
               <div>
@@ -344,14 +545,13 @@
                   <div>
                     <span style="font-weight: bold;"><%= result[i].제목 %></span>
                   </div>
-                  <div>
-                    <span>경기 날짜: <%= result[i].경기진행날짜 %> /</span>
-                    <span>시간: <%= result[i].경기진행시간 %>:00 </span><br>
+                  <div id="detailcon">
+                    <span><%= result[i].경기진행날짜 %> /</span>
+                    <span><%= result[i].경기진행시간 %></span><br>
                   </div>
-                  <div>
+                  <div id="detailcon">
                     <span><%= result[i].장소 %> /</span>
-                    <span><%= result[i].인원 %> /</span>
-                    <span>남은자리: <%= result[i].count %>명</span><br>
+                    <span><%= result[i].인원 %></span>
                   </div>
                 </div>
                 <div class="btn_box" style="margin: auto auto;">
@@ -364,12 +564,14 @@
                   <% if(result[i].여부==2){ %>
                     <span class="fail">매칭실패</span>
                   <% } %>
-                  <button class="accept_btn accept" data-articlenum_acc="<%= result[i].게시글번호%>">
-                    수락
-                  </button>
-                  <button class="refuse_btn refuse" data-articlenum_ref="<%= result[i].게시글번호%>">
-                    거절
-                  </button>
+                  <div id="buttonBox">
+                    <button class="accept_btn accept" data-articlenum_acc="<%= result[i].게시글번호%>">
+                      수락
+                    </button>
+                    <button class="refuse_btn refuse" data-articlenum_ref="<%= result[i].게시글번호%>">
+                      거절
+                    </button>
+                  </div>
                 </div>
               </div>
               <% } %>
@@ -378,7 +580,9 @@
         </div>
       </div>
     </main>
+<footer>
 
+</footer>
       <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 
       <script>

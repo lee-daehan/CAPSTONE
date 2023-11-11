@@ -12,204 +12,447 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
   <title>순풋</title>
   <style>
-  @media screen and (min-width: 481px) {
-    header {
-      width: 100%;
-      height: 300px;
-      margin: 0;
-      padding: 0;
-      border: 0;
-      display: grid;
-      grid-template-rows: auto auto;
-    }
-    .menubar {
-      bottom: 10px;
-      display: grid;
-      grid-template-columns: auto auto auto auto;
-      justify-content: center;
-      align-items: center;
-      padding: 20px 0;
-      margin-bottom: 20px;
-      height: 100px;
-    }
+    @media screen and (max-width: 480px) {
+      #header {
+        grid-area: header;
+      }
 
-    .menubar a {
-      text-decoration: none;
-      color: black;
-      font-weight: bold;
-      margin: 0 200px;
-      display: grid;
-      grid-template-rows: auto auto;
-      place-items: center;
-    }
+      #main {
+        grid-area: main;
+        display: grid;
+        grid-template-rows: auto auto;
+        grid-gap: 10px;
+      }
 
-    .menubar img {
-      width: 60px;
-      height: 60px;
-    }
+      #footer {
+        grid-area: footer;
+      }
 
-    .menuname {
-      margin-top: 10px;
-    }
-    #main-title {
-      width: 80%;
-      color: black;
-      margin: 30px auto;
-      display: flex;
-      justify-content: center;
-      font-size:x-large;
-      font-weight: bold;
-    }
-    .list-container {
-      width: 60%;
-      height: 600px;
-      border: 1px solid #ced4da;
-      color: #838589;
-      border-radius: 10px;
-      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
-      /* display: flex; */
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-      overflow-y: scroll;
-      margin: 10px auto;
-    }
-    .list-container::-webkit-scrollbar {
-      display: none;
-    }
+      #body {
+        display: grid;
+        gap: 10px;
+        grid-template-rows: 1fr;
+        grid-template-areas:
+          'header'
+          'main'
+          'footer';
+      }
 
-    .list-item {
-      display: flex;
-      justify-content: space-between;
-      border: 1px solid #ced4da;
-      color: #838589;
-      border-radius: 10px;
-      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
-      margin: 10px 10px;
-      padding: 10px;
-    }
-    .list-wrap {
-      /* display: grid;
+      #nav {
+        width: 100%;
+      }
+
+      #menubar {
+        width: 100%;
+      }
+
+      .menubar {
+        display: grid;
+        grid-template-rows: auto auto auto;
+        align-items: center;
+        margin: 10px 0;
+      }
+
+      .menubar a {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        margin: 0 200px;
+        display: grid;
+        grid-template-rows: auto auto;
+        place-items: center;
+      }
+
+      .menubar img {
+        width: 50px;
+        height: 50px;
+      }
+
+      #main-title {
+        width: 80%;
+        color: black;
+        margin: 30px auto;
+        display: flex;
+        justify-content: center;
+        font-size:large;
+        font-weight: bold;
+      }
+
+      .list-container {
+        width: 95%;
+        height: 600px;
+        border: 1px solid #ced4da;
+        color: #838589;
+        border-radius: 10px;
+        box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+        /* display: flex; */
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        overflow-y: scroll;
+        margin: 10px auto;
+      }
+
+      .list-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      .list-item {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid #ced4da;
+        color: #838589;
+        border-radius: 10px;
+        box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+        margin: 10px 10px;
+        padding: 10px;
+      }
+      .before_ev {
+
+      }
+      .list-wrap {
+        /* display: grid;
       grid-template-rows: 1fr 1fr;
       grid-gap: 10px; */
-      border: 1px solid #ced4da;
-      color: #838589;
-      border-radius: 10px;
-      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
-      margin: 10px 10px;
-      padding: 10px;
+        border: 1px solid #ced4da;
+        color: #838589;
+        border-radius: 10px;
+        box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+        margin: 10px 10px;
+        padding: 10px;
 
-    }
-    .list-item-success{
-      display: flex;
-      justify-content: space-between;
+      }
 
-    }
-    .title {
-      color: black;
-      font-weight: bold;
+      .list-item-success {
+        display: flex;
+        justify-content: space-between;
+
+      }
+
+      .title {
+        color: black;
+        font-weight: bold;
+      }
+
+      .content {
+        color: black;
+      }
+
+      .detail {
+        font-size: 16px;
+        color: #545658;
+      }
+
+      .btn_wait {
+        width: 120px;
+        height: 100%;
+        border: 0;
+        background-color: rgb(66, 66, 236);
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        border-radius: 10px;
+        padding: 3px;
+      }
+
+      .btn_fail {
+        width: 120px;
+        height: 100%;
+        border: 0;
+        background-color: red;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        border-radius: 10px;
+        padding: 3px;
+      }
+
+      .btn_complete {
+        width: 120px;
+        height: 100%;
+        border: 0;
+        background-color: #5da034;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        border-radius: 10px;
+        padding: 3px;
+      }
+
+      .score_button {
+        width: fit-content;
+        height: fit-content;
+        background-color: white;
+        margin-top: 10px;
+        font-size: 15px;
+      }
+
+      .score_button a {
+        color: black;
+        font-weight: bold;
+        list-style: none;
+        text-decoration: none;
+      }
+
+      #star {
+        display: flex;
+      }
+
+      .star {
+        font-size: 2rem;
+        margin: 10px 0;
+        cursor: pointer;
+      }
+
+      .star:not(.on) {
+        color: #ccc;
+      }
+
+      .star.on {
+        color: orange;
+      }
+
+      #mat-stat {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .wait {
+        font-weight: bold;
+        color: green;
+      }
+
+      .complete {
+        font-weight: bold;
+        color: blue;
+      }
+
+      .fail {
+        font-weight: bold;
+        color: red;
+      }
+
+      footer {
+        width: 100%;
+        height: 300px;
+        margin: 0 auto;
+        background-color: #282B33;
+      }
     }
 
-    .content {
-      color: black;
-    }
+    @media screen and (min-width: 481px) {
+      header {
+        width: 100%;
+        height: 300px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        display: grid;
+        grid-template-rows: auto auto;
+      }
 
-    .detail {
-      font-size: 16px;
-      color: #545658;
-    }
+      .menubar {
+        bottom: 10px;
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
+        margin-bottom: 20px;
+        height: 100px;
+      }
 
-    .btn_wait {
-      width: 120px;
-      height: 100%;
-      border: 0;
-      background-color: rgb(66, 66, 236);
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      border-radius: 10px;
-      padding: 3px;
-    }
+      .menubar a {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        margin: 0 200px;
+        display: grid;
+        grid-template-rows: auto auto;
+        place-items: center;
+      }
 
-    .btn_fail {
-      width: 120px;
-      height: 100%;
-      border: 0;
-      background-color: red;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      border-radius: 10px;
-      padding: 3px;
-    }
+      .menubar img {
+        width: 60px;
+        height: 60px;
+      }
 
-    .btn_complete {
-      width: 120px;
-      height: 100%;
-      border: 0;
-      background-color: #5da034;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      border-radius: 10px;
-      padding: 3px;
-    }
-    .score_button {
-      width: fit-content;
-      height: fit-content;
-      background-color: white;
-      margin-top: 10px;
-      margin-left: 60%;
-      font-size: 15px;
-    }
-    .score_button a{
-      color: black;
-      font-weight: bold;
-      list-style: none;
-      text-decoration: none;
-    }
+      .menuname {
+        margin-top: 10px;
+      }
 
-    #star {
-      display: flex;
-    }
+      #main-title {
+        width: 80%;
+        color: black;
+        margin: 30px auto;
+        display: flex;
+        justify-content: center;
+        font-size: x-large;
+        font-weight: bold;
+      }
 
-    .star {
-      font-size: 2rem;
-      margin: 10px 0;
-      cursor: pointer;
-    }
+      .list-container {
+        width: 60%;
+        height: 600px;
+        border: 1px solid #ced4da;
+        color: #838589;
+        border-radius: 10px;
+        box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+        /* display: flex; */
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        overflow-y: scroll;
+        margin: 10px auto;
+      }
 
-    .star:not(.on) {
-      color: #ccc;
-    }
+      .list-container::-webkit-scrollbar {
+        display: none;
+      }
 
-    .star.on {
-      color: orange;
+      .list-item {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid #ced4da;
+        color: #838589;
+        border-radius: 10px;
+        box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+        margin: 10px 10px;
+        padding: 10px;
+      }
+
+      .list-wrap {
+        /* display: grid;
+      grid-template-rows: 1fr 1fr;
+      grid-gap: 10px; */
+        border: 1px solid #ced4da;
+        color: #838589;
+        border-radius: 10px;
+        box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+        margin: 10px 10px;
+        padding: 10px;
+
+      }
+
+      .list-item-success {
+        display: flex;
+        justify-content: space-between;
+
+      }
+
+      .title {
+        color: black;
+        font-weight: bold;
+      }
+
+      .content {
+        color: black;
+      }
+
+      .detail {
+        font-size: 16px;
+        color: #545658;
+      }
+
+      .btn_wait {
+        width: 120px;
+        height: 100%;
+        border: 0;
+        background-color: rgb(66, 66, 236);
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        border-radius: 10px;
+        padding: 3px;
+      }
+
+      .btn_fail {
+        width: 120px;
+        height: 100%;
+        border: 0;
+        background-color: red;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        border-radius: 10px;
+        padding: 3px;
+      }
+
+      .btn_complete {
+        width: 120px;
+        height: 100%;
+        border: 0;
+        background-color: #5da034;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        border-radius: 10px;
+        padding: 3px;
+      }
+
+      .score_button {
+        width: fit-content;
+        height: fit-content;
+        background-color: white;
+        margin-top: 10px;
+        margin-left: 60%;
+        font-size: 15px;
+      }
+
+      .score_button a {
+        color: black;
+        font-weight: bold;
+        list-style: none;
+        text-decoration: none;
+      }
+
+      #star {
+        display: flex;
+      }
+
+      .star {
+        font-size: 2rem;
+        margin: 10px 0;
+        cursor: pointer;
+      }
+
+      .star:not(.on) {
+        color: #ccc;
+      }
+
+      .star.on {
+        color: orange;
+      }
+
+      #mat-stat {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .wait {
+        font-weight: bold;
+        color: green;
+      }
+
+      .complete {
+        font-weight: bold;
+        color: blue;
+      }
+
+      .fail {
+        font-weight: bold;
+        color: red;
+      }
+
+      footer {
+        width: 100%;
+        height: 300px;
+        margin: 0 auto;
+        background-color: #282B33;
+      }
     }
-    #mat-stat{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .wait {
-            font-weight: bold;
-            color: green;
-    }
-    .complete {
-     font-weight: bold;
-     color: blue;
-    }
-    .fail {
-      font-weight: bold;
-      color: red;
-    }
-    footer {
-      width: 100%;
-      height: 300px;
-      margin: 0 auto;
-      background-color: #282B33;
-    }
-  }
   </style>
 </head>
 
@@ -230,163 +473,151 @@
           <p class="menuname">공지사항</p>
         </a>
       </div>
-    </header>
-    <hr style="height: 1px; background: #ccc;">
+  </header>
+  <hr style="height: 1px; background: #ccc;">
 
-    <main>
-      <div id="main-title"> <%= 매칭된게시물.신청자 %>님의 신청한 매치</div>
-      <div class="list-container">
-        <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
-          <% if(모든게시물[i].신청자==매칭된게시물.신청자) { %>
-            <% if(모든게시물[i].여부==0) { %>
-              <div class="list-item">
-                <div class="item1">
-                  <div class="title">
-                    <%= 모든게시물[i].제목 %>
-                  </div>
-                  <div class="content">
-                    <%= 모든게시물[i].게시글 %>
-                  </div>
-                  <div class="detail">
-                    <span>작성자: <%= 모든게시물[i].작성자 %> •</span>
-                    <span>
-                      <%= 모든게시물[i].경기진행날짜 %> •
-                    </span>
-                    <span>
-                      <%= 모든게시물[i].경기진행시간 %> •
-                    </span>
-                    <span>
-                      <%= 모든게시물[i].장소 %> •
-                    </span>
-                    <span>
-                      <%= 모든게시물[i].인원 %> •
-                    </span>
-                    <span>남은인원: <%= 모든게시물[i].남은인원 %></span>
-                  </div>
+  <main>
+    <div id="main-title">
+      <%= 매칭된게시물.신청자 %>님이 신청한 매치
+    </div>
+    <div class="list-container">
+      <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
+        <% if(모든게시물[i].신청자==매칭된게시물.신청자) { %>
+          <% if(모든게시물[i].여부==0) { %>
+            <div class="list-item">
+              <div class="item1">
+                <div class="title">
+                  <%= 모든게시물[i].제목 %>
                 </div>
-                <div id="mat-stat">
-                  <span class="wait">매칭대기중</span>
+                <div class="detail">
+                  <span>
+                    <%= 모든게시물[i].경기진행날짜 %> /
+                  </span>
+                  <span>
+                    <%= 모든게시물[i].경기진행시간 %>
+                  </span><br>
+                  <span>
+                    <%= 모든게시물[i].장소 %> /
+                  </span>
+                  <span>
+                    <%= 모든게시물[i].인원 %>
+                  </span>
                 </div>
               </div>
+              <div id="mat-stat">
+                <span class="wait">매칭대기중</span>
+              </div>
+            </div>
+            <% } %>
               <% } %>
                 <% } %>
-                  <% } %>
 
-                    <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
-                      <% if(모든게시물[i].신청자==매칭된게시물.신청자) { %>
-                        <% if(모든게시물[i].여부==1) { %>
-                          <div class="list-wrap">
-                            <div class="list-item-success">
-                                <div class="item1">
-                                  <div class="title">
-                                    <%= 모든게시물[i].제목 %>
-                                  </div>
-                                  <div class="content">
-                                    <%= 모든게시물[i].게시글 %>
-                                  </div>
-                                  <div class="detail">
-                                    <span>작성자: <%= 모든게시물[i].작성자 %> •</span>
-                                    <span>
-                                      <%= 모든게시물[i].경기진행날짜 %> •
-                                    </span>
-                                    <span>
-                                      <%= 모든게시물[i].경기진행시간 %> •
-                                    </span>
-                                    <span>
-                                      <%= 모든게시물[i].장소 %> •
-                                    </span>
-                                    <span>
-                                      <%= 모든게시물[i].인원 %> •
-                                    </span>
-                                    <span>남은인원: <%= 모든게시물[i].남은인원 %></span>
-                                  </div>
-                                </div>
-
-                                <div id="mat-stat">
-                                  <span class="complete">매칭 완료</span>
-                                </div>
+                  <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
+                    <% if(모든게시물[i].신청자==매칭된게시물.신청자) { %>
+                      <% if(모든게시물[i].여부==1) { %>
+                        <div class="list-wrap">
+                          <div class="list-item-success">
+                            <div class="item1">
+                              <div class="title">
+                                <%= 모든게시물[i].제목 %>
+                              </div>
+                              <div class="detail">
+                                <span>
+                                  <%= 모든게시물[i].경기진행날짜 %> /
+                                </span>
+                                <span>
+                                  <%= 모든게시물[i].경기진행시간 %>
+                                </span><br>
+                                <span>
+                                  <%= 모든게시물[i].장소 %> /
+                                </span>
+                                <span>
+                                  <%= 모든게시물[i].인원 %>
+                                </span>
+                              </div>
                             </div>
 
-                            <div class="score_button">
-                              <a href="/score" data-id="<%= 모든게시물[i].작성자 %>" class="before_ev">> <%= 모든게시물[i].작성자 %>님의 매너점수 평가하러가기</a>
+                            <div id="mat-stat">
+                              <span class="complete">매칭 완료</span>
                             </div>
                           </div>
+
+                          <div class="score_button">
+                            <a href="/score" data-id="<%= 모든게시물[i].작성자 %>" class="before_ev">> <%= 모든게시물[i].작성자 %>님의
+                                매너점수 평가하러가기</a>
+                          </div>
+                        </div>
+                        <% } %>
                           <% } %>
                             <% } %>
-                              <% } %>
 
 
-                                <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
-                                  <% if(모든게시물[i].신청자==매칭된게시물.신청자) { %>
-                                    <% if(모든게시물[i].여부==2) { %>
-                                      <div class="list-item">
-                                        <div class="item1">
-                                          <div class="title">
-                                            <%= 모든게시물[i].제목 %>
-                                          </div>
-                                          <div class="content">
-                                            <%= 모든게시물[i].게시글 %>
-                                          </div>
-                                          <div class="detail">
-                                            <span>작성자: <%= 모든게시물[i].작성자 %> •</span>
-                                            <span>
-                                              <%= 모든게시물[i].경기진행날짜 %> •
-                                            </span>
-                                            <span>
-                                              <%= 모든게시물[i].경기진행시간 %>:00 •
-                                            </span>
-                                            <span>
-                                              <%= 모든게시물[i].장소 %> •
-                                            </span>
-                                            <span>
-                                              <%= 모든게시물[i].인원 %> •
-                                            </span>
-                                            <span>남은인원: <%= 모든게시물[i].남은인원 %></span>
-                                          </div>
+                              <% nprint : for (var i=0; i < 모든게시물.length; i++ ) { %>
+                                <% if(모든게시물[i].신청자==매칭된게시물.신청자) { %>
+                                  <% if(모든게시물[i].여부==2) { %>
+                                    <div class="list-item">
+                                      <div class="item1">
+                                        <div class="title">
+                                          <%= 모든게시물[i].제목 %>
                                         </div>
-                                        <div id="mat-stat">
-                                        <span class="fail">매칭 실패</span>
+                                        <div class="detail">
+                                          <span>
+                                            <%= 모든게시물[i].경기진행날짜 %> /
+                                          </span>
+                                          <span>
+                                            <%= 모든게시물[i].경기진행시간 %> /
+                                          </span><br>
+                                          <span>
+                                            <%= 모든게시물[i].장소 %> /
+                                          </span>
+                                          <span>
+                                            <%= 모든게시물[i].인원 %>
+                                          </span>
                                         </div>
                                       </div>
+                                      <div id="mat-stat">
+                                        <span class="fail">매칭 실패</span>
+                                      </div>
+                                    </div>
+                                    <% } %>
                                       <% } %>
                                         <% } %>
-                                          <% } %>
-      </div>
-    </main>
+    </div>
+  </main>
 
-    <footer>
-    </footer>
+  <footer>
+  </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-      crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-      crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+    crossorigin="anonymous"></script>
 
-      <script>
-                        $('.before_ev').click(function (e) {
-                    var id = e.target.dataset.id; //지금 클릭한것
-                    console.log(id);
-                    var nowClick = $(this); // 지금 이벤트가 동작하는 곳
-                    $.ajax({
-                        method: 'POST',
-                        url: '/before_ev',
-                        data: { id: id }
-                    }).done(function (result) {
-                        console.log(data);
-                    }).fail(function (xhr, textStatus, errorThrow) {
-                        //요청 실패시
-                        console.log(xhr, textStatus, errorThrow);
-                    });
-                })
+  <script>
+    $('.before_ev').click(function (e) {
+      var id = e.target.dataset.id; //지금 클릭한것
+      console.log(id);
+      var nowClick = $(this); // 지금 이벤트가 동작하는 곳
+      $.ajax({
+        method: 'POST',
+        url: '/before_ev',
+        data: { id: id }
+      }).done(function (result) {
+        console.log(data);
+      }).fail(function (xhr, textStatus, errorThrow) {
+        //요청 실패시
+        console.log(xhr, textStatus, errorThrow);
+      });
+    })
 
-                window.onload = function () {
-                    if (location.href.indexOf('reloaded') == -1) location.replace(location.href + '?reloaded');
-                    //if (parent.location.href.indexOf('reloaded')==-1) parent.location.replace(parent.location.href+'?reloaded');
-                } 
-      </script>
+    window.onload = function () {
+      if (location.href.indexOf('reloaded') == -1) location.replace(location.href + '?reloaded');
+      //if (parent.location.href.indexOf('reloaded')==-1) parent.location.replace(parent.location.href+'?reloaded');
+    } 
+  </script>
 
 </body>
 

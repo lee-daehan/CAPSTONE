@@ -90,8 +90,7 @@
                     </div>
                     
                     <div class="profile">
-                      <p><%= allpost[i].신청자%>님의 프로필
-                      </p>
+                      <p><%= allpost[i].신청자%>님의 프로필</p>
                       <% if(allpost[i].성별 === "남성") { %>
                         <div class="male">
                           <img src="public/imgs/male.png" alt="male" width="50px" height="50px" >
@@ -105,13 +104,17 @@
                         </div>
                       <% }%>
                       
-                      <div>
+                      <div id="positioninfo">
                         <img src="public/imgs/position.png" alt="foot" width="50px" height="50px">
                         <span class="pl-3"><%= allpost[i].선호포지션 %></span>
                       </div>
                       <div>
                         <img src="public/imgs/foot.png" alt="foot" width="50px" height="50px">
                         <span class="pl-3"><%= allpost[i].주발 %></span>
+                      </div>
+                      <div id="scoreinfo">
+                        <img src="public/imgs/foot.png" alt="foot" width="50px" height="50px">
+                        <span class="pl-3"></span>
                       </div>
                     </div>
 

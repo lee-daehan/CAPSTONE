@@ -10,12 +10,163 @@
 
     <title>순풋</title>
     <style>
+        @media screen and (max-width:480px) {
+            * {
+                height: 100%;
+            }
+            #main {
+                height:fit-content;
+            }
+            #container {
+                width: 70%;
+                height: 70%;
+                margin: 50px auto;
+                display: grid;
+                grid-template-rows: auto auto;
+                grid-gap: 20px;
+            }
+            #profileBox {
+                display: grid;
+                grid-template-rows: 1fr 1.5fr 1fr;
+                grid-gap: 30px;
+            }
+            #userName {
+                padding: 15px;
+                border: 1px solid #ced4da;
+                border-radius: 10px;
+                box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+                font-weight: bold;
+            }
+            #user_id{
+                font-size: 24px;
+                font-weight: bold;
+            }
+            #user_name {
+                color: #727F88;
+            }
+            #user_department {
+                color: #727F88;
+            }
+            #profile {
+                border: 1px solid #ced4da;
+                border-radius: 10px;
+                box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+                /* display: grid;
+                grid-template-rows: 0.1fr 0.5fr 0.5fr; */
+                padding: 15px;
+                font-weight: bold;
+                position: relative;
+            }
+            #por_title{
+                height: 20%;
+            }
+            #profile_info {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 20px;
+                color: #727F88;
+                height: fit-content;
+                margin-top: 20px;
+            }
+            #info1, #info2 {
+                border: 0;
+                border-radius: 10px;
+                padding: 10px;
+                background-color:rgb(201, 229, 255);
+            }
+            #editBtn {
+                width: 90%;
+                height: 20%;
+                position: absolute;
+                bottom: 15px;
+            }
+            #editBtn button {
+                width: 100%;
+                border: 0;
+                border-radius: 10px;
+                box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+                background-color: rgb(201, 229, 255);
+                font-weight: bold;
+                color: black;
+            }
+            #editBtn button:hover {
+                background-color: rgb(89, 163, 242);
+            }
+            #profilemenu:hover {
+                cursor: pointer;
+            }
+            /* #profileBtn button{
+                border-radius: 10px;
+                background-color: #8bc269;
+                border: 0;
+                font-weight: bold;
+            } */
+            #userScore {
+                border: 1px solid #ced4da;
+                border-radius: 10px;
+                box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+                height: 100%;
+                padding: 15px;
+                font-weight: bold;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            #score {
+                height: fit-content;
+                margin: 20px;
+            }
+            #detail {
+                font-size: 14px;
+            }
+            #score_img {
+                width: 50px;
+                height: 50px;
+                place-content: center;
+                align-items: center;
+                margin: 5px;
+            }
+
+            #menuBox ul {
+                display: grid;
+                grid-template-rows: auto auto auto auto auto auto;
+                border: 1px solid #ced4da;
+                border-radius: 10px;
+                box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+                margin: 0;
+                padding: 20px;
+            }
+            #menuBox ul li {
+                list-style: none;
+            }
+            #menuBox ul li:hover {
+                cursor: pointer;
+            }
+            #item {
+                display: flex;
+                align-items: center;
+                border-radius: 10px;
+                font-weight: bold;
+            }
+            #item:hover {
+                background-color: #ced4da;
+            }
+            #item span{
+                display: flex;
+                align-items: center;
+            }
+            #menuBox li img {
+                width: 30px;
+                height: 30px;
+                margin: 0 10px;
+            }
+        }
         @media screen and (min-width:481px) {
             * {
                 height: 100%;
             }
             #main {
-                height: 90%;
+                height:fit-content;
             }
             #container {
                 width: 70%;
@@ -61,9 +212,18 @@
                 height: 20%;
             }
             #profile_info {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 20px;
                 color: #727F88;
                 height: fit-content;
                 margin-top: 20px;
+            }
+            #info1, #info2 {
+                border: 0;
+                border-radius: 10px;
+                padding: 10px;
+                background-color:rgb(201, 229, 255);
             }
             #editBtn {
                 width: 90%;
@@ -73,12 +233,12 @@
             }
             #editBtn button {
                 width: 100%;
-                border: 1px solid rgb(89, 163, 242);
+                border: 0;
                 border-radius: 10px;
                 box-shadow: 0 0 3px 0 rgb(172, 170, 170);
-                background-color: rgb(89, 163, 242);
+                background-color: rgb(201, 229, 255);
                 font-weight: bold;
-                color: white;
+                color: black;
             }
             #editBtn button:hover {
                 background-color: rgb(89, 163, 242);
@@ -197,6 +357,7 @@
             <div id="profileBox">
                 <div id="userName">
                 <span id="user_id"><%= user.id %></span><br><br>
+                <span style="font-size: 13px; font-weight: 500;">이름 / 학과</span><br>
                 <span id="user_name"><%= user.이름 %> /</span>
                 <span id="user_department"><%= user.학과 %></span>
                 </div>
@@ -207,14 +368,20 @@
                     </div>
                     <div id="profile_info">
                         <% if (user.닉네임 != null) { %>
-                            <span><%= user.닉네임 %> /</span>
-                            <span><%= user.성별 %></span><br>
-                            <span><%= user.선호포지션 %> /</span>
-                            <span><%= user.주발 %></span>
-                            <div id="editBtn">
-                                <button type="button" onclick="location.href='/editprofile'">프로필 수정</button>
+                            <div id="info1">
+                                <span style="font-size: 13px; font-weight: 500;">닉네임 / 성별</span><br>
+                                <span><%= user.닉네임 %> /</span>
+                                <span><%= user.성별 %></span>
+                            </div>
+                            <div id="info2">
+                                <span style="font-size: 13px; font-weight: 500;">선호포지션 / 주발</span><br>
+                                <span><%= user.선호포지션 %> /</span>
+                                <span><%= user.주발 %></span>
                             </div>
                         <% } %>
+                    </div>
+                    <div id="editBtn">
+                        <button type="button" onclick="location.href='/editprofile'">프로필 수정</button>
                     </div>
                 </div>
 
@@ -269,6 +436,9 @@
                     <li onclick="location.href='/autorecommand'">
                         <div id="item"><img src="public/imgs/recommand.png" alt="원하는 조건의 유저 목록"><span>원하는 조건의 유저 추천</span></div>
                     </li>
+                    <li onclick="location.href='/evaluate'">
+                        <div id="item"><img src="public/imgs/evaluate.png" alt="평가하기"><span>함께 뛴 유저 평가하기</span></div>
+                    </li>
                     <li onclick="location.href='/logout'">
                         <div id="item"><img src="public/imgs/logout.png" alt="로그아웃"><span>로그아웃</span></div>
                     </li>
@@ -276,73 +446,6 @@
             </div>
         </div>
     </main>
-
-
-
-
-
-
-
-    <!-- <div class="menubutton">
-
-        <div class="btn_box">
-            <button type="button" class="btn">
-                <a class="text-decoration-none" href="/inputprofile"><img src="public/imgs/profile.png" alt="프로필입력">프로필입력
-                </a>
-            </button>
-        </div>
-        <div class="btn_box">
-            <button type="button" class="btn" >
-                <a class="text-decoration-none" href="/myprofile"><img src="public/imgs/view.png" alt="프로필보기">프로필보기</a>
-            </button>
-        </div>
-        <div class="btn_box">
-            <button type="button" class="btn">
-                <a class="text-decoration-none" href="/editprofile"><img src="public/imgs/modify.png" alt="프로필수정">프로필수정</a>
-            </button>
-        </div>
-        
-        <div class="btn_box">
-            <button type="button" class="btn">
-                <a class="text-decoration-none" href="/resmatch"><img src="public/imgs/apply.png" alt="신청한경기">신청한 경기</a>
-            </button>
-        </div>
-        <div class="btn_box">
-            <button type="button" class="btn">
-                <a class="text-decoration-none" href="/reqmatch"><img src="public/imgs/receive.png" alt="신청받은경기">신청받은 경기</a>
-            </button>
-        </div>
-        <div class="btn_box">
-            <button type="button" class="btn">
-                <a class="text-decoration-none" href="/boardview"><img src="public/imgs/board.png" alt="내 게시물">내 게시물</a>
-            </button>
-        </div>
-        <div class="btn_box">
-            <button type="button" class="btn">
-                <a class="text-decoration-none" href="/myscore"><img src="public/imgs/score.png" alt="내 점수 보기">내 점수</a>
-            </button>
-        </div>
-        <div class="btn_box">
-            <button type="button" class="btn">
-                <a class="text-decoration-none" href="/logout"><img src="public/imgs/logout.png" alt="로그아웃">로그아웃</a>
-            </button>
-        </div>
-        <div class="btn_box">
-            <button type="button" class="btn">
-                <a class="text-decoration-none" href="/myinvitelist"><img src="public/imgs/receive.png" alt="초대한 유저 목록">초대한 유저 목록</a>
-            </button>
-        </div>
-        <div class="btn_box">
-            <button type="button" class="btn">
-                <a class="text-decoration-none" href="/invited_match"><img src="public/imgs/receive.png" alt="초대받은경기">초대받은경기</a>
-            </button>
-        </div>
-    </div> -->
-    
-    
-    
-    <!-- Optional JavaScript; choose one of the two! -->
-
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>

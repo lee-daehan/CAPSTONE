@@ -171,7 +171,7 @@
           <span class="star" data-id="<%= result.평가받은사람 %>" data-rate="4">★</span>
           <span class="star" data-id="<%= result.평가받은사람 %>" data-rate="5">★</span>
         </div>
-        <button onclick="alert('평가를 완료하였습니다.')" class="score_button"><a href="/resmatch" data-id="<%= result.평가받은사람 %>">완료</a></button>
+        <button onclick="alert('평가를 완료하였습니다.')" class="score_button"><a href="/evaluate" data-id="<%= result.평가받은사람 %>" data-articlenum="<%= articlenum%>">완료</a></button>
       </div>
 
                                                 
@@ -221,11 +221,13 @@
       $('.star').click(function (e) {
           var id = e.target.dataset.id; //지금 클릭한것
           var rate = e.target.dataset.rate; //지금 클릭한것
-          var nowClick = $(this); // 지금 이벤트가 동작하는 곳
+          var articlenum = e.target.dataset.articlenum;
+
+
           $.ajax({
               method: 'POST',
               url: '/apply',
-              data: { id: id, rate:rate }, 
+              data: { id: id, rate:rate, articlenum:articlenum}
             })
             .done(function (result) {
                 alert('평가완료');
