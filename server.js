@@ -104,7 +104,9 @@ app.post('/register', function (req, res) {
                 팀원주발: req.body.team_foot
             }, function (error, result) {
                 if (error) { return error };
-                res.write("<script>window.location=\"../login\"</script>");
+                res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+                res.write("<script>alert('회원가입이 완료되었습니다.')</script>");
+                return res.write("<script>window.location=\"../login\"</script>");
             })
 
             db.collection('recommands').insertOne({
@@ -146,6 +148,7 @@ app.post('/register', function (req, res) {
             })
         }
     })
+    
 });
 
 //로그인
@@ -216,8 +219,11 @@ function checklogin(req, res, next) {
     if (req.user) {
         next();
     } else {
-        res.write("<script>alert('please login')</script>");
-        res.write("<script>window.location=\"../login\"</script>");
+        // res.write("<script>alert('please login')</script>");
+        // res.write("<script>window.location=\"../login\"</script>");
+        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+        res.write("<script>alert('로그인을 해주세요.')</script>");
+        return res.write("<script>window.location=\"../login\"</script>");
     }
 }
 
@@ -456,47 +462,36 @@ app.put('/request', checklogin, function (req, res) {
     })
 });
 
-app.post('/request2', checklogin, function (req, res) {//메인페이지의 날짜 선택해서 request컬렉션에 inserOne하는 부분, 신청전에 초대를 이미 받아서 매칭요청이 왔는지 중복검사해야함
-    //반대로 신청할 땐 신청하려는데 내가 이미 초대를 받았을 경우가 있음, 그럼 신청 눌렀을때 request컬렉션에서 비교해줘야 중복이 안발생함
+app.post('/request2', checklogin, function (req, res, done) {
     var art_id = parseInt(req.body._id)// 신청 버튼을 누른 게시글의 글번호
     var host = req.body.host// 신청 버튼을 누른 게시글의 작성자id
-    // console.log(req.user.id); // 지금 로그인한 유저의 아이디
     console.log(art_id);
     console.log(host);
-    // res.write("<script>window.location=\"../board\"</script>");//지금 박는거 주석해놔서 안박히는거임 놀라지 말자
 
-    // db.collection('request').findOne({초대한사람: host,초대받은사람: req.user.id,신청한게시물번호:art_id},function(error,result){
-
-    //     if(result != null){
-    //         console.log(result);//result.length는 undefined, parseInt(result.length)는 NaN으로 뜸 if로 조건 걸려면 null로 해야함
-    //         console.log('중복되는게 있어요')
-    //         res.write("<script>window.location=\"../double\"</script>");
-    //     }
-    //     if(result == null){
-    //         console.log(result);
-    //         console.log('신청되었습니다')
-    //     }
-    // })
+    // function (inputid, inputpw, done) {
+    //     db.collection('profile').findOne({ id: inputid }, function (error, result) {
+    //         if (error) return done(error)
+    
+    //         if (!result) return done(null, false, { message: '존재하지않는 아이디입니다.' })
+    //         if (inputpw == result.pw) {
+    //             return done(null, result)
+    //         } else {
+    //             return done(null, false, { message: '비밀번호가 일치하지 않습니다.' })
+    //         }
+    //     })
 
     db.collection('request').findOne({초대한사람: host,초대받은사람: req.user.id,신청한게시물번호:art_id},function(error,result){
-        if(result != null){
-            console.log(result)//잘 가져옴
-            // console.log("중복된 게시글이 있습니다.")//중복된 게시글 있는거 확인가능
-            // res.send('이미 이 경기에 초대되셨습니다.')
-            //list.ejs의 window.reload때문에 duplication으로 이동 못하는거 아님
-            // res.write("<script>location.href='/duplication'</script>");
-            // res.location('/duplication.ejs')
-            // res.send('')
-            // alert('이미 이 경기에 초대되셨습니다');
-            // res.send(
-                //     `<script>
-                //       alert('이메일 인증 시간을 초과했습니다.');
-                //       location.href='${"/duplication.ejs"}';
-                //     </script>`
-                //   );
-                // res.send("<script>alert('알림 창입니다.');location.href='/duplication';</script>");
-            }
-            if(result == null){
+        // console.log(result) //잘 넘어옴
+        if(result.초대받은사람 == req.user.id && result.신청한게시물번호 == art_id && result.초대한사람 == host)
+        return done(null,null, {message: '이미 초대받은경기입니다.'})
+        // {
+        //     // console.log("중복") //중복 확인 잚됨
+        //     // res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+        //     // res.write("<script>alert('이미 초대받은 매치입니다.');</script>");
+        //     // return res.write("<script>window.location=\"../mypage\"</script>");
+        //         res.send(html);
+        // }
+        if(result == null){
                 //아래 findOne 위에부터 감싸서 조건 걸어주자, db.collection('request').findOne({신청한게시물번호: art_id, 신청자:, 작성자: host})
                 db.collection('board').findOne({ _id: art_id }, function (error, result) {
                     db.collection('profile').findOne({id: req.user.id}, function(error,result2){
@@ -528,17 +523,21 @@ app.post('/request2', checklogin, function (req, res) {//메인페이지의 날�
 //     res.render('double.ejs');
 // })
 
-
+app.get('/appresult', function(req,res){
+    res.render('appresult.ejs');
+})
 
 //신청내역 알림
 app.get('/reqmatch', checklogin, function (req, res) {
     db.collection('request').find({작성자: req.user.id}).toArray(function(error,result){
-        if(result == null){
-            res.write("<script>alert('not found')</script>");
-            res.write("<script>window.location=\"../mypage\"</script>");
+        console.log(result.length)
+        if(result.length == 0){
+            res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+            res.write("<script>alert('신청받은 경기가 없습니다.')</script>");
+            return res.write("<script>window.location=\"../mypage\"</script>");
         }
         if(result != null){
-            res.render('reqmatch.ejs',{allpost: result})
+            return res.render('reqmatch.ejs',{allpost: result})
         }
     })
 })

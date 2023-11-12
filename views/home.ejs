@@ -369,6 +369,10 @@
     #time {
       width: 40px;
     }
+    #count {
+      text-align: center;
+      width: 70px;
+    }
     #place {
       width: 350px;
     }
@@ -382,6 +386,10 @@
     }
     #timetitle {
       width: 350px;
+      font-weight: bold;
+    }
+    #counttitle {
+      width: 70px;
       font-weight: bold;
     }
     #abletitle {
@@ -619,6 +627,9 @@
                 <div id="timetitle">
                   <span>매치정보</span>
                 </div>
+                <div id="counttitle">
+                  <span>남은자리</span>
+                </div>
                 <div id="abletitle">
                   <span>등록여부</span>
                 </div>
@@ -644,6 +655,9 @@
                       <span id="placespan"><%= result[i].장소 %> /</span>
                       <span id="placespan"><%= result[i].인원 %></span>
                     </div>
+                    <div id="count">
+                      <span id="countspan"><%= result[i].count %></span><br>
+                    </div>
                     <div id="btnBox">
                       <button class="disable">마감</button>
                     </div>
@@ -663,9 +677,12 @@
                           <span id="placespan"><%= result[i].장소 %> /</span>
                           <span id="placespan"><%= result[i].인원 %></span>
                         </div>
+                        <div id="count">
+                          <span id="countspan"><%= result[i].count %></span><br>
+                        </div>
                         <div id="btnBox">
-                          <button class="request2" onclick="alert('신청되었습니다.(이미 초대된 경기일수도 있으니 초대된경기를 확인해주세요)')"
-                          data-id="<%= result[i]._id %>" data-host="<%= result[i].작성자%>">신청</button>
+                          <button class="request2" data-id="<%= result[i]._id %>"
+                            data-host="<%= result[i].작성자%>" onclick="location.href='/appresult'">신청</button>
                         </div>
                       </div>
                       <hr style="height: 0.5px; background: #ccc; margin-top: 5px; margin-bottom: 5px; border-top: 0;">
