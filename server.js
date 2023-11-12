@@ -146,6 +146,11 @@ app.post('/register', function (req, res) {
                 date: null,
                 time: null
             })
+            db.collection('duplication').insertOne({
+                id: req.body.id,
+                duplication: null,
+                art_id: null
+            })
         }
     })
     
@@ -980,10 +985,22 @@ app.post('/recommand', checklogin, function (req, res) {
     res.write("<script>window.location=\"../suggest\"</script>");
 })
 
+// app.get('/suggest', checklogin, function (req, res) {
+//     db.collection('recommands').findOne({ id: req.user.id }, function (error, result) {
+//         db.collection('profile').find({ 성별: result.성별, 선호포지션: result.선호포지션, 주발: result.주발 }).toArray(function (error, result1) {
+//             res.render('suggest.ejs', { player: result1, host: req.user.id })
+//         })
+//     })
+// })
+
 app.get('/suggest', checklogin, function (req, res) {
-    db.collection('recommands').findOne({ id: req.user.id }, function (error, result) {
-        db.collection('profile').find({ 성별: result.성별, 선호포지션: result.선호포지션, 주발: result.주발 }).toArray(function (error, result1) {
-            res.render('suggest.ejs', { player: result1, host: req.user.id })
+    var date = dateString;//현재날짜
+    var place = "소운동장";
+    db.collection('board').find({경기진행날짜: dateString, 장소:place}).toArray(function(error,result１) {
+        db.collection('recommands').findOne({ id: req.user.id }, function (error, result) {
+            db.collection('profile').find({ 성별: result.성별, 선호포지션: result.선호포지션, 주발: result.주발 }).toArray(function (error, result1) {
+                res.render('suggest.ejs', { player: result1, host: req.user.id,dateKor:dateKor, date:date, result:result１ })
+            })
         })
     })
 })
@@ -1210,14 +1227,21 @@ app.get('/invited_match', function(req,res){
 
 //초대 수락
 app.put('/acc_invite', checklogin, function (req, res) {
-    console.log(req.body.accept);
+    const count = parseInt(req.body.accept)
+    console.log(count)
         db.collection('request').updateOne({ 초대받은사람:req.user.id , 신청한게시물번호:parseInt(req.body.accept) }, {
             $set:
             {
                 여부: parseInt(1)
             }
+        }, function(error,result) {
+            db.collection('board').updateOne({ _id: count }, { $inc: { count: -1 } }, function (error, result) {
+                console.log("성공")
+                if (error) { return console.log(error) };
+            })
         })
 });
+
 //초대 거절
 app.put('/ref_invite', checklogin, function (req, res) {
     console.log(typeof req.body.refuse); //string
