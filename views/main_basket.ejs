@@ -1,0 +1,811 @@
+<!doctype html>
+<html>
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <title>순풋</title>
+  <script>
+    if(!location.search.match('a=1')){
+      location.href='?a=1';
+    }
+  </script>
+</head>
+<style>
+  @media screen and (max-width: 480px) {
+    #header {
+      grid-area: header;
+    }
+    #main {
+      grid-area: main;
+      display: grid;
+      grid-template-rows: auto auto;
+      grid-gap: 10px;
+    }
+    #footer {
+      grid-area: footer;
+    }
+
+    #body {
+      display: grid;
+      gap: 10px;
+      grid-template-rows: 1fr;
+      grid-template-areas: 
+        'header'
+        'main'
+        'footer';
+    }
+
+  #nav {
+    width: 100%;
+  }
+  #menubar {
+    width: 100%;
+  }
+  .menubar {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    align-items: center;
+    margin: 10px 0;
+  }
+  .menubar a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    margin: 0 200px;
+    display: grid;
+    grid-template-rows: auto auto;
+    place-items: center;
+  }
+  .menubar img {
+    width: 50px;
+    height: 50px;
+  }
+
+  #container1 {
+    display: grid;
+    grid-template-rows: auto auto;
+    justify-content: center;
+    grid-gap: 10px;
+    width: 100%;
+  }
+  .list-container {
+    width: 95%;
+    margin: 0 auto;
+    border: 1px solid #ced4da;
+    color: #838589;
+    border-radius: 10px;
+    box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    overflow-y:hidden;
+    padding: 5px;
+  }
+  .listTitle {
+    position: relative;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1fr;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .listTitle span:nth-child(4) {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+  }
+  .listContainer-item {
+    width: 100%;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1fr;
+    /* border: 1px solid #ced4da; */
+    border-bottom: 0.5px solid #ced4da;
+    border-radius: 0;
+    position: relative;
+    align-items: center;
+  }
+  .list-main-content {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+  }
+  .list-time{
+
+    font-weight: bold;
+    color: black;
+  }
+  .request2 {
+    width: 80px;
+      height: 30px;
+      border: none;
+      background-color: rgb(42, 145, 230);
+      border-radius: 10px;
+      color: white;
+      font-size: medium;
+      font-weight: bold;
+  }
+  .disable {
+    width: 80px;
+      height: 30px;
+      border: none;
+      background-color: rgb(243, 72, 72);
+      border-radius: 10px;
+      color: white;
+      font-size: medium;
+      font-weight: bold;
+  }
+  .list-container p{
+    font-size: 16px;
+    margin: 0;
+    padding: 5px 0;
+  }
+  #listtitle {
+    font-size: 15px;
+  }
+
+  
+  .menu {
+    display: grid;
+    grid-template-columns: 1fr;
+  }  
+    .recommand-container{
+      width: 95%;
+      display: grid;
+      grid-template-rows: auto auto;
+      border: 1px solid #ced4da;
+      border-radius: 10px;
+      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+      margin: 0 auto;
+    }
+
+    .recommand-title{
+      display: grid;
+      place-content: center;
+  }
+
+    .recommand-title span{
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .select {
+    padding: 7px;
+  }
+  
+  .select-container {
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    grid-gap: 20px;
+    margin: 20px 10px;
+    position: relative;
+  }
+
+  .select input[type=radio] {
+    display: none;
+  }
+
+  .select input[type=radio]+label {
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid #8f9194;
+    box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+    line-height: 24px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
+  }
+
+  .select input[type=radio]+label {
+    background-color: #fff;
+    color: #a8aaac;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+  }
+
+  .select input[type=radio]:checked+label {
+    border: 1px solid #5da034;
+    color: white;
+    background-color: #5da034;
+  }
+
+  .genderlabel {
+    margin: 0;
+  }
+
+  .submitButton {
+    margin: 20px 0;
+  }
+
+  .sub_title {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+  }
+
+  .sub_title span{
+    display: grid; 
+    justify-content: flex-start;
+    align-items: last baseline;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .sub_title img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .radio-container-gender {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .radio-container-position {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  .radio-container-foot {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .submit {
+    width: 100%;
+    height: 100%;
+  }
+
+  .submit input{
+    width: 100%;
+    background-color: #5da034;
+    margin-top: 64.4px;
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+    color: white;
+    font-weight: bold;
+  }
+  footer {
+    width: 100%;
+    height: 300px;
+    margin: 0 auto;
+    background-color: #282B33;
+  }
+  }
+
+  @media screen and (min-width: 481px) {
+      header {
+      width: 100%;
+      height: 300px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      display: grid;
+      grid-template-rows: auto auto;
+    }
+
+    .menubar {
+      bottom: 10px;
+      display: grid;
+      grid-template-columns: auto auto auto auto;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      margin-bottom: 20px;
+      height: 100px;
+    }
+
+    .menubar a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+      margin: 0 200px;
+      display: grid;
+      grid-template-rows: auto auto;
+      place-items: center;
+    }
+
+    .menubar img {
+      width: 60px;
+      height: 60px;
+    }
+
+    .menuname {
+      margin-top: 10px;
+    }
+
+    main {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .container1 {
+      display: grid;
+      grid-template-columns: 1.5fr 3.5fr;
+      grid-gap: 10px;
+      margin: 10px;
+    }
+
+    .list-container {
+      width: 100%;
+      border: 1px solid #ced4da;
+      /* color: #838589; */
+      border-radius: 10px;
+      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+      display: inline-block;
+      /* grid-template-rows: 1fr 4fr; */
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+    }
+    #radioContainer {
+      padding: 10px;
+    }
+    #radioContainer form label{
+      margin-right: 10px;
+    }
+    #radioContainer form a{
+      text-decoration: none;
+      color: black;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    #matchlist {
+      padding: 10px;
+    }
+    #listdetail{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+    }
+    #date {
+      width: 70px;
+    }
+    #time {
+      width: 40px;
+    }
+    #place {
+      width: 350px;
+    }
+    
+    #datetitle {
+      font-weight: bold;
+      /* padding-left: 30px; */
+    }
+    #placetitle {
+      font-weight: bold;
+    }
+    #timetitle {
+      width: 350px;
+      font-weight: bold;
+    }
+    #abletitle {
+      font-weight: bold;
+      padding-right: 10px;
+    }
+  .listTitle {
+    position: relative;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1fr;
+    color: black;
+  }
+  .listTitle span:nth-child(4) {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+  }
+  .listContainer-item {
+    width: 100%;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1fr;
+    /* border: 1px solid #ced4da; */
+    border-bottom: 0.5px solid #ced4da;
+    border-radius: 0;
+    position: relative;
+    align-items: center;
+  }
+  .list-main-content {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+  }
+  .list-time{
+
+    font-weight: bold;
+    color: black;
+  }
+  .request2 {
+    width: 80px;
+    height: 30px;
+    border: none;
+    background-color: rgb(42, 145, 230);
+    border-radius: 10px;
+    color: white;
+    font-size: medium;
+    font-weight: bold;
+  }
+  .disable {
+    width: 80px;
+      height: 30px;
+      border: none;
+      background-color: rgb(243, 72, 72);
+      border-radius: 10px;
+      color: white;
+      font-size: medium;
+      font-weight: bold;
+  }
+    .recommand-container {
+      margin: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 10px;
+      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+    }
+
+    .recommand-title {
+      margin: 20px 10px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+
+    .select {
+      padding: 0;
+      height: 100%;
+    }
+
+    .select-container {
+      display: grid;
+      grid-template-columns: 3fr 3fr 3fr 1fr;
+      grid-gap: 20px;
+      margin: 20px 10px;
+      position: relative;
+    }
+
+    .select input[type=radio] {
+      display: none;
+    }
+
+    .select input[type=radio]+label {
+      display: inline-block;
+      cursor: pointer;
+      border: 1px solid #8f9194;
+      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+      line-height: 24px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .select input[type=radio]+label {
+      background-color: #fff;
+      color: #a8aaac;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3px;
+    }
+
+    .select input[type=radio]:checked+label {
+      border: 1px solid #5da034;
+      color: white;
+      background-color: #5da034;
+    }
+
+    .genderlabel {
+      margin: 0;
+    }
+
+    .submitButton {
+      margin: 20px 0;
+    }
+
+    .sub_title {
+      display: grid;
+      grid-template-columns: 1fr 5fr;
+    }
+
+    .sub_title span{
+      display: grid; 
+      justify-content: flex-start;
+      align-items: last baseline;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .sub_title img{
+      width: 50px;
+      height: 50px;
+      float: left;
+    }
+
+    .radio-container-gender {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .radio-container-position {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .radio-container-foot {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .submit {
+      width: 100%;
+      height: 100%;
+    }
+
+    .submit input{
+      width: 100%;
+      background-color: #5da034;
+      margin-top: 64.4px;
+      border: 0;
+      border-radius: 10px;
+      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+      color: white;
+      font-weight: bold;
+    }
+
+    footer {
+      width: 100%;
+      height: 300px;
+      margin: 0 auto;
+      background-color: #282B33;
+    }
+  }
+
+</style>
+
+<body id="body">
+  <header id="header">
+    <%- include('nav.html') %>
+      <div class="menubar" id="menubar">
+        <a href="/board">
+          <img src="public/imgs/ball.png" alt="전체 매치">
+          <p class="menuname">전체 매치</p>
+        </a>
+        <a href="/selDate">
+          <img src="public/imgs/write.png" alt="매치등록">
+          <p class="menuname">매치 등록</p>
+        </a>
+        <a href="/">
+          <img src="public/imgs/notification.png" alt="공지사항">
+          <p class="menuname">공지사항</p>
+        </a>
+      </div>
+    </header>
+    <hr style="height: 1px; background: #ccc;">
+
+  <main id="main">
+    <section id="sec_1">
+      <div class="container1" id="container1">
+        <%- include('calendar.ejs') %>
+          <div class="list-container" id="list-container">
+            <div id="radioContainer">
+              <form action="" method="" name="selPlace">
+                <label for="소운동장">
+                  <input class="radio" type="radio" id="소운동장" name="place" value="소운동장">
+                  <a id="소운동장" href="/main_small_playground" onclick="check(this.id)">소운동장</a>
+                </label>
+                <label for="대운동장 풋살장(체육관 옆)">
+                  <input class="radio" type="radio" id="대운동장 풋살장(체육관 옆)" name="place" value="대운동장 풋살장(체육관 옆)">
+                  <a id="대운동장 풋살장(체육관 옆)" href="/main_gym" onclick="check(this.id)">대운동장 풋살장(체육관 옆)</a>
+                </label>
+                <label for="대운동장 풋살장(농구골대 옆)">
+                  <input class="radio" type="radio" id="대운동장 풋살장(농구골대 옆)" name="place" value="대운동장 풋살장(농구골대 옆)" checked>
+                  <a id="대운동장 풋살장(농구골대 옆)" href="/main_basket" onclick="check(this.id)">대운동장 풋살장(농구골대 옆)</a>
+                </label>
+              </form>
+            </div>
+            <div id="matchlist">
+              <div id="listdetail">
+                <div id="datetitle">
+                  <span>경기날짜</span>
+                </div>
+                <div id="placetitle">
+                  <span>시간</span>
+                </div>
+                <div id="timetitle">
+                  <span>매치정보</span>
+                </div>
+                <div id="abletitle">
+                  <span>등록여부</span>
+                </div>
+              </div>
+              <hr style="height: 0.5px; background: #ccc; margin-top: 5px; margin-bottom: 5px; border-top: 0;">
+
+            <%result2.sort((prev, cur) => { %>
+              <%if (prev.경기진행시간 > cur.경기진행시간) return 1; %>
+              <%if (prev.경기진행시간 < cur.경기진행시간) return -1; %>
+              <%}); %>
+
+              <% for (var i=0; i < result2.length; i++ ) { %>
+                <% if(result2[i].count === 0) { %>
+                  <div id="listdetail">
+                    <div id="date">
+                      <span id="datespan"><%= dateKor %></span>
+                    </div>
+                    <div id="time">
+                      <span id="timespan"><%= result2[i].경기진행시간 %></span>
+                    </div>
+                    <div id="place">
+                      <span id="placespan"><%= result2[i].제목 %></span><br>
+                      <span id="placespan"><%= result2[i].장소 %> /</span>
+                      <span id="placespan"><%= result2[i].인원 %></span>
+                    </div>
+                    <div id="btnBox">
+                      <button class="disable">마감</button>
+                    </div>
+                  </div>
+                  <hr style="height: 0.5px; background: #ccc; margin-top: 5px; margin-bottom: 5px; border-top: 0;">
+                  <% } %>
+                    <% if(result2[i].count !=0) { %>
+                      <div id="listdetail">
+                        <div id="date">
+                          <span><%= dateKor %></span>
+                        </div>
+                        <div id="time">
+                          <span><%= result2[i].경기진행시간 %></span>
+                        </div>
+                        <div id="place">
+                          <span><%= result2[i].제목 %></span><br>
+                          <span><%= result2[i].장소 %> /</span>
+                          <span><%= result2[i].인원 %></span>
+                        </div>
+                        <div id="btnBox">
+                          <button class="request2" onclick="alert('신청되었습니다.(이미 초대된 경기일수도 있으니 초대된경기를 확인해주세요)')"
+                          data-id="<%= result2[i]._id %>" data-host="<%= result2[i].작성자%>">신청</button>
+                        </div>
+                      </div>
+                      <hr style="height: 0.5px; background: #ccc; margin-top: 5px; margin-bottom: 5px; border-top: 0;">
+                      <% } %>
+                    <% } %>
+            </div>
+          </div>
+      </div>
+    </section>
+
+    <section id="sec_2">
+      <div class="recommand-container">
+        <div class="recommand-title">
+          <span>원하는 조건의 팀원을 찾아보세요!</span>
+        </div>
+        <form action="/recommand" method="POST">
+          <div class="select-container">
+            <div class="select">
+              <p class="sub_title">
+                <img src="public/imgs/gender.png" alt="">
+                <span>성별</span>
+              </p>
+              <div class="radio-container-gender">
+                <input type="radio" name="gender" id="male" value="남성"><label class="genderlabel" for="male"
+                  required>남성</label>
+                <input type="radio" name="gender" id="female" value="여성"><label class="genderlabel" for="female"
+                  required>여성</label>
+              </div>
+            </div>
+
+            <div class="select">
+              <p class="sub_title">
+                <img src="public/imgs/position.png" alt="">
+                <span>선호포지션</span>
+              </p>
+              <div class="radio-container-position">
+                <input type="radio" name="position" id="FW" value="FW"><label class="genderlabel" for="FW"
+                  required>FW</label>
+                <input type="radio" name="position" id="MD" value="MD"><label class="genderlabel" for="MD"
+                  required>MD</label>
+                <input type="radio" name="position" id="DF" value="DF"><label class="genderlabel" for="DF"
+                  required>DF</label>
+                <input type="radio" name="position" id="GK" value="GK"><label class="genderlabel" for="GK"
+                  required>GK</label>
+              </div>
+            </div>
+
+            <div class="select">
+              <p class="sub_title">
+                <img src="public/imgs/foot.png" alt="">
+                <span>주발</span>
+              </p>
+              <div class="radio-container-foot">
+                <input type="radio" name="foot" id="left" value="왼발"><label class="genderlabel" for="left"
+                  required>왼발</label>
+                <input type="radio" name="foot" id="right" value="오른발"><label class="genderlabel" for="right"
+                  required>오른발</label>
+                <input type="radio" name="foot" id="any" value="양발"><label class="genderlabel" for="any"
+                  required>양발</label>
+              </div>
+            </div>
+            <div class="submit">
+              <input type="submit" value="검색하기">
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    footer
+  </footer>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('.request2').click(function (e) {
+      var art_id = e.target.dataset.id; //지금 클릭 게시글의 글 번호
+      var host = e.target.dataset.host;
+
+      // console.log(art_id);
+      $.ajax({
+        method: 'POST',
+        url: '/request2',
+        data: { _id: art_id, host: host }
+      }).done(function (result) {
+        console.log(data);
+      }).fail(function (xhr, textStatus, errorThrow) {
+        //요청 실패시
+        console.log(xhr, textStatus, errorThrow);
+      });
+    })
+
+    function check(place) {
+      $.ajax({
+        method: 'POST',
+        url: '/main_selplace',
+        data: { place: place }
+      }).done(function (result) {
+        console.log(data);
+      }).fail(function (xhr, textStatus, errorThrow) {
+        //요청 실패시
+        console.log(xhr, textStatus, errorThrow);
+      });
+    }
+
+    // window.onload = function () {
+    //   if (location.href.indexOf('reloaded') == -1) location.replace(location.href + '?reloaded');
+    //   //if (parent.location.href.indexOf('reloaded')==-1) parent.location.replace(parent.location.href+'?reloaded');
+    // }
+  </script>
+  <!-- Optional JavaScript; choose one of the two! -->
+
+  <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+    crossorigin="anonymous"></script>
+
+  <!-- Option 2: Separate Popper and Bootstrap JS -->
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+    integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>

@@ -194,7 +194,7 @@
 
                     <% for (var i=0; i < allpost.length; i++ ) { %>
                         <% if(writer.작성자===allpost[i].작성자) { %>
-                            <div onclick="location.href='/invitedetail'" data-id="<%= allpost[i]._id %>" class="sel-match choice">
+                            <div onclick="location.href='/invitedetail'" data-id="<%= allpost[i]._id %>" class="sel-match choice" style="padding: 20px;">
                                 작성자: <%= allpost[i].작성자 %> /
                                 제목: <%= allpost[i].제목 %> /
                                 게시글: <%= allpost[i].게시글 %> /

@@ -25,6 +25,7 @@ app.use(passport.session());
 app.use(express.static('views'));
 
 
+
 var db;
 MongoClient.connect('mongodb+srv://admin:qwer1234@cluster0.0sp7tde.mongodb.net/?retryWrites=true&w=majority', function (error, client) {
     if (error) { return console.log(error) };
@@ -37,7 +38,12 @@ MongoClient.connect('mongodb+srv://admin:qwer1234@cluster0.0sp7tde.mongodb.net/?
 });
 
 app.get('/', function (req, res) {
-    res.render('home.ejs');
+    var date = dateString;//현재날짜
+    var place = "소운동장";
+    console.log(date);
+    db.collection('board').find({경기진행날짜: dateString, 장소:place}).toArray(function(error,result) {
+        res.render('home.ejs', {dateKor:dateKor, date:date, result:result});
+    })
 })
 
 
@@ -421,6 +427,7 @@ app.put('/editboard', checklogin, function (req, res) {
 })
 
 //원하는 경기 신청
+//이건 지울 부분, 메인페이지에서만 이제 신청을 진행할거라 전체 메치 눌러서 가는건 안함
 app.put('/request', checklogin, function (req, res) {
     console.log(req.user.id); // 지금 로그인한 유저의 아이디
     req.body._id = parseInt(req.body._id)// 신청 버튼을 누른 게시글의 글번호
@@ -449,35 +456,77 @@ app.put('/request', checklogin, function (req, res) {
     })
 });
 
-app.put('/request2', checklogin, function (req, res) {
-    art_id = parseInt(req.body._id)// 신청 버튼을 누른 게시글의 글번호
+app.post('/request2', checklogin, function (req, res) {//메인페이지의 날짜 선택해서 request컬렉션에 inserOne하는 부분, 신청전에 초대를 이미 받아서 매칭요청이 왔는지 중복검사해야함
+    //반대로 신청할 땐 신청하려는데 내가 이미 초대를 받았을 경우가 있음, 그럼 신청 눌렀을때 request컬렉션에서 비교해줘야 중복이 안발생함
+    var art_id = parseInt(req.body._id)// 신청 버튼을 누른 게시글의 글번호
+    var host = req.body.host// 신청 버튼을 누른 게시글의 작성자id
     // console.log(req.user.id); // 지금 로그인한 유저의 아이디
-    // console.log(art_id);
-    db.collection('board').findOne({ _id: art_id }, function (error, result) {
-        db.collection('profile').findOne({id: req.user.id}, function(error,result2){
-            db.collection('request').insertOne({//request 콜렉션에 경기 신청자와 게시글 번호와 작성자,제목, 게시글을 삽입
-                신청한게시물번호: art_id,
-                제목: result.제목,
-                게시글: result.게시글,
-                신청자: req.user.id,
-                이름 : result2.이름,
-                성별: result2.성별,
-                선호포지션: result2.선호포지션,
-                주발: result2.주발,
-                작성자: result.작성자,
-                경기진행날짜: result.경기진행날짜,
-                경기진행시간: result.경기진행시간,
-                장소: result.장소,
-                인원: result.인원,
-                남은인원: result.count,
-                여부: parseInt(0),
-                평가여부: parseInt(0)
-        })
-        })
+    console.log(art_id);
+    console.log(host);
+    // res.write("<script>window.location=\"../board\"</script>");//지금 박는거 주석해놔서 안박히는거임 놀라지 말자
 
-    })
+    // db.collection('request').findOne({초대한사람: host,초대받은사람: req.user.id,신청한게시물번호:art_id},function(error,result){
+
+    //     if(result != null){
+    //         console.log(result);//result.length는 undefined, parseInt(result.length)는 NaN으로 뜸 if로 조건 걸려면 null로 해야함
+    //         console.log('중복되는게 있어요')
+    //         res.write("<script>window.location=\"../double\"</script>");
+    //     }
+    //     if(result == null){
+    //         console.log(result);
+    //         console.log('신청되었습니다')
+    //     }
+    // })
+
+    db.collection('request').findOne({초대한사람: host,초대받은사람: req.user.id,신청한게시물번호:art_id},function(error,result){
+        if(result != null){
+            console.log(result)//잘 가져옴
+            // console.log("중복된 게시글이 있습니다.")//중복된 게시글 있는거 확인가능
+            // res.send('이미 이 경기에 초대되셨습니다.')
+            //list.ejs의 window.reload때문에 duplication으로 이동 못하는거 아님
+            // res.write("<script>location.href='/duplication'</script>");
+            // res.location('/duplication.ejs')
+            // res.send('')
+            // alert('이미 이 경기에 초대되셨습니다');
+            // res.send(
+                //     `<script>
+                //       alert('이메일 인증 시간을 초과했습니다.');
+                //       location.href='${"/duplication.ejs"}';
+                //     </script>`
+                //   );
+                // res.send("<script>alert('알림 창입니다.');location.href='/duplication';</script>");
+            }
+            if(result == null){
+                //아래 findOne 위에부터 감싸서 조건 걸어주자, db.collection('request').findOne({신청한게시물번호: art_id, 신청자:, 작성자: host})
+                db.collection('board').findOne({ _id: art_id }, function (error, result) {
+                    db.collection('profile').findOne({id: req.user.id}, function(error,result2){
+                        db.collection('request').insertOne({//request 콜렉션에 경기 신청자와 게시글 번호와 작성자,제목, 게시글을 삽입
+                            신청한게시물번호: art_id,
+                            제목: result.제목,
+                            게시글: result.게시글,
+                            신청자: req.user.id,
+                            이름 : result2.이름,
+                            성별: result2.성별,
+                            선호포지션: result2.선호포지션,
+                            주발: result2.주발,
+                            작성자: result.작성자,
+                            경기진행날짜: result.경기진행날짜,
+                            경기진행시간: result.경기진행시간,
+                            장소: result.장소,
+                            인원: result.인원,
+                            남은인원: result.count,
+                            여부: parseInt(0),
+                            평가여부: parseInt(0)
+                    })
+                    })
+                })
+            }
+        })
 });
 
+// app.get('/double',function(req,res){
+//     res.render('double.ejs');
+// })
 
 
 
@@ -583,10 +632,9 @@ app.post('/recommand', checklogin, function (req, res) {
 app.get('/suggest', checklogin, function (req, res) {
     db.collection('recommands').findOne({ id: req.user.id }, function (error, result) {
         db.collection('profile').find({ 성별: result.성별, 선호포지션: result.선호포지션, 주발: result.주발 }).toArray(function (error, result1) {
-            res.render('suggest.ejs', { player: result1 })
+            res.render('suggest.ejs', { player: result1, host: req.user.id })
         })
     })
-
 })
 
 app.post('/apply', checklogin, function (req, res) {
@@ -611,73 +659,41 @@ app.post('/apply', checklogin, function (req, res) {
     //점수 줬으니 평가여부 바꾸는 과정, 중복제거도 할 수 있게 평가여부를 request의 두가지 경우와 inviteList의 두가지 경우를 조건검색해서 있다면 평가여부를 1로 바꿔야 중복 제거가능
     //중복 없으면 없는대로도 실행 가능, 없다면 조건이 안맞으면 실행을 안시키니까 문제 없
     //내가 신청했을때
-    db.collection('request').updateOne({작성자:req.body.id , 신청자: req.user.id, 신청한게시물번호: articlenum},{
-        $set: {
-            평가여부: parseInt(1)
-        }
-    })
-    //내가 신청 받았을 때
-    db.collection('request').updateOne({작성자:req.user.id , 신청자: req.body.id, 신청한게시물번호: articlenum},{
-        $set: {
-            평가여부: parseInt(1)
-        }
-    })
-    //내가 초대했을때
-    db.collection('inviteList').updateOne({초대한사람:req.user.id , 초대받은사람: req.body.id, 게시글번호: articlenum},{
-        $set: {
-            평가여부: parseInt(1)
-        }
-    })
-    //내가 초대받았을때
-    db.collection('inviteList').updateOne({초대한사람:req.body.id , 초대받은사람: req.user.id, 게시글번호: articlenum},{
-        $set: {
-            평가여부: parseInt(1)
-        }
-    })
+    // db.collection('request').updateOne({작성자:req.body.id , 신청자: req.user.id, 신청한게시물번호: articlenum},{
+    //     $set: {
+    //         평가여부: parseInt(1)
+    //     }
+    // })
+    // //내가 신청 받았을 때
+    // db.collection('request').updateOne({작성자:req.user.id , 신청자: req.body.id, 신청한게시물번호: articlenum},{
+    //     $set: {
+    //         평가여부: parseInt(1)
+    //     }
+    // })
+    // //내가 초대했을때
+    // db.collection('inviteList').updateOne({초대한사람:req.user.id , 초대받은사람: req.body.id, 게시글번호: articlenum},{
+    //     $set: {
+    //         평가여부: parseInt(1)
+    //     }
+    // })
+    // //내가 초대받았을때
+    // db.collection('inviteList').updateOne({초대한사람:req.body.id , 초대받은사람: req.user.id, 게시글번호: articlenum},{
+    //     $set: {
+    //         평가여부: parseInt(1)
+    //     }
+    // })
     
-    //중복 문제 해결, 내가 초대한거, 내가 신청 받은거가 중복이 일어날 경우가 있음
-    db.collection('request').updateOne({작성자:req.user.id , 신청자: req.body.id, 신청한게시물번호: articlenum},{
-        $set: {
-            평가여부: parseInt(1)
-        }
-    })
+    // //중복 문제 해결, 내가 초대한거, 내가 신청 받은거가 중복이 일어날 경우가 있음
+    // db.collection('request').updateOne({작성자:req.user.id , 신청자: req.body.id, 신청한게시물번호: articlenum},{
+    //     $set: {
+    //         평가여부: parseInt(1)
+    //     }
+    // })
 })
 
-//달력
-app.post('/calendar', function (req, res) {
-    db.collection('searchdate').deleteMany({}, function (error, result) {
-    });
-    var day = req.body.date;
 
-    console.log(day); //달력 클릭으로 넘어온 날짜list
-    
-    db.collection('board').find({ 경기진행날짜: req.body.date }).toArray(function (error, result) {
-        for (var i = 0; i < result.length; i++) {
-            db.collection('searchdate').insertOne({
-                id: req.user.id,
-                경기진행날짜: req.body.date,
-                경기진행시간: result[i].경기진행시간,
-                art_id: result[i]._id,
-                작성자: result[i].작성자,
-                제목: result[i].제목,
-                게시글: result[i].게시글,
-                장소: result[i].장소,
-                인원: result[i].인원,
-                남은인원: result[i].count
-            })
-        }
-    })
-    res.write("<script>window.location=\"../list\"</script>");
-})
 
-app.get('/list', function (req, res) {
-    db.collection('searchdate').findOne({choiceid: req.user.id}, function(error, result1){
 
-        db.collection('searchdate').find().toArray(function(error, result2){
-            return res.render('list.ejs', {result: result2, choice : result1})  
-        })
-    })
-})
 
 // app.get('/board2', checklogin, function(req,res) {
 //     console.log(req.body.art_id);
@@ -686,7 +702,7 @@ app.get('/list', function (req, res) {
 app.post('/invite', function(req,res){
     var invited_id = req.body.id; //초대받는 사람의 아이디
     console.log(invited_id);
-        db.collection('invite').updateOne({ id: req.user.id }, {
+        db.collection('invite').updateOne({ id: req.user.id }, {//invite컬렉션(메인페이지에서 조건검색으로 추천받은 유저 초대할때)은 inviteList의 값을 바꾸기 위해 사용하는 값이다.
             $set:
             {
                 초대받은사람: invited_id
@@ -703,54 +719,112 @@ app.get('/boardview2', checklogin, function (req, res) {
         });
     });
 
-app.post('/invite2', function(req,res){
+app.post('/invite2', function(req,res){//boardview2.ejs에서 ajax로 보내오는 경로
     var art_num = parseInt(req.body.postNum); //게시글번호
-    db.collection('invite').updateOne({ id: req.user.id }, {
+    db.collection('invite').updateOne({ id: req.user.id }, {//여기서 최종적으로 invite컬렉션엔 초대한사람id, 초대받은사람id, 선택한게시물번호가 업데이트 다 완료가 됨
         $set:
         {
             게시글번호: art_num
         }
-    }, function (error, result) {})
+    }, function (error, result) {    
+        db.collection('invite').findOne({id:req.user.id},function(error,result){
+            // console.log(result); 클릭한값들 다 제대로 들어감
+
+        })
+    })
+
+    // db.collection('request').findOne({})
+    
+    
+    
+    
+    
+    //근데 중요한건 초대를 하려는데 이미 초대받은 사람이 나한테 신청을 했어서 똑같은 게시글에 매칭이 완료된 상태라면 중복이 발생하지 않게끔 해줘야함
+    //그래서 여기 function에서 조건을 걸어서 막아야함, invite컬렉션에서 값을 읽어오고 request컬렉션에서 비교해아함,신청자: 초대받은사람, 작성자: id, 신청한게시물번호: 게시글번호 
+    //위의 형식에 맞게 비교를해서 만약 request컬렉션에서 읽어온 값 result가 null이 아니라면 값을 읽어왔다는 의미(이미 매칭 신청이 왔던거임, 매칭 여부는 여기서 조건으로 안걸어도됨)
+    //그냥 중복만 안되게 하려고 하는거니까(여부가 0이든 1이든 2이든 이미 신청받아서 대기중인거고 완료된거고 거절된거여도 request컬렉션엔 같은게 박히면 안됨)
+    //다 평가하고 result가 null이라면 아무 반응 안해줘도 됨 근데 null이 아니라면 alert나 뭐로 이미 지금 선택한 게시글엔 이 유저한테 신청받았다고 알려주자,
+    //반대로 신청할 땐 신청하려는데 내가 이미 초대를 받았을 경우가 있음, 그럼 신청 눌렀을때 
 })
 
 
-//메인페이지에서의 조건 검색으로 inviteList 컬렉션에 inser하는 부분
+//메인페이지에서의 조건 검색으로 inviteList를 이제 지우고 request 컬렉션에 insert하는 부분
 app.get('/invitedetail', checklogin, function(req,res){
     db.collection('invite').findOne({id:req.user.id}, function(error, result){
-        db.collection('board').findOne({_id:result.게시글번호}, function(error, result2) {
-            db.collection('inviteList').insertOne({
-                초대한사람: req.user.id,
-                초대받은사람: result.초대받은사람,
-                게시글번호: result2._id,
-                제목:result2.제목,
-                게시글:result2.게시글,
-                장소:result2.장소,
-                인원:result2.인원,
-                경기진행날짜:result2.경기진행날짜,
-                경기진행시간:result2.경기진행시간,
-                count:result2.count,
-                여부:parseInt(0)
-            })
-            res.render('invitedetail.ejs',{board: result2, person: result, host: req.user.id });
+
+        db.collection('request').findOne({신청자:result.초대받은사람 ,작성자:req.user.id ,신청한게시물번호: result.게시글번호}, function(error,result2){
+            if(result2 != null){
+                // console.log('중복된 경기가 있습니다.')
+                console.log(result)
+                db.collection('invite').updateOne({ id: req.user.id }, {//여기서 최종적으로 invite컬렉션엔 초대한사람id, 초대받은사람id, 선택한게시물번호가 업데이트 다 완료가 됨
+                    $set:
+                    {
+                        게시글번호: null
+                    }
+                }, function (error, result) {    
+                    db.collection('invite').findOne({id:req.user.id},function(error,result){
+                        // console.log(result); 클릭한값들 다 제대로 들어감
+            
+                    })
+                })
+                res.write("<script>alert('already apply, another choice')</script>");
+                res.write("<script>window.location=\"../boardview2\"</script>");
+            }
+            if(result2 == null){
+                db.collection('board').findOne({_id:result.게시글번호}, function(error, result3) {
+                    db.collection('request').insertOne({//이 부분을 request컬렉션에 박히도록 바꿔야함, 이미 invite컬렉션에 id, 초대한유저id, 게시글번호가 있으니
+                        //그걸로 이미 매칭이 완료된 경기이면 insert못하도록(신청으로 매칭이 됬든 초대로 매칭이 됬든 같은 게시글에 매칭이 된거면 중복되게 하면 안됨) 이미 매칭된 경기라는 알림을 줘야함
+                        //초대 했을때 값 -> 초대자 id, 초대받은 사람 id, 게시글 번호(조회할땐 신청한게시물번호)
+                        //신청했을때 값 -> 신청자 id, 작성자 id, 신청한게시물번호
+                        //request 컬렉션의 변수 이름을 초대했을경우엔 아래형식으로 박아도 되나? 아래 형식으로 박아도됨, 대신 박을때 평가여부: parseInt(0) 추가해서 박자
+                        // 초대한사람: req.user.id,
+                        // 초대받은사람: result.초대받은사람,
+                        // 게시글번호: result2._id,
+                        // 제목:result2.제목,
+                        // 게시글:result2.게시글,
+                        // 장소:result2.장소,
+                        // 인원:result2.인원,
+                        // 경기진행날짜:result2.경기진행날짜,
+                        // 경기진행시간:result2.경기진행시간,
+                        // count:result2.count,
+                        // 여부:parseInt(0),
+                        // 평가여부: parseInt(0)
+                        신청한게시물번호: result3._id,
+                        제목: result3.제목,
+                        게시글: result3.게시글,
+                        초대한사람: req.user.id,
+                        초대받은사람: result.초대받은사람,
+                        장소: result3.장소,
+                        인원: result3.인원,
+                        경기진행날짜: result3.경기진행날짜,
+                        경기진행시간: result3.경기진행시간,
+                        남은인원: result3.count,
+                        여부: parseInt(0),
+                        평가여부: parseInt(0)
+                    })
+                    res.render('invitedetail.ejs',{board: result3, person: result, host: req.user.id });
+                })
+            }
         })
+
     })
 })
 
 app.get('/myinvitelist', function(req,res){
-    db.collection('inviteList').find({초대한사람: req.user.id}).toArray(function(error,result){
+    db.collection('request').find({초대한사람: req.user.id}).toArray(function(error,result){//여기 request컬렉션으로 바꿈
         res.render('myinvitelist.ejs', {personlist: result});
     });
 })
 
 app.post('/cancelinvite',function(req,res){
-    db.collection('inviteList').findOne({초대받은사람:req.body.reciever, 게시글번호:req.body.articlenum},function(error,result){
-        db.collection('inviteList').deleteOne({초대한사람: req.body.sender});
+    db.collection('request').findOne({초대받은사람:req.body.reciever, 게시글번호:req.body.articlenum},function(error,result){
+        db.collection('request').deleteOne({초대한사람: req.body.sender});//여기조건은 취소가 되는지 안되는지 확인이 필요함
     })
     res.write("<script>window.location=\"../myinvitelist\"</script>");
 })
 
 app.get('/invited_match', function(req,res){
-    db.collection('inviteList').find({초대받은사람:req.user.id}).toArray(function(error,result){
+    db.collection('request').find({초대받은사람:req.user.id}).toArray(function(error,result){
         res.render('invited_match.ejs', {result:result});
     })
 })
@@ -830,7 +904,7 @@ app.post('/autoeditpage',function(req,res){
 })
 
 
-//초대에서의 inviteList컬렉션 insert부분
+//초대에서의 inviteList컬렉션 insert부분,자동 초대 안할거임, 중복 오류 너무나서 지울부분
 app.post('/autoinvite',function(req,res){
     var user = req.body.id//초대버튼 누른 유저 아이디값
     db.collection('board').find({작성자:req.user.id}).toArray(function(error,result){
@@ -854,7 +928,9 @@ app.post('/autoinvite',function(req,res){
         }
     })
 })
-//////////////// 여기서부터 중복 등록 방지 코드 ///////////////////////
+
+
+//////////////// 여기서부터 매치등록 중복 등록 방지 코드 ///////////////////////
 var today = new Date();
 
 var year = today.getFullYear();
@@ -862,8 +938,7 @@ var month = ('0' + (today.getMonth() + 1)).slice(-2);
 var day = ('0' + today.getDate()).slice(-2);
 
 var dateString = year + '-' + month  + '-' + day;
-
-console.log(dateString);
+var dateKor = month  + '월' + day + '일';
 
 app.get('/selDate', function(req,res){
      // 현재날짜
@@ -871,7 +946,7 @@ app.get('/selDate', function(req,res){
     var place = "소운동장";
     // console.log(typeof place); //String
     db.collection('board').find({장소:place, 경기진행날짜:dateString}).toArray(function(error,result){
-        res.render('selDate.ejs', {date:dateString, place:place, result:result});
+        res.render('selDate.ejs', {date:dateString, dateKor:dateKor,place:place, result:result});
         // console.log(result);
     }) 
 })
@@ -1004,6 +1079,149 @@ app.get('/basket2', function(req,res){
         })
     })
 })
+
+
+////////////////////////////////////매치등록 중복 방지 코드 end /////////////////////////////////////////////////
+
+////////////////////////////////////메인페이지 매치 신청 코드 start ///////////////////////////////////////////////
+app.post('/main_selplace', function(req,res) {
+    console.log(req.body.place);
+    var date = dateString // 현재날짜
+        db.collection('addmatch').updateOne({id:req.user.id}, {
+            $set: 
+            {
+                place:req.body.place
+            }
+        }, function(error, result){
+            console.log("place updated")
+        })
+    if(req.body.place == "소운동장") {
+        res.write("<script>window.location=\"../main_small_playground\"</script>");
+    }
+    else if( req.body.place == "대운동장 풋살장(체육관 옆)") {
+        res.write("<script>window.location=\"../main_gym\"</script>");
+    } else if ( req.body.place == "대운동장 풋살장(농구골대 옆)") {
+        res.write("<script>window.location=\"../main_basket\"</script>");
+    }
+})
+
+app.get('/main_small_playground', function(req,res){
+    var date = dateString;
+    db.collection('addmatch').findOne({id:req.user.id}, function(error,result){
+        db.collection('board').find({장소:result.place, 경기진행날짜:date}).toArray(function(error, result2){
+            res.render('main_small_playground.ejs', {date:date, dateKor:dateKor, result2:result2})
+            console.log(dateKor);
+        })
+    })
+})
+
+app.get('/main_gym', function(req,res){
+    var date = dateString
+    db.collection('addmatch').findOne({id:req.user.id}, function(error,result){
+        db.collection('board').find({장소:result.place, 경기진행날짜:date}).toArray(function(error, result2) {
+            res.render('main_gym.ejs', {date:date, dateKor:dateKor,result2:result2})
+        })
+    })
+})
+
+app.get('/main_basket', function(req,res){
+    var date = dateString
+    db.collection('addmatch').findOne({id:req.user.id}, function(error,result){
+        db.collection('board').find({장소:result.place, 경기진행날짜:date}).toArray(function(error,result2){
+            res.render('main_basket.ejs', {date:date, dateKor:dateKor, result2:result2})
+        })
+    })
+})
+
+//달력
+app.post('/calendar', function (req, res) {
+    db.collection('searchdate').deleteMany({}, function (error, result) {
+    });
+    var day = req.body.date;
+
+    console.log(day); //달력 클릭으로 넘어온 날짜list
+
+    db.collection('addmatch').updateOne({id:req.user.id}, {
+        $set:
+        {
+            date: day
+        }
+    }, function(error, result) {
+        console.log("1 document updated");
+    })
+    
+    db.collection('board').find({ 경기진행날짜: req.body.date }).toArray(function (error, result) {
+        for (var i = 0; i < result.length; i++) {
+            db.collection('searchdate').insertOne({
+                id: req.user.id,
+                경기진행날짜: req.body.date,
+                경기진행시간: result[i].경기진행시간,
+                art_id: result[i]._id,
+                작성자: result[i].작성자,
+                제목: result[i].제목,
+                게시글: result[i].게시글,
+                장소: result[i].장소,
+                인원: result[i].인원,
+                남은인원: result[i].count
+            })
+        }
+    })
+    res.write("<script>window.location=\"../list\"</script>");
+})
+
+app.get('/list', function (req, res) {
+    var place = "소운동장";
+    //searchdate에 클릭한 날짜에 해당하는 게시글이 이미 있음
+    db.collection('searchdate').find({id: req.user.id, 장소:place}).toArray(function(error, result){
+        res.render('list.ejs', {result: result, place:place})
+    })
+})
+
+app.post('/main_selplace2', function(req,res) {
+    console.log(req.body.place);
+    var date = dateString // 현재날짜
+        db.collection('addmatch').updateOne({id:req.user.id}, {
+            $set: 
+            {
+                place:req.body.place
+            }
+        }, function(error, result){
+            console.log("place updated")
+        })
+    if(req.body.place == "소운동장") {
+        res.write("<script>window.location=\"../main_small_playground2\"</script>");
+    }
+    else if( req.body.place == "대운동장 풋살장(체육관 옆)") {
+        res.write("<script>window.location=\"../main_gym2\"</script>");
+    } else if ( req.body.place == "대운동장 풋살장(농구골대 옆)") {
+        res.write("<script>window.location=\"../main_basket2\"</script>");
+    }
+})
+
+app.get('/main_small_playground2', function(req,res){
+    db.collection('addmatch').findOne({id:req.user.id}, function(error,result){
+        db.collection('board').find({장소:result.place, 경기진행날짜:result.date}).toArray(function(error, result2){
+            res.render('main_small_playground2.ejs', {result2:result2, date:result.date})
+        })
+    })
+})
+
+app.get('/main_gym2', function(req,res){
+    db.collection('addmatch').findOne({id:req.user.id}, function(error,result){
+        db.collection('board').find({장소:result.place, 경기진행날짜:result.date}).toArray(function(error, result2) {
+            res.render('main_gym2.ejs', {result2:result2, date:result.date})
+        })
+    })
+})
+
+app.get('/main_basket2', function(req,res){
+    db.collection('addmatch').findOne({id:req.user.id}, function(error,result){
+        db.collection('board').find({장소:result.place, 경기진행날짜:result.date}).toArray(function(error,result2){
+            res.render('main_basket2.ejs', {result2:result2, date:result.date})
+        })
+    })
+})
+////////////////////////////////////메인페이지 매치 신청 코드 end ///////////////////////////////////////////////
 
 //dateString이 위에서 현재날짜를 담은 변수임
 app.get('/evaluate',function(req,res){
