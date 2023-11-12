@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
   <title>순풋</title>
   <style>
-  @media screen and (min-width: 481px) {
+  @media screen and (max-width: 480px) {
     header {
       width: 100%;
       height: 300px;
@@ -209,6 +209,7 @@
       margin: 0 auto;
       background-color: #282B33;
     }
+    
   }
   </style>
 </head>
@@ -234,7 +235,7 @@
     <hr style="height: 1px; background: #ccc;">
 
     <main>
-      <div id="main-title"> <%= user %>님의 신청한 매치</div>
+      <div id="main-title"> <%= user %>님과 함께 경기한 유저들</div>
         <div class="list-container">
           <!-- 신청한 경기의 매칭완료 출력문 -->
             <%for (var i=0; i < apply_sender.length; i++ ) { %>
@@ -245,6 +246,9 @@
                                   <div class="title">
                                     <p>
                                       신청한거
+                                    </p>
+                                    <p>
+                                      <%= apply_sender[i].평가여부 %>
                                     </p>
                                     <p>
                                       <%= apply_sender[i].작성자 %>
@@ -274,81 +278,6 @@
                <% } %>
             <% } %>
         
-          <!-- 신청받은 경기의 매칭완료 출력문 -->
-          <%for (var i=0; i < apply_receiver.length; i++ ) { %>
-            <% if(apply_receiver[i].경기진행날짜 < date) { %>
-                  <div class="list-wrap">
-                    <div class="list-item-success">
-                        <div class="item1">
-                          <div class="title">
-                            <p>
-                              신청받은거
-                            </p>
-                            <p>
-                              <%= apply_receiver[i].신청자 %>
-                            </p>
-                            <p>
-                              <%= apply_receiver[i].제목 %>
-                            </p>
-                            <p>
-                              <%= apply_receiver[i].신청한게시물번호 %>
-                            </p>
-                          </div>
-                          <div class="content">
-                            <%= apply_receiver[i].게시글 %>
-                          </div>
-                          <div class="detail">
-                            <span>
-                              <%= apply_receiver[i].경기진행날짜 %> •
-                            </span>
-                          </div>
-                        </div>
-                    </div>
-
-                    <div class="score_button">
-                      <a href="/score" data-id="<%= apply_receiver[i].신청자 %>" data-articlenum="<%= apply_receiver[i].신청한게시물번호 %>" class="before_ev">> <%= apply_receiver[i].신청자 %>님의 매너점수 평가하러가기</a>
-                    </div>
-                  </div>
-                    <% } %>
-                      <% } %>
-
-          <!-- 초대한 경기의 매칭완료 출력문 -->
-          <%for (var i=0; i < invite_sender.length; i++ ) { %>
-            <% if(invite_sender[i].경기진행날짜 < date) { %>
-                  <div class="list-wrap">
-                    <div class="list-item-success">
-                        <div class="item1">
-                          <div class="title">
-                            <p>
-                              초대한거
-                            </p>
-                            <p>
-                              <%= invite_sender[i].초대받은사람 %>
-                            </p>
-                            <p>
-                              <%= invite_sender[i].제목 %>
-                            </p>
-                            <p>
-                              <%= invite_sender[i].게시글번호 %>
-                            </p>
-                          </div>
-                          <div class="content">
-                            <%= invite_sender[i].게시글 %>
-                          </div>
-                          <div class="detail">
-                            <span>
-                              <%= invite_sender[i].경기진행날짜 %> •
-                            </span>
-                          </div>
-                        </div>
-                    </div>
-
-                    <div class="score_button">
-                      <a href="/score" data-id="<%= invite_sender[i].초대받은사람 %>" data-articlenum="<%= invite_sender[i].게시글번호 %>" class="before_ev">> <%= invite_sender[i].초대받은사람 %>님의 매너점수 평가하러가기</a>
-                    </div>
-                  </div>
-                    <% } %>
-                      <% } %>
 
          <!-- 초대받은 경기의 매칭완료 출력문 -->
          <%for (var i=0; i < invite_receiver.length; i++ ) { %>
@@ -361,13 +290,16 @@
                             초대받은거
                           </p>
                           <p>
+                            <%= invite_receiver[i].평가여부 %>
+                          </p>
+                          <p>
                             <%= invite_receiver[i].초대한사람 %>
                           </p>
                           <p>
                             <%= invite_receiver[i].제목 %>
                           </p>
                           <p>
-                            <%= invite_receiver[i].게시글번호 %>
+                            <%= invite_receiver[i].신청한게시물번호 %>
                           </p>
                         </div>
                         <div class="content">
@@ -382,7 +314,7 @@
                   </div>
 
                   <div class="score_button">
-                    <a href="/score" data-id="<%= invite_receiver[i].초대한사람 %>" data-articlenum="<%= invite_receiver[i].게시글번호 %>" class="before_ev">> <%= invite_receiver[i].초대한사람 %>님의 매너점수 평가하러가기</a>
+                    <a href="/score" data-id="<%= invite_receiver[i].초대한사람 %>" data-articlenum="<%= invite_receiver[i].신청한게시물번호 %>" class="before_ev">> <%= invite_receiver[i].초대한사람 %>님의 매너점수 평가하러가기</a>
                   </div>
                 </div>
                   <% } %>
