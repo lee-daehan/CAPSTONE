@@ -98,10 +98,7 @@ app.post('/register', function (req, res) {
                 생일 : req.body.birthdate,
                 성별 : req.body.identityGender,
                 선호포지션: req.body.position,
-                주발: req.body.foot,
-                팀원성별: req.body.team_identityGender,
-                팀원선호포지션: req.body.team_position,
-                팀원주발: req.body.team_foot
+                주발: req.body.foot
             }, function (error, result) {
                 if (error) { return error };
                 res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
@@ -145,6 +142,11 @@ app.post('/register', function (req, res) {
                 place: null,
                 date: null,
                 time: null
+            })
+            db.collection('duplication').insertOne({
+                id: req.body.id,
+                duplication: null,
+                art_id: null,
             })
         }
     })
@@ -395,7 +397,7 @@ app.post('/boardinput', checklogin, function (req, res) {
         
     });
     //마이페이지로 돌아가게함
-    res.write("<script>window.location=\"../board\"</script>");
+    res.write("<script>window.location=\"../\"</script>");
 });
 
 //게시물 삭제
@@ -502,7 +504,7 @@ app.post('/request2', checklogin, function(req, res) {
     
     //처음 신청하는 경우
     db.collection('duplication').findOne({id:req.user.id}, function(eroor,result) {
-        if(result.art_id != reqid && result.duplication != 2) {
+        if(result.art_id != reqid) {
             db.collection('board').findOne({ _id: reqid }, function (error, result) {
                 db.collection('profile').findOne({id: req.user.id}, function(error,result2){
                     db.collection('request').insertOne({//request 콜렉션에 경기 신청자와 게시글 번호와 작성자,제목, 게시글을 삽입
@@ -538,185 +540,6 @@ app.post('/request2', checklogin, function(req, res) {
 ////////////////////////////////////신청 중복 방지 start //////////////////////////////////////////
 
 
-// app.post('/request2', checklogin, function (req, res) {
-//     var art_id = parseInt(req.body._id)// 신청 버튼을 누른 게시글의 글번호
-//     var host = req.body.host// 신청 버튼을 누른 게시글의 작성자id
-//     // console.log(req.user.id); // 지금 로그인한 유저의 아이디
-//     console.log("art_id:" + art_id);
-//     console.log("host:" + host);
-//     all_id = parseInt(req.body._id);
-//     console.log("all_id:" + all_id + " " + typeof all_id);
-    
-//     //이미 초대 받았을 경우 start
-//     db.collection('request').findOne({신청한게시물번호:art_id, 초대한사람: host,초대받은사람: req.user.id}, function(error,result){
-//         if(result != null){
-//             console.log( "491-result:" + result.신청한게시물번호)//잘 가져옴
-//             db.collection('duplication').updateOne({ id: req.user.id }, {
-//                 $set:
-//                 {
-//                     duplication: 1, //1이면 초대 받았을때,
-//                     art_id:art_id  //초대받았을때 어떤 게시글이 초대 받은건지
-//                 }
-//             }, function(error,result) {
-//                 console.log("499-result update 1")
-//             })
-//         }
-//         if(result == null){
-//             db.collection('board').findOne({ _id: art_id }, function (error, result) {
-//                 db.collection('profile').findOne({id: req.user.id}, function(error,result2){
-//                     db.collection('request').insertOne({//request 콜렉션에 경기 신청자와 게시글 번호와 작성자,제목, 게시글을 삽입
-//                         신청한게시물번호: art_id,
-//                         제목: result.제목,
-//                         게시글: result.게시글,
-//                         신청자: req.user.id,
-//                         이름 : result2.이름,
-//                         성별: result2.성별,
-//                         선호포지션: result2.선호포지션,
-//                         주발: result2.주발,
-//                         작성자: result.작성자,
-//                         경기진행날짜: result.경기진행날짜,
-//                         경기진행시간: result.경기진행시간,
-//                         장소: result.장소,
-//                         인원: result.인원,
-//                         남은인원: result.count,
-//                         여부: parseInt(0),
-//                         평가여부: parseInt(0)
-//                     })
-//                 })
-//             })
-//             db.collection('duplication').updateOne({ id: req.user.id }, {
-//                 $set:
-//                 {
-//                     duplication: 2, //신청하고 2로 바꿔줌
-//                     art_id: art_id
-//                 }
-//             })
-//         }
-//     }) //이미 초대 받았을경우 end
-
-//     //이미 신청 했을경우 start
-//     db.collection('request').findOne({신청한게시물번호:art_id, 신청자:req.user.id},function(error,result){
-//         if(result != null){ //이미 신청한 게시글일때
-//             console.log("538-result:" + result.신청한게시물번호 +" ," + result.신청자 )//잘 가져옴
-//             db.collection('duplication').updateOne({ id: req.user.id }, {
-//                 $set:
-//                 {
-//                     duplication: 1, //3이면 이미 신청한 게시글이 있을때
-//                     art_id: art_id
-//                 }
-//             }, function(error,result) {
-//                 console.log("546-update 3")
-//             })
-//         }   
-//         if(result == null){
-//             db.collection('board').findOne({ _id: art_id }, function (error, result) {
-//                 db.collection('profile').findOne({id: req.user.id}, function(error,result2){
-//                     db.collection('request').insertOne({//request 콜렉션에 경기 신청자와 게시글 번호와 작성자,제목, 게시글을 삽입
-//                         신청한게시물번호: art_id,
-//                         제목: result.제목,
-//                         게시글: result.게시글,
-//                         신청자: req.user.id,
-//                         이름 : result2.이름,
-//                         성별: result2.성별,
-//                         선호포지션: result2.선호포지션,
-//                         주발: result2.주발,
-//                         작성자: result.작성자,
-//                         경기진행날짜: result.경기진행날짜,
-//                         경기진행시간: result.경기진행시간,
-//                         장소: result.장소,
-//                         인원: result.인원,
-//                         남은인원: result.count,
-//                         여부: parseInt(0),
-//                         평가여부: parseInt(0)
-//                     })
-//                 })
-//             },function(error, result3) {
-//                 console.log("572 -"+ art_id);
-//                 db.collection('duplication').updateOne({ id: req.user.id }, {
-//                     $set:
-//                     {
-//                         duplication: 2, //신청하고 2로 바꿔줌
-//                         art_id: art_id
-//                     }
-//                 })
-//             })
-
-//         }
-//     })
-// });
-// console.log("544-all_id: " + all_id + typeof all_id);
-/////////////////////////////////////
-
-
-
-// var tf = 0;
-// app.post('/request2', checklogin, function (req, res) {
-//     var art_id = parseInt(req.body._id)// 신청 버튼을 누른 게시글의 글번호
-//     var host = req.body.host// 신청 버튼을 누른 게시글의 작성자id
-//     console.log(art_id);
-//     console.log(host);
-
-//     db.collection('duplication').findOne({id:req.user.id}, function(error,result){
-//         if(result.duplication == 1) {
-//             tf = 1;
-//         } else {
-//             tf = 0;
-//         }
-//     })
-//     console.log(tf)
-//     //새로운 경기에 신청할때
-//     if(tf = 0) {
-//         db.collection('board').findOne({ _id: art_id }, function (error, result) {
-//                     db.collection('profile').findOne({ id: req.user.id }, function (error, result2) {
-//                         db.collection('request').insertOne({//request 콜렉션에 경기 신청자와 게시글 번호와 작성자,제목, 게시글을 삽입
-//                             신청한게시물번호: art_id,
-//                             제목: result.제목,
-//                             게시글: result.게시글,
-//                             신청자: req.user.id,
-//                             이름: result2.이름,
-//                             성별: result2.성별,
-//                             선호포지션: result2.선호포지션,
-//                             주발: result2.주발,
-//                             작성자: result.작성자,
-//                             경기진행날짜: result.경기진행날짜,
-//                             경기진행시간: result.경기진행시간,
-//                             장소: result.장소,
-//                             인원: result.인원,
-//                             남은인원: result.count,
-//                             여부: parseInt(0),
-//                             평가여부: parseInt(0)
-//                         })
-//                     })
-//                 })
-//             return res.write("<script>window.location=\"../\"</script>"); 
-//     } else if(tf=1){ //이미 초대 받았을때
-
-//         db.collection('request').findOne({ 초대한사람: host, 초대받은사람: req.user.id, 신청한게시물번호: art_id }, function (error, result) {
-//             console.log(result) //잘 넘어옴
-//             if (result.초대받은사람 == req.user.id && result.신청한게시물번호 == art_id && result.초대한사람 == host) {
-//                 db.collection('duplication').updateOne({ id: req.user.id }, {
-//                     $set:
-//                     {
-//                         duplication: 1 //1이면 중복
-//                     }
-//                 })
-//             }
-//             else {
-//                 db.collection('duplication').updateOne({ id: req.user.id }, {
-//                     $set:
-//                     {
-//                         duplication: 0 //1이면 중복
-//                     }
-//                 })
-//             }
-//         })
-//     }
-// });
-
-// app.get('/double', function (req, res) {
-//     res.render('double.ejs');
-// })
-
 app.get('/appresult', function (req, res) {
     db.collection('duplication').findOne({ id: req.user.id }, function (error, result) {
         console.log("681-result:" + result.duplication + result.art_id)
@@ -741,7 +564,10 @@ app.get('/appresult', function (req, res) {
                     art_id: all_id
                 }
             })
-            res.render('appresult.ejs'); }
+            res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+            res.write("<script>alert('신청완료.')</script>");
+            return res.write("<script>window.location=\"../\"</script>");
+         }
        
     })
 })
@@ -981,9 +807,13 @@ app.post('/recommand', checklogin, function (req, res) {
 })
 
 app.get('/suggest', checklogin, function (req, res) {
-    db.collection('recommands').findOne({ id: req.user.id }, function (error, result) {
-        db.collection('profile').find({ 성별: result.성별, 선호포지션: result.선호포지션, 주발: result.주발 }).toArray(function (error, result1) {
-            res.render('suggest.ejs', { player: result1, host: req.user.id })
+    var date = dateString;//현재날짜
+    var place = "소운동장";
+    db.collection('board').find({경기진행날짜: dateString, 장소:place}).toArray(function(error,result１) {
+        db.collection('recommands').findOne({ id: req.user.id }, function (error, result) {
+            db.collection('profile').find({ 성별: result.성별, 선호포지션: result.선호포지션, 주발: result.주발 }).toArray(function (error, result1) {
+                res.render('suggest.ejs', { player: result1, host: req.user.id,dateKor:dateKor, date:date, result:result１ })
+            })
         })
     })
 })
@@ -1210,14 +1040,37 @@ app.get('/invited_match', function(req,res){
 
 //초대 수락
 app.put('/acc_invite', checklogin, function (req, res) {
-    console.log(req.body.accept);
+    const count = parseInt(req.body.accept)
+    console.log(count)
         db.collection('request').updateOne({ 초대받은사람:req.user.id , 신청한게시물번호:parseInt(req.body.accept) }, {
             $set:
             {
                 여부: parseInt(1)
             }
+        }, function(error,result) {
+            db.collection('board').updateOne({ _id: count }, { $inc: { count: -1 } }, function (error, result) {
+                console.log("성공")
+                if (error) { return console.log(error) };
+            })
         })
 });
+
+// app.put('/accept', checklogin, function (req, res) {
+//     const id = new mongoose.Types.ObjectId(req.body._id.id);
+//     const count = parseInt(req.body._id.articlenum) // 신청한게시물번호
+//     console.log(req.body._id.articlenum)
+//     console.log(req.body._id.id)
+
+//     db.collection('request').updateOne({ _id: id }, {
+//         $set: {
+//             여부: parseInt(1)
+//         }
+//     }, function (error, result) {
+//         db.collection('board').updateOne({ _id: count }, { $inc: { count: -1 } }, function (error, result) {
+//             if (error) { return console.log(error) };
+//         })
+//     })
+// });
 //초대 거절
 app.put('/ref_invite', checklogin, function (req, res) {
     console.log(typeof req.body.refuse); //string

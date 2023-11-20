@@ -63,7 +63,10 @@
   }
 
   .sel-match {
-      padding: 20px;
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    margin: 10px;
+    padding: 20px;
   }
 
   .sel-match:hover {
@@ -126,12 +129,12 @@
     }
 
   .sel-match {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 50px;
+    display: grid;
+    grid-template-columns: 5fr 1fr;
     margin: 0 auto;
+    width: 90%;
+    height: 100px;
+    /* margin: 0 auto; */
     border: 1px solid #8f9194;
     border-radius: 10px;
     box-shadow: 0 0 3px 0 rgb(172, 170, 170);
@@ -150,10 +153,12 @@
       border-radius: 10px;
   } */
   .invite-button {
+    width: 80px;
+    height: 40px;
+    text-align: center;
     color: white;
     padding: 6px;
     background-color: #5da034;
-    margin-top: 64.4px;
     border: 0;
     border-radius: 10px;
     box-shadow: 0 0 3px 0 rgb(172, 170, 170);
@@ -163,9 +168,9 @@
   .main-container{
     width: 90%;
     margin: 0 auto;
-    border: 1px solid #8f9194;
-    border-radius: 10px;
-    box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+    /* border: 1px solid #8f9194; */
+    /* border-radius: 10px;
+    box-shadow: 0 0 3px 0 rgb(172, 170, 170); */
   }
   .title {
     display: flex;
@@ -175,6 +180,49 @@
   }
   .list-group {
     padding: 10px;
+  }
+  #btn {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+  #info {
+    padding: 10px;
+  }
+  #infotitle {
+    font-weight: bold;
+  }
+  #count {
+    font-weight: bold;
+    color: #679ae6;
+  }
+  .main-container2{
+    width: 90%;
+    margin: 20px auto;
+
+  }
+  .sel-match2{
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+    margin: 0 auto;
+    width: 90%;
+    height: 100px;
+    /* margin: 0 auto; */
+    border: 1px solid #8f9194;
+    border-radius: 10px;
+    box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+    color: black;
+  }
+  .invite-button2{
+    text-align: center;
+    color: white;
+    padding: 6px;
+    background-color: #5da034;
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+    font-size: 14px;
+    font-weight: bold;
   }
   footer {
       width: 100%;
@@ -209,36 +257,27 @@
         <main>
             <div class="main-container">
                 <h4 class="title"> 초대할 경기를 선택하세요! </h4>
-
                 <% for (var i=0; i < allpost.length; i++ ) { %>
-                  
-
                     <% for (var j=0; j < duplication.length; j++ ) { %>
                       <% if(allpost[i]._id == duplication[j].신청한게시물번호) { %>
                           <% condition = false; %>
                           <% break; %>
-                      
                         <% } %>
-                    
-
                   <% } %>
                     
-
                   <% if(condition == true) { %>
                     <div class="sel-match">
-                      작성자: <%= allpost[i].작성자 %> /
-                      제목: <%= allpost[i].제목 %> /
-                      게시글: <%= allpost[i].게시글 %> /
-                      장소: <%= allpost[i].장소 %> /
-                      인원: <%= allpost[i].인원 %> /
-                      경기진행날짜: <%= allpost[i].경기진행날짜 %> /
-                      경기진행시간: <%= allpost[i].경기진행시간 %>
-                  </div>
-                 
-                    
-                      <a href="/invitedetail" class="invite-button choice"  data-id="<%= allpost[i]._id %>" style="text-decoration: none;">선택</a>
-                   
-                 
+                      <div id="info">
+                        <span id="infotitle"><%= allpost[i].제목 %></span><br>
+                        <span><%= allpost[i].게시글 %></span><br>
+                        <span><%= allpost[i].경기진행날짜 %> / <%= allpost[i].경기진행시간 %> / <%= allpost[i].장소 %> / <%= allpost[i].인원 %> / </span>
+                        <span id="count">남은인원 : <%= allpost[i].count %></span>
+                      </div>
+                      
+                      <div id="btn">
+                        <a href="/invitedetail" class="invite-button choice"  data-id="<%= allpost[i]._id %>" style="text-decoration: none;">선택</a>
+                      </div>
+                    </div>
                   <% } %>
 
                   <% condition = true; %>
@@ -246,23 +285,26 @@
                 <% } %>
             </div>
 
-            <div class="main-container">
+            <div class="main-container2">
+              <div class="sel-match2">
               <p style="margin-top: 20px;">현재 아래의 게시글들에게 신청이 와있으니 신청받은경기 목록을 확인해주세요</p>
-          <% for (var i=0; i < duplication.length; i++ ) { %>
+                <% for (var i=0; i < duplication.length; i++ ) { %>
                 <div class="sel-match">
-                    신청자: <%= duplication[i].신청자 %> /
-                    제목: <%= duplication[i].제목 %> /
-                    경기진행날짜: <%= duplication[i].경기진행날짜 %> /
-                    경기진행시간: <%= duplication[i].경기진행시간 %>
+                  <div id="info">
+                    <span><%= allpost[i].제목 %></span>
+                    <span><%= allpost[i].게시글 %></span>
+                    <span><%= allpost[i].경기진행날짜 %> / <%= allpost[i].경기진행시간 %> <%= allpost[i].장소 %> / <%= allpost[i].인원 %> /</span>
+                  </div>
                 </div>
                 <% } %>
-                <div>
-                  <button type="submit" style="border: 0;">
-                    <a href="/reqmatch" class="invite-button" style="text-decoration: none;">>신청받은경기 목록 보러가기</a>
-                  </button>
+                  <div id="btn">
+                    <button type="submit" style="border: 0;">
+                      <a href="/reqmatch" class="invite-button2" style="text-decoration: none;">>신청받은경기 목록 보러가기</a>
+                    </button>
+                  </div>
                 </div>
-            </div>
-            
+              </div>
+            </div> 
         </main>
         <footer>
 

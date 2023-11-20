@@ -13,6 +13,109 @@
   <title>순풋</title>
   <style>
   @media screen and (max-width: 480px) {
+    #header {
+      grid-area: header;
+    }
+    #main {
+      grid-area: main;
+      display: grid;
+      grid-template-rows: auto auto;
+      grid-gap: 10px;
+    }
+    #footer {
+      grid-area: footer;
+    }
+
+    #body {
+      display: grid;
+      gap: 10px;
+      grid-template-rows: 1fr;
+      grid-template-areas: 
+        'header'
+        'main'
+        'footer';
+    }
+
+  #nav {
+    width: 100%;
+  }
+  #menubar {
+    width: 100%;
+  }
+  .menubar {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    align-items: center;
+    margin: 10px 0;
+  }
+  .menubar a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    margin: 0 200px;
+    display: grid;
+    grid-template-rows: auto auto;
+    place-items: center;
+  }
+  .menubar img {
+    width: 50px;
+    height: 50px;
+  }
+  #main-title{
+      display: flex;
+      justify-content: center;
+      font-size: large;
+      font-weight: bold;
+      margin: 20px;
+    }
+
+  .list-container {
+      width: 95%;
+      border: 1px solid #ced4da;
+      /* color: #838589; */
+      border-radius: 10px;
+      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
+      /* display: inline-block; */
+      /* grid-template-rows: 1fr 4fr; */
+      /* justify-content: center;
+      align-items: center; */
+      font-size: 18px;
+      margin: 0 auto;
+    }
+  .listContainer-item {
+    width: 100%;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1fr;
+    /* border: 1px solid #ced4da; */
+    border-bottom: 0.5px solid #ced4da;
+    border-radius: 0;
+    position: relative;
+    align-items: center;
+  }
+  .title {
+      color: #5da034;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .list-wrap {
+      padding: 20px;
+    }
+    .score_button a{
+      text-decoration: none;
+      color: black;
+      font-size: 16px;
+    }
+  footer {
+    width: 100%;
+    height: 300px;
+    margin: 0 auto;
+    background-color: #282B33;
+  }
+  }
+    
+
+  @media screen and (min-width: 481px) {
     header {
       width: 100%;
       height: 300px;
@@ -22,6 +125,7 @@
       display: grid;
       grid-template-rows: auto auto;
     }
+
     .menubar {
       bottom: 10px;
       display: grid;
@@ -51,165 +155,44 @@
     .menuname {
       margin-top: 10px;
     }
-    #main-title {
-      width: 80%;
-      color: black;
-      margin: 30px auto;
+
+    main {
+      width: 100%;
+      margin: 40px auto;
+    }
+    #main-title{
       display: flex;
       justify-content: center;
-      font-size:x-large;
+      font-size: large;
       font-weight: bold;
+      margin: 20px;
     }
     .list-container {
-      width: 60%;
-      height: 600px;
+      width: 50%;
       border: 1px solid #ced4da;
-      color: #838589;
+      /* color: #838589; */
       border-radius: 10px;
       box-shadow: 0 0 3px 0 rgb(172, 170, 170);
-      /* display: flex; */
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-      overflow-y: scroll;
-      margin: 10px auto;
-    }
-    .list-container::-webkit-scrollbar {
-      display: none;
-    }
-
-    .list-item {
-      display: flex;
-      justify-content: space-between;
-      border: 1px solid #ced4da;
-      color: #838589;
-      border-radius: 10px;
-      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
-      margin: 10px 10px;
-      padding: 10px;
-    }
-    .list-wrap {
-      /* display: grid;
-      grid-template-rows: 1fr 1fr;
-      grid-gap: 10px; */
-      border: 1px solid #ced4da;
-      color: #838589;
-      border-radius: 10px;
-      box-shadow: 0 0 3px 0 rgb(172, 170, 170);
-      margin: 10px 10px;
-      padding: 10px;
-
-    }
-    .list-item-success{
-      display: flex;
-      justify-content: space-between;
-
+      /* display: inline-block; */
+      /* grid-template-rows: 1fr 4fr; */
+      /* justify-content: center;
+      align-items: center; */
+      font-size: 18px;
+      margin: 0 auto;
     }
     .title {
-      color: black;
+      color: #5da034;
       font-weight: bold;
+      margin-bottom: 10px;
     }
-
-    .content {
-      color: black;
-    }
-
-    .detail {
-      font-size: 16px;
-      color: #545658;
-    }
-
-    .btn_wait {
-      width: 120px;
-      height: 100%;
-      border: 0;
-      background-color: rgb(66, 66, 236);
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      border-radius: 10px;
-      padding: 3px;
-    }
-
-    .btn_fail {
-      width: 120px;
-      height: 100%;
-      border: 0;
-      background-color: red;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      border-radius: 10px;
-      padding: 3px;
-    }
-
-    .btn_complete {
-      width: 120px;
-      height: 100%;
-      border: 0;
-      background-color: #5da034;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      border-radius: 10px;
-      padding: 3px;
-    }
-    .score_button {
-      width: fit-content;
-      height: fit-content;
-      background-color: white;
-      margin-top: 10px;
-      margin-left: 60%;
-      font-size: 15px;
+    .list-wrap {
+      padding: 20px;
     }
     .score_button a{
-      color: black;
-      font-weight: bold;
-      list-style: none;
       text-decoration: none;
+      color: black;
+      font-size: 16px;
     }
-
-    #star {
-      display: flex;
-    }
-
-    .star {
-      font-size: 2rem;
-      margin: 10px 0;
-      cursor: pointer;
-    }
-
-    .star:not(.on) {
-      color: #ccc;
-    }
-
-    .star.on {
-      color: orange;
-    }
-    #mat-stat{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .wait {
-            font-weight: bold;
-            color: green;
-    }
-    .complete {
-     font-weight: bold;
-     color: blue;
-    }
-    .fail {
-      font-weight: bold;
-      color: red;
-    }
-    footer {
-      width: 100%;
-      height: 300px;
-      margin: 0 auto;
-      background-color: #282B33;
-    }
-    
   }
   </style>
 </head>
@@ -235,90 +218,81 @@
     <hr style="height: 1px; background: #ccc;">
 
     <main>
-      <div id="main-title"> <%= user %>님과 함께 경기한 유저들</div>
+      <div id="main-title"> <%= user %>님과 함께 매치를 진행한 유저를 평가해주세요</div>
+      <div id="wrap">
         <div class="list-container">
           <!-- 신청한 경기의 매칭완료 출력문 -->
             <%for (var i=0; i < apply_sender.length; i++ ) { %>
                 <% if(apply_sender[i].경기진행날짜 < date) { %>
                           <div class="list-wrap">
-                            <div class="list-item-success">
-                                <div class="item1">
                                   <div class="title">
-                                    <p>
-                                      신청한거
-                                    </p>
-                                    <p>
-                                      <%= apply_sender[i].평가여부 %>
-                                    </p>
-                                    <p>
-                                      <%= apply_sender[i].작성자 %>
-                                    </p>
-                                    <p>
-                                      <%= apply_sender[i].제목 %>
-                                    </p>
-                                    <p>
-                                      <%= apply_sender[i].신청한게시물번호 %>
-                                    </p>
-                                  </div>
-                                  <div class="content">
-                                    <%= apply_sender[i].게시글 %>
-                                  </div>
-                                  <div class="detail">
                                     <span>
-                                      <%= apply_sender[i].경기진행날짜 %> •
+                                      신청한 매치
                                     </span>
                                   </div>
-                                </div>
-                            </div>
+                                    <span style="display: none;">
+                                      <%= apply_sender[i].평가여부 %>
+                                    </span>
+                                    <div>
+                                      <span>
+                                        매치의 호스트 - <%= apply_sender[i].작성자 %>
+                                      </span>
+                                    </div>
 
-                            <div class="score_button">
-                              <a href="/score" data-id="<%= apply_sender[i].작성자 %>" data-articlenum="<%= apply_sender[i].신청한게시물번호 %>" class="before_ev">> <%= apply_sender[i].작성자 %>님의 매너점수 평가하러가기</a>
-                            </div>
+                                  <div class="detail">
+                                    <span>
+                                      <%= apply_sender[i].경기진행날짜 %> /
+                                    </span>
+                                    <span>
+                                      <%= apply_sender[i].장소 %>
+                                    </span>
+                                  </div>
+                                  
+                                 <div class="score_button">
+                                     <a href="/score" data-id="<%= apply_sender[i].작성자 %>" data-articlenum="<%= apply_sender[i].신청한게시물번호 %>" class="before_ev">> <%= apply_sender[i].작성자 %>님의 매너점수 평가하러가기</a>
+                                  </div>
+                                </div>
                           </div>
                <% } %>
             <% } %>
-        
+          </div>
+          <div id="wrap">
+        <div class="list-container">
+          <!-- 신청한 경기의 매칭완료 출력문 -->
+            <%for (var i=0; i < invite_receiver.length; i++ ) { %>
+                <% if(invite_receiver[i].경기진행날짜 < date) { %>
+                          <div class="list-wrap">
+                                  <div class="title">
+                                    <span>
+                                      초대받은 매치
+                                    </span>
+                                  </div>
+                                    <span style="display: none;">
+                                      <%= invite_receiver[i].평가여부 %>
+                                    </span>
+                                    <div>
+                                      <span>
+                                        매치의 호스트 - <%= invite_receiver[i].초대한사람 %>
+                                      </span>
+                                    </div>
 
-         <!-- 초대받은 경기의 매칭완료 출력문 -->
-         <%for (var i=0; i < invite_receiver.length; i++ ) { %>
-          <% if(invite_receiver[i].경기진행날짜 < date) { %>
-                <div class="list-wrap">
-                  <div class="list-item-success">
-                      <div class="item1">
-                        <div class="title">
-                          <p>
-                            초대받은거
-                          </p>
-                          <p>
-                            <%= invite_receiver[i].평가여부 %>
-                          </p>
-                          <p>
-                            <%= invite_receiver[i].초대한사람 %>
-                          </p>
-                          <p>
-                            <%= invite_receiver[i].제목 %>
-                          </p>
-                          <p>
-                            <%= invite_receiver[i].신청한게시물번호 %>
-                          </p>
-                        </div>
-                        <div class="content">
-                          <%= invite_receiver[i].게시글 %>
-                        </div>
-                        <div class="detail">
-                          <span>
-                            <%= invite_receiver[i].경기진행날짜 %> •
-                          </span>
-                        </div>
-                      </div>
-                  </div>
-
-                  <div class="score_button">
-                    <a href="/score" data-id="<%= invite_receiver[i].초대한사람 %>" data-articlenum="<%= invite_receiver[i].신청한게시물번호 %>" class="before_ev">> <%= invite_receiver[i].초대한사람 %>님의 매너점수 평가하러가기</a>
-                  </div>
-                </div>
-                  <% } %>
-                    <% } %>                                
+                                  <div class="detail">
+                                    <span>
+                                      <%= invite_receiver[i].경기진행날짜 %> /
+                                    </span>
+                                    <span>
+                                      <%= invite_receiver[i].장소 %>
+                                    </span>
+                                  </div>
+                                  
+                                 <div class="score_button">
+                                  <a href="/score" data-id="<%= invite_receiver[i].초대한사람 %>" data-articlenum="<%= invite_receiver[i].신청한게시물번호 %>" class="before_ev">> <%= invite_receiver[i].초대한사람 %>님의 매너점수 평가하러가기</a>
+                                  </div>
+                                </div>
+                          </div>
+               <% } %>
+            <% } %>                              
+        </div>  <!-- list container end-->
       </div>
     </main>
 

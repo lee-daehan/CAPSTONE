@@ -397,13 +397,13 @@
                                 <span style="font-weight: bold;"><%= personlist[i].제목 %></span>
                             </div>
                             <div id="detail_info">
-                                <span>경기 날짜: <%= personlist[i].경기진행날짜 %> /</span>
-                                <span>경기 시간: <%= personlist[i].경기진행시간 %></span><br>
+                                <span><%= personlist[i].경기진행날짜 %> /</span>
+                                <span><%= personlist[i].경기진행시간 %></span><br>
                             </div>
                             <div id="detail_info">
                                 <span><%= personlist[i].장소 %> /</span>
                                 <span><%= personlist[i].인원 %> /</span>
-                                <span>남은자리: <%= personlist[i].count %>명</span>
+                                <span>남은자리: <%= personlist[i].남은인원 %>명</span>
                             </div>
                         </div>
                         <div class="btn_box" style="margin: auto auto;">
