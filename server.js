@@ -806,6 +806,14 @@ app.post('/recommand', checklogin, function (req, res) {
     res.write("<script>window.location=\"../suggest\"</script>");
 })
 
+// app.get('/suggest', checklogin, function (req, res) {
+//     db.collection('recommands').findOne({ id: req.user.id }, function (error, result) {
+//         db.collection('profile').find({ 성별: result.성별, 선호포지션: result.선호포지션, 주발: result.주발 }).toArray(function (error, result1) {
+//             res.render('suggest.ejs', { player: result1, host: req.user.id })
+//         })
+//     })
+// })
+
 app.get('/suggest', checklogin, function (req, res) {
     var date = dateString;//현재날짜
     var place = "소운동장";
